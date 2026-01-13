@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>상품 상세 - 호두마켓</title>
+  <link rel="stylesheet" href="../assets/css/reset.css">
+  <link rel="stylesheet" href="../assets/css/common.css">
+  <link rel="stylesheet" href="../assets/css/pages/products.css">
+</head>
+<body>
+  <main class="main">
+      <div class="container">
+          <section class="product">
+
+            <div class="product-media">
+                <img src="#" alt="">
+            </div>
+            <aside class="product-info">
+              <p class="kicker">맞고 줄래 그냥 줄래?</p>
+                <h1 class="title">고롱고롱 츄르 세트</h1>
+                <p class="price" data-price="13500">13,500</p>
+                  <div class="row">
+                    <div class="label">택배배송 / </div>
+                    <div class="value">무료배송</div>
+                  </div>
+
+                <div class="counter-section">
+                    <div class="counter">
+                      <button type="button" class="btn-minus" aria-label="수량 감소">
+                          <img src="../assets/images/icon-minus-line.svg" alt="감소">
+                      </button>
+
+                      <input type="number" class="quantity-input" min="1" value="1" readonly>
+
+                      <button type="button" class="btn-plus" aria-label="수량 증가">
+                        <img src="../assets/images/icon-plus-line.svg" alt="증가">
+                      </button>
+                      </div>
+                  </div>
+
+                <div class="rowalt">
+                  <div class="summary">
+                      <div class="total">총 상품 금액</div>
+                      <div class="value">총 수량 <span class="total-count">1</span>개</div>
+                      <div class="money"><span class="total-money">13,500</span></div>
+                  </div>
+                </div>
+                  <div class="button-group">
+                      <button type="button" class="btn-buy">바로 구매</button>
+                      <button type="button" class="btn-cart">장바구니</button>
+                  </div>
+              </aside>
+
+              <nav class="product-tabs">
+                <ul class="tab-list">
+                  <li>
+                      <button type="button" class="tab-item active" data-tab="description">상세 정보</button>
+                  </li>
+                  <li>
+                      <button type="button" class="tab-item" data-tab="review">리뷰</button>
+                      </li>
+                      <li>
+                        <button type="button" class="tab-item" data-tab="qna">Q&A</button>
+                      </li>
+                      <li>
+                        <button type="button" class="tab-item" data-tab="policy">반품/교환정보</button>
+                      </li>
+                </ul>
+              </nav>
+              
+            <section class="tab-content">
+                <div id="description" class="content-item">상세 내용</div>
+            </section>
+          </section>
+      </div>
+  </main>
+
+  <script src="../assets/js/pages/products.js"></script>
+
+
+</body>
+</html>
