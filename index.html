@@ -1,9 +1,102 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>호두마켓 - 고양이 물품 전문 쇼핑몰</title>
-  </head>
-  <body></body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>호두마켓 - 고양이 물품 전문 쇼핑몰</title>
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/common.css">
+  <link rel="stylesheet" href="./assets/css/pages/home.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header__inner">
+      <h1 class="header__logo">
+        <a href="/">
+          <img src="./assets/images/logo.png" alt="호두마켓">
+        </a>
+      </h1>
+
+      <form class="header__search">
+        <input type="search" placeholder="상품을 검색해보세요!">
+        <button type="submit">검색</button>
+      </form>
+
+      <nav class="header__nav">
+        <a href="#" class="header__nav-item header__nav-item--cart">
+          <span>장바구니</span>
+        </a>
+        <a href="#" class="header__nav-item header__nav-item--mypage">
+          <span>마이페이지</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+    <!-- Banner Slider -->
+    <section class="banner">
+      <button class="banner__btn banner__btn--prev">이전</button>
+      <ul class="banner__slides">
+        <li class="banner__slide"></li>
+        <li class="banner__slide"></li>
+        <li class="banner__slide"></li>
+      </ul>
+      <button class="banner__btn banner__btn--next">다음</button>
+      <div class="banner__indicators">
+        <button class="banner__indicator active"></button>
+        <button class="banner__indicator"></button>
+        <button class="banner__indicator"></button>
+      </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products">
+      <h2 class="sr-only">상품 목록</h2>
+      <ul class="products__list">
+        <li class="product-card">
+          <a href="./products/detail.html">
+            <div class="product-card__img">
+              <img src="" alt="상품 이미지">
+            </div>
+            <p class="product-card__desc">상품 설명</p>
+            <h3 class="product-card__name">상품명</h3>
+            <p class="product-card__price">
+              <span class="price">00,000</span>
+              <span class="unit">원</span>
+            </p>
+          </a>
+        </li>
+        <!-- 상품 카드 반복 -->
+      </ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <nav class="footer__nav">
+        <a href="#">호두샵 소개</a>
+        <a href="#">이용약관</a>
+        <a href="#">개인정보처리방침</a>
+        <a href="#">전자금융거래약관</a>
+        <a href="#">청소년보호정책</a>
+        <a href="#">제휴문의</a>
+      </nav>
+      <div class="footer__info">
+        <p>호두샵 사업자정보</p>
+      </div>
+      <div class="footer__sns">
+        <a href="#">인스타그램</a>
+        <a href="#">페이스북</a>
+        <a href="#">유튜브</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./assets/js/common.js"></script>
+  <script src="./assets/js/pages/home.js"></script>
+</body>
 </html>
