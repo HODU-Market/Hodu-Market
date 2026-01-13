@@ -4,99 +4,256 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>호두마켓 - 고양이 물품 전문 쇼핑몰</title>
-  <link rel="stylesheet" href="./assets/css/reset.css">
-  <link rel="stylesheet" href="./assets/css/common.css">
-  <link rel="stylesheet" href="./assets/css/pages/home.css">
+
+  <link rel="stylesheet" href="../assets/css/reset.css">
+  <link rel="stylesheet" href="../assets/css/common.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
 </head>
 <body>
-  <!-- Header -->
+
   <header class="header">
-    <div class="header__inner">
-      <h1 class="header__logo">
-        <a href="/">
-          <img src="./assets/images/logo.png" alt="호두마켓">
+    <div class="header-inner">
+      <h1 class="logo">
+        <span class="text-ir">호두 마켓 바로가기</span>
+        <a href="#">
+          <img src="../assets/images/logo.png" alt="HODU 로고">
         </a>
       </h1>
 
-      <form class="header__search">
-        <input type="search" placeholder="상품을 검색해보세요!">
-        <button type="submit">검색</button>
+      <form class="input-box" action="#" method="get">
+        <label for="fieldInput" class="text-ir">상품 검색</label>
+        <input
+          id="fieldInput"
+          class="input"
+          type="text"
+          name="q"
+          placeholder="상품을 검색해보세요!"
+          required
+        >
+        <img class="search-icon" src="../assets/images/search.png" alt="">
       </form>
 
-      <nav class="header__nav">
-        <a href="#" class="header__nav-item header__nav-item--cart">
-          <span>장바구니</span>
-        </a>
-        <a href="#" class="header__nav-item header__nav-item--mypage">
-          <span>마이페이지</span>
-        </a>
+      <nav class="nav" aria-label="메인메뉴">
+        <ul class="nav-list">
+          <li class="cart">
+            <a href="../cart/index.html" class="cart-link">
+              <img class="shopping-icon" src="../assets/images/icon-shopping-cart.png" alt="">
+              <span>장바구니</span>
+            </a>
+          </li>
+
+          <li class="mypage">
+            <button type="button" class="mypage-btn" aria-haspopup="true" aria-expanded="false">
+              <img class="user-icon" src="../assets/images/icon-user.png" alt="">
+              <span>마이페이지</span>
+            </button>
+
+            <div class="dropdown" role="menu" aria-label="마이페이지 메뉴">
+              <button type="button" class="dropdown-item" data-action="ui-only">마이페이지</button>
+              <button type="button" class="dropdown-item" data-action="logout">로그아웃</button>
+            </div>
+          </li>
+        </ul>
       </nav>
     </div>
   </header>
 
-  <!-- Main -->
-  <main>
-    <!-- Banner Slider -->
-    <section class="banner">
-      <button class="banner__btn banner__btn--prev">이전</button>
-      <ul class="banner__slides">
-        <li class="banner__slide"></li>
-        <li class="banner__slide"></li>
-        <li class="banner__slide"></li>
-      </ul>
-      <button class="banner__btn banner__btn--next">다음</button>
-      <div class="banner__indicators">
-        <button class="banner__indicator active"></button>
-        <button class="banner__indicator"></button>
-        <button class="banner__indicator"></button>
+  <main class="main">
+    <section class="banner" aria-label="프로모션 배너">
+      <div class="swiper banner-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img src="../assets/images/banner-1.png" alt="배너 1"></div>
+          <div class="swiper-slide"><img src="../assets/images/banner-2.png" alt="배너 2"></div>
+          <div class="swiper-slide"><img src="../assets/images/banner-3.png" alt="배너 3"></div>
+          <div class="swiper-slide"><img src="../assets/images/banner-4.png" alt="배너 3"></div>
+        </div>
+
+        <button class="swiper-button-prev" type="button" aria-label="이전 배너">
+          <img src="../assets/images/icon-swiper-1.svg" alt="">
+        </button>
+        <button class="swiper-button-next" type="button" aria-label="다음 배너">
+          <img src="../assets/images/icon-swiper-2.svg" alt="">
+        </button>
+
+        <div class="swiper-pagination" aria-label="배너 페이지네이션"></div>
       </div>
     </section>
 
-    <!-- Products -->
-    <section class="products">
-      <h2 class="sr-only">상품 목록</h2>
-      <ul class="products__list">
-        <li class="product-card">
-          <a href="./products/detail.html">
-            <div class="product-card__img">
-              <img src="" alt="상품 이미지">
-            </div>
-            <p class="product-card__desc">상품 설명</p>
-            <h3 class="product-card__name">상품명</h3>
-            <p class="product-card__price">
-              <span class="price">00,000</span>
-              <span class="unit">원</span>
-            </p>
-          </a>
-        </li>
-        <!-- 상품 카드 반복 -->
-      </ul>
+    <section class="products" aria-label="상품 목록">
+      <div class="container">
+        <ul class="product-grid" id="productList"></ul>
+        <p class="empty" id="emptyState" hidden>등록된 상품이 없습니다.</p>
+      </div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
-    <div class="footer__inner">
-      <nav class="footer__nav">
-        <a href="#">호두샵 소개</a>
-        <a href="#">이용약관</a>
-        <a href="#">개인정보처리방침</a>
-        <a href="#">전자금융거래약관</a>
-        <a href="#">청소년보호정책</a>
-        <a href="#">제휴문의</a>
-      </nav>
-      <div class="footer__info">
-        <p>호두샵 사업자정보</p>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <ul class="footer-links">
+          <li><a href="#">호두샵 소개</a></li>
+          <li><a href="#">이용약관</a></li>
+          <li><a href="#"><strong>개인정보처리방침</strong></a></li>
+          <li><a href="#">전자금융거래약관</a></li>
+          <li><a href="#">청소년보호정책</a></li>
+          <li><a href="#">제휴문의</a></li>
+        </ul>
+  
+        <div class="footer-sns" aria-label="SNS 링크">
+          <a href="#" class="sns-link" aria-label="인스타그램">
+            <img src="../assets/images/icon-insta.svg" alt="">
+          </a>
+          <a href="#" class="sns-link" aria-label="페이스북">
+            <img src="../assets/images/icon-fb.svg" alt="">
+          </a>
+          <a href="#" class="sns-link" aria-label="유튜브">
+            <img src="../assets/images/icon-yt.svg" alt="">
+          </a>
+        </div>
       </div>
-      <div class="footer__sns">
-        <a href="#">인스타그램</a>
-        <a href="#">페이스북</a>
-        <a href="#">유튜브</a>
+  
+      <div class="footer-divider"></div>
+  
+      <div class="footer-info">
+        <p class="footer-company">(주)HODU SHOP</p>
+        <p>제주특별자치도 제주시 동광고로 137 제주코딩베이스캠프</p>
+        <p>사업자 번호: 000-0000-0000 | 통신판매업</p>
+        <p>대표: 김호두</p>
       </div>
     </div>
-  </footer>
+  </footer>  
 
-  <script src="./assets/js/common.js"></script>
-  <script src="./assets/js/pages/home.js"></script>
+  <script>
+    const mypage = document.querySelector(".mypage");
+    const mypageBtn = document.querySelector(".mypage-btn");
+    const dropdown = document.querySelector(".dropdown");
+    const cart = document.querySelector(".cart");
+    const cartLink = document.querySelector(".cart-link");
+
+    cartLink.addEventListener("click", () => {
+      cart.classList.add("is-active");
+    });
+
+    const openMenu = () => {
+      mypage.classList.add("is-open");
+      mypageBtn.setAttribute("aria-expanded", "true");
+    };
+
+    const closeMenu = () => {
+      mypage.classList.remove("is-open");
+      mypageBtn.setAttribute("aria-expanded", "false");
+    };
+
+    mypageBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      mypage.classList.contains("is-open") ? closeMenu() : openMenu();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!mypage.contains(e.target)) closeMenu();
+    });
+
+    dropdown.addEventListener("click", (e) => {
+      const btn = e.target.closest(".dropdown-item");
+      if (!btn) return;
+
+      const action = btn.dataset.action;
+
+      if (action === "ui-only") {
+        closeMenu();
+        return;
+      }
+
+      if (action === "logout") {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        location.href = "#";
+      }
+    });
+  </script>
+
+  <script>
+    const PRODUCTS_KEY = "hodu_products";
+
+    const formatPrice = (value) => {
+      const n = Number(value || 0);
+      return n.toLocaleString("ko-KR") + "원";
+    };
+
+    const getProducts = () => {
+      try {
+        const raw = localStorage.getItem(PRODUCTS_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const renderProducts = (products) => {
+      const list = document.getElementById("productList");
+      const empty = document.getElementById("emptyState");
+
+      if (!list || !empty) return;
+
+      list.innerHTML = "";
+
+      if (!products.length) {
+        empty.hidden = false;
+        return;
+      }
+
+      empty.hidden = true;
+
+      const html = products.map((p) => {
+        const id = encodeURIComponent(p.id ?? "");
+        const seller = p.seller ?? "판매자";
+        const name = p.name ?? "상품명";
+        const price = formatPrice(p.price);
+        const img = p.image ?? "../assets/images/product-placeholder.png";
+
+        return `
+          <li>
+            <a class="product-card" href="../products/detail.html?id=${id}">
+              <div class="thumb">
+                <img src="${img}" alt="${name}">
+              </div>
+              <div class="meta">
+                <p class="seller">${seller}</p>
+                <p class="name">${name}</p>
+                <p class="price">${price}</p>
+              </div>
+            </a>
+          </li>
+        `;
+      }).join("");
+
+      list.insertAdjacentHTML("beforeend", html);
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      renderProducts(getProducts());
+
+      new Swiper(".banner-swiper", {
+        loop: true,
+        autoplay: {
+          delay: 3500,
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+    });
+  </script>
+
 </body>
 </html>
