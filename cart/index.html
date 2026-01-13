@@ -155,25 +155,29 @@
         <aside class="cart__summary">
           <h3 class="sr-only">결제 금액 요약</h3>
           <dl class="cart__summary-list">
-            <dt>총 상품금액</dt>
-            <dd><output class="amount">0</output>원</dd>
+            <div class="cart__summary-item">
+              <dt>총 상품금액</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
 
-            <dt class="cart__summary-operator minus" aria-hidden="true">-</dt>
-            <dd class="sr-only">빼기</dd>
+            <span class="cart__summary-operator minus" aria-hidden="true"></span>
 
-            <dt>상품 할인</dt>
-            <dd><output class="amount">0</output>원</dd>
+            <div class="cart__summary-item">
+              <dt>상품 할인</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
 
-            <dt class="cart__summary-operator plus" aria-hidden="true">+</dt>
-            <dd class="sr-only">더하기</dd>
+            <span class="cart__summary-operator plus" aria-hidden="true"></span>
 
-            <dt>배송비</dt>
-            <dd><output class="amount">0</output>원</dd>
+            <div class="cart__summary-item">
+              <dt>배송비</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
 
-            <dt class="cart__summary-total">결제 예정 금액</dt>
-            <dd class="cart__summary-total">
-              <output class="amount">0</output>원
-            </dd>
+            <div class="cart__summary-item cart__summary-item--total">
+              <dt>결제 예정 금액</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
           </dl>
         </aside>
 
