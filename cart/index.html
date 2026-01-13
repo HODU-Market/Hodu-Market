@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>장바구니 - 호두마켓</title>
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/common.css" />
+    <link rel="stylesheet" href="../assets/css/pages/cart.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <!-- 추후 연동 예정 -->
+
+    <!-- Main -->
+    <main class="cart">
+      <h2 class="cart__title">장바구니</h2>
+
+      <!-- Cart Form -->
+      <form class="cart__form">
+        <!-- Cart Table -->
+        <section class="cart__content">
+          <!-- Table Header -->
+          <header class="cart__table-header">
+            <label class="cart__checkbox">
+              <input type="checkbox" id="select-all" />
+              <span class="sr-only">전체 선택</span>
+            </label>
+            <span class="cart__col-info">상품정보</span>
+            <span class="cart__col-quantity">수량</span>
+            <span class="cart__col-price">상품금액</span>
+          </header>
+
+          <!-- Cart Items -->
+          <ul class="cart__list">
+            <!-- Cart Item 1 -->
+            <li class="cart-item">
+              <label class="cart-item__checkbox">
+                <input type="checkbox" name="cart-item" />
+                <span class="sr-only">상품 선택</span>
+              </label>
+
+              <article class="cart-item__info">
+                <figure class="cart-item__img">
+                  <img src="" alt="상품 이미지" />
+                </figure>
+                <dl class="cart-item__detail">
+                  <dt class="sr-only">판매자</dt>
+                  <dd class="cart-item__seller">판매자명</dd>
+                  <dt class="sr-only">상품명</dt>
+                  <dd class="cart-item__name">상품명</dd>
+                  <dt class="sr-only">가격</dt>
+                  <dd class="cart-item__price">00,000원</dd>
+                  <dt class="sr-only">배송</dt>
+                  <dd class="cart-item__delivery">택배배송 / 무료배송</dd>
+                </dl>
+              </article>
+
+              <fieldset class="cart-item__quantity">
+                <legend class="sr-only">수량 조절</legend>
+                <button
+                  type="button"
+                  class="cart-item__qty-btn cart-item__qty-btn--minus"
+                >
+                  <span class="sr-only">수량 감소</span>
+                </button>
+                <input
+                  type="number"
+                  value="1"
+                  min="1"
+                  class="cart-item__qty-input"
+                  aria-label="수량"
+                />
+                <button
+                  type="button"
+                  class="cart-item__qty-btn cart-item__qty-btn--plus"
+                >
+                  <span class="sr-only">수량 증가</span>
+                </button>
+              </fieldset>
+
+              <p class="cart-item__total">
+                <output class="cart-item__total-price">00,000원</output>
+                <button type="button" class="cart-item__order-btn">
+                  주문하기
+                </button>
+              </p>
+
+              <button type="button" class="cart-item__delete">
+                <span class="sr-only">삭제</span>
+              </button>
+            </li>
+
+            <!-- Cart Item 2 (반복) -->
+            <li class="cart-item">
+              <label class="cart-item__checkbox">
+                <input type="checkbox" name="cart-item" />
+                <span class="sr-only">상품 선택</span>
+              </label>
+
+              <article class="cart-item__info">
+                <figure class="cart-item__img">
+                  <img src="" alt="상품 이미지" />
+                </figure>
+                <dl class="cart-item__detail">
+                  <dt class="sr-only">판매자</dt>
+                  <dd class="cart-item__seller">판매자명</dd>
+                  <dt class="sr-only">상품명</dt>
+                  <dd class="cart-item__name">상품명</dd>
+                  <dt class="sr-only">가격</dt>
+                  <dd class="cart-item__price">00,000원</dd>
+                  <dt class="sr-only">배송</dt>
+                  <dd class="cart-item__delivery">택배배송 / 무료배송</dd>
+                </dl>
+              </article>
+
+              <fieldset class="cart-item__quantity">
+                <legend class="sr-only">수량 조절</legend>
+                <button
+                  type="button"
+                  class="cart-item__qty-btn cart-item__qty-btn--minus"
+                >
+                  <span class="sr-only">수량 감소</span>
+                </button>
+                <input
+                  type="number"
+                  value="1"
+                  min="1"
+                  class="cart-item__qty-input"
+                  aria-label="수량"
+                />
+                <button
+                  type="button"
+                  class="cart-item__qty-btn cart-item__qty-btn--plus"
+                >
+                  <span class="sr-only">수량 증가</span>
+                </button>
+              </fieldset>
+
+              <p class="cart-item__total">
+                <output class="cart-item__total-price">00,000원</output>
+                <button type="button" class="cart-item__order-btn">
+                  주문하기
+                </button>
+              </p>
+
+              <button type="button" class="cart-item__delete">
+                <span class="sr-only">삭제</span>
+              </button>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Cart Summary -->
+        <aside class="cart__summary">
+          <h3 class="sr-only">결제 금액 요약</h3>
+          <dl class="cart__summary-list">
+            <div class="cart__summary-item">
+              <dt>총 상품금액</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
+
+            <span class="cart__summary-operator minus" aria-hidden="true"></span>
+
+            <div class="cart__summary-item">
+              <dt>상품 할인</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
+
+            <span class="cart__summary-operator plus" aria-hidden="true"></span>
+
+            <div class="cart__summary-item">
+              <dt>배송비</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
+
+            <div class="cart__summary-item cart__summary-item--total">
+              <dt>결제 예정 금액</dt>
+              <dd><output class="amount">0</output>원</dd>
+            </div>
+          </dl>
+        </aside>
+
+        <!-- Order Button -->
+        <button type="submit" class="cart__order-btn">주문하기</button>
+      </form>
+    </main>
+
+    <!-- Footer -->
+    <!-- 추후 연동 예정 -->
+    <script src="../assets/js/common.js"></script>
+    <script src="../assets/js/pages/cart.js"></script>
+  </body>
+</html>
