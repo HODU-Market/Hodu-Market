@@ -65,6 +65,13 @@
     height: 28px;
 }
 
+.search-icon:hover,
+.search-icon.is-active {
+    filter: brightness(0) saturate(100%)
+            invert(83%) sepia(18%)
+            saturate(496%) hue-rotate(345deg);
+}
+
 .nav{
     position: absolute;
     top: 50%;
@@ -134,21 +141,20 @@
 
 .dropdown-item{
     width: 100%;
-    padding: 10px 12px;
+    padding: 10px 0;
     background: transparent;
-    border: 0;
-    text-align: left;
+    border: 1px solid transparent;
+    text-align: center;
     font-size: 14px;
+    font-weight: 400;
     cursor: pointer;
+    border-radius: 6px;
 }
 
 .dropdown-item:hover{
-    background: #f5f5f5;
-    border-radius: 8px;
-}
-
-.cart.is-active .cart-link{
-    color: #E3C1A4;
+    font-weight: 700;
+    border: 2px solid #848484;
+    background: #fff;
 }
 
 .cart.is-active .shopping-icon{
