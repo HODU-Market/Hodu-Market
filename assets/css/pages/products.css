@@ -1,4 +1,4 @@
-/* products.css */
+/* products.css 수정 전문 */
 
 body {
     font-family: 'SpokaHanSansNeo', sans-serif;
@@ -8,6 +8,7 @@ body {
     display: flex;
     justify-content: center;
     padding-top: 80px;
+    scroll-behavior: smooth;
 }
 
 .container {
@@ -16,27 +17,31 @@ body {
     margin: 0 auto;
 }
 
+/* 상단 상품 영역 (이미지 + 정보) */
 .product {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 140px 40px;
     margin-bottom: 80px;
 }
-
 
 .product-media {
     background-color: var(--color-gray-100);
     overflow: hidden;
     aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--color-border);
 }
 
 .product-media img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 600px;
+    height: auto;
+    object-fit: contain;
 }
 
-/* 오른쪽 상품 정보 섹션 */
 .product-info {
     display: flex;
     flex-direction: column;
@@ -86,7 +91,6 @@ body {
 .label { color: var(--color-gray-400); }
 .value { margin-left: 5px; color: var(--color-gray-400); }
 
-
 .counter-section {
     border-top: 2px solid var(--color-gray-200);
     border-bottom: 2px solid var(--color-gray-200);
@@ -120,7 +124,6 @@ body {
     outline: none;
 }
 
-
 .quantity-input {
     width: 40px;
     text-align: center;
@@ -129,21 +132,11 @@ body {
     border-right: 1px solid var(--color-gray-200);
     font-size: 16px;
     outline: none;
-    
     color: var(--color-dark); 
     background-color: var(--color-white); 
     font-weight: 500;
 }
 
-.quantity-input::-webkit-outer-spin-button,
-.quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-
-
-/* 총 금액 섹션 */
 .summary {
     width: 100%;
     display: flex;
@@ -152,29 +145,10 @@ body {
     gap: 15px;
 }
 
-.total {
-    font-weight: bold;
-    margin-right: auto;
-}
-
-.summary .value { color: var(--color-gray-400); font-size: 13px; }
-.money {
-    color: var(--color-primary);
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.money::after {
-    content: "원";
-    font-size: 18px;
-    margin-left: 2px;
-    font-weight: 300;
-}
-
-.total-count {
-    font-size: 13px;
-    color: var(--color-primary);
-}
+.total { font-weight: bold; margin-right: auto; }
+.money { color: var(--color-primary); font-size: 24px; font-weight: 700; }
+.money::after { content: "원"; font-size: 18px; margin-left: 2px; font-weight: 300; }
+.total-count { font-size: 13px; color: var(--color-primary); }
 
 .button-group {
     display: flex;
@@ -182,39 +156,39 @@ body {
     margin-top: 10px;
 }
 
-.btn-buy {
-    flex: 2;
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    border: none;
-    padding: 18px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-}
+.btn-buy { flex: 2; 
+    background-color: var(--color-secondary); 
+    color: var(--color-white); 
+    border: none; 
+    padding: 18px; 
+    border-radius: 5px; 
+    font-weight: bold; 
+    cursor: pointer; }
 
-.btn-cart {
-    flex: 1;
-    background-color: var(--color-gray-400);
-    color: var(--color-white);
-    border: none;
-    padding: 18px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-}
+.btn-cart { flex: 1; 
+    background-color: var(--color-gray-400); 
+    color: var(--color-white); 
+    border: none; 
+    padding: 18px; 
+    border-radius: 5px; 
+    font-weight: bold; 
+    cursor: pointer; }
 
 /* 하단 탭 메뉴 */
 .product-tabs {
-    grid-column: span 2;
+    grid-column: 1 / span 2;
+    position: sticky;
+    top: 90px;
+    background: var(--color-white);
+    z-index: 100;
     border-bottom: 6px solid var(--color-gray-200);
-    margin-top: 140px;
 }
 
 .tab-list {
     display: flex;
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .tab-list li {
@@ -230,13 +204,12 @@ body {
     color: #C4C4C4;
     cursor: pointer;
     text-align: center;
+    position: relative;
 }
 
 .tab-item.active {
     color: var(--color-primary);
     font-weight: 700;
-    border-bottom: none;
-    position: relative;
 }
 
 .tab-item.active::after{
@@ -250,9 +223,205 @@ body {
 }
 
 
-.tab-content {
-    grid-column: span 2;
-    padding: 50px 0;
+.tab-content-container {
+    grid-column: 1 / span 2;
+}
+
+.content-item {
+    display: block; 
+    min-height: 800px;
+    padding-top: 50px;
+}
+
+/* 섹션 제목 스타일 */
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: left;
+    margin-bottom: 15px;
+    color: var(--color-black);
+}
+
+/* 표 기본 스타일 */
+.info-table {
+    width: 100%;
+    border-top: 2px solid var(--color-gray-400);
+    border-collapse: collapse;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+.info-table th {
+    background-color: var(--color-gray-100);
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--color-gray-200);
+    font-size: 14px;
+    color: var(--color-dark);
+    font-weight: 500;
+}
+
+.info-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--color-gray-200);
+    font-size: 14px;
+    color: var(--color-gray-400);
+    line-height: 1.6;
+}
+
+/* 리스트 스타일 제거 */
+.policy-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.policy-list li {
+    position: relative;
+    padding-left: 10px;
+}
+
+.policy-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--color-gray-400);
+}
+
+/* 리뷰 대시보드 전체 컨테이너 */
+.review-dashboard {
+    display: flex;
+    background-color: #F8F9FA;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 50px;
+    gap: 20px;
     text-align: center;
-    color: var(--color-gray-200);
+}
+
+.dash-column {
+    flex: 1;
+    border-right: 1px solid #E9ECEF;
+}
+
+.dash-column:last-child { border-right: none; }
+
+.dash-column h3 {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 20px;
+}
+
+/* 별점 및 숫자 */
+.stars { color: #FF6B6B; font-size: 24px; margin-bottom: 10px; }
+.score-number { font-size: 16px; color: #ADB5BD; }
+.score-number strong { font-size: 32px; color: #212529; }
+
+/* 세로 그래프 (평점 비율) */
+.ratio-graph {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100px;
+    gap: 10px;
+}
+
+.bar-unit { display: flex; flex-direction: column; align-items: center; font-size: 12px; color: #868E96; }
+.bar {
+    width: 15px;
+    background-color: #DEE2E6;
+    border-radius: 3px;
+    position: relative;
+    margin-bottom: 5px;
+}
+.bar.active { background-color: #FF6B6B; }
+.bar span { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #FF6B6B; font-weight: bold; }
+
+/* 가로 그래프 (만족도) */
+.horizontal-bar-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 10px;
+}
+
+.h-bar-unit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: #ADB5BD;
+}
+
+.h-bar-bg {
+    flex: 1;
+    height: 8px;
+    background-color: #DEE2E6;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.h-bar-fill { height: 100%; background-color: #ADB5BD; }
+.h-bar-unit.highlight { color: #7048E8; font-weight: bold; }
+.h-bar-unit.highlight .h-bar-fill { background-color: #7048E8; }
+
+
+/* 배송 정보 컨테이너 박스 */
+.delivery-info {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fcfcfc; /* 아주 연한 회색 배경 */
+    border: 1px solid #eeeeee; /* 연한 테두리 */
+    border-radius: 8px;
+    text-align: center; /* 모든 텍스트 가운데 정렬 */
+}
+
+/* 택배배송 / 무료배송 줄 */
+.delivery-row {
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: #333333;
+}
+
+.delivery-label {
+    color: #888888; /* 라벨은 약간 연하게 */
+}
+
+.delivery-value {
+    font-weight: 500;
+    color: #333333;
+}
+
+/* 오늘 결제 시 안내 박스 */
+.countdown-box {
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0; /* 내부 구분선 */
+}
+
+/* 오늘 결제 시 내일 바로 발송! */
+.delivery-time-text {
+    display: block;
+    font-size: 16px;
+    color: #333333;
+    margin-bottom: 6px;
+}
+
+.delivery-time-text strong {
+    color: #ff4b4b; /* 이미지와 동일한 강조 붉은색 */
+    font-weight: 700;
+}
+
+/* 남은 시간 텍스트와 타이머 */
+.timer-desc {
+    font-size: 14px;
+    color: #666666;
+    margin: 0;
+}
+
+#realtime-timer {
+    color: #ff4b4b; /* 타이머 숫자 강조 */
+    font-weight: bold;
+    font-size: 15px;
+    margin-left: 4px;
+    /* 숫자가 바뀔 때 글자가 좌우로 흔들리는 것을 방지 */
+    font-variant-numeric: tabular-nums; 
 }
