@@ -333,6 +333,7 @@ img {
   height: var(--header-height);
   background: var(--color-white);
   z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .header-inner{
@@ -501,7 +502,7 @@ img {
   filter: var(--header-icon-filter);
 }
 
-.header-cart:active .cart-link span{
+.header-cart:active .header-cart-link span{
   color: var(--color-primary);
   font-weight: 700;
 }
