@@ -4,10 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>호두마켓 - 고양이 물품 전문 쇼핑몰</title>
-  <link rel="icon" type="image/svg+xml" href="../assets/images/icons/favicon.svg">
-  <link rel="stylesheet" href="../assets/css/reset.css">
-  <link rel="stylesheet" href="../assets/css/pages/home.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+  <link rel="icon" type="image/svg+xml" href="../assets/images/icons/favicon.svg" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/common.css" />
+  <link rel="stylesheet" href="../assets/css/pages/home.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
 
@@ -82,8 +84,72 @@
 
     <section class="products" aria-label="상품 목록">
       <div class="container">
-        <ul class="product-grid" id="productList"></ul>
-        <p class="empty" id="emptyState" hidden>등록된 상품이 없습니다.</p>
+        <ul class="product-grid" id="productList">
+          <li>
+            <a class="product-card" href="#">
+              <div class="thumb">
+                <img src="../assets/images/sample1.png" alt="상품명" />
+              </div>
+              <div class="meta">
+                <p class="seller">혼자 있고 싶으니까 나가줘</p>
+                <p class="name">사춘기 냥이 숨숨집</p>
+                <p class="price">21,000원</p>
+              </div>
+            </a>
+          </li>
+        
+          <li>
+            <a class="product-card" href="#">
+              <div class="thumb">
+                <img src="../assets/images/sample2.png" alt="상품명" />
+              </div>
+              <div class="meta">
+                <p class="seller">집사야 등 좀 긁어봐라</p>
+                <p class="name">집사 손은 약손 캣 브러쉬</p>
+                <p class="price">11,000원</p>
+              </div>
+            </a>
+          </li>
+        
+          <li>
+            <a class="product-card" href="#">
+              <div class="thumb">
+                <img src="../assets/images/sample3.png" alt="상품명" />
+              </div>
+              <div class="meta">
+                <p class="seller">맞고 줄래 그냥 줄래?</p>
+                <p class="name">고롱고롱 츄르 세트</p>
+                <p class="price">13,500원</p>
+              </div>
+            </a>
+          </li>
+        
+          <li>
+            <a class="product-card" href="#">
+              <div class="thumb">
+                <img src="../assets/images/sample4.png" alt="상품명" />
+              </div>
+              <div class="meta">
+                <p class="seller">나 드르렁...드르렁...드르렁 대...</p>
+                <p class="name">포근따끈 엄마품 방석</p>
+                <p class="price">20,000원</p>
+              </div>
+            </a>
+          </li>
+        
+          <li>
+            <a class="product-card" href="#">
+              <div class="thumb">
+                <img src="../assets/images/sample5.png" alt="상품명" />
+              </div>
+              <div class="meta">
+                <p class="seller">나 인형 안아..</p>
+                <p class="name">질투나 애착인형</p>
+                <p class="price">10,000원</p>
+              </div>
+            </a>
+          </li>
+        </ul>        
       </div>
     </section>
   </main>
@@ -124,158 +190,7 @@
     </div>
   </footer>  
 
-  <script>
-    const mypage = document.querySelector(".mypage");
-    const mypageBtn = document.querySelector(".mypage-btn");
-    const dropdown = document.querySelector(".dropdown");
-    const cart = document.querySelector(".cart");
-    const cartLink = document.querySelector(".cart-link");
-
-    cartLink.addEventListener("click", () => {
-      cart.classList.add("is-active");
-    });
-
-    const openMenu = () => {
-      mypage.classList.add("is-open");
-      mypageBtn.setAttribute("aria-expanded", "true");
-    };
-
-    const closeMenu = () => {
-      mypage.classList.remove("is-open");
-      mypageBtn.setAttribute("aria-expanded", "false");
-    };
-
-    mypageBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      mypage.classList.contains("is-open") ? closeMenu() : openMenu();
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!mypage.contains(e.target)) closeMenu();
-    });
-
-    dropdown.addEventListener("click", (e) => {
-      const btn = e.target.closest(".dropdown-item");
-      if (!btn) return;
-
-      const action = btn.dataset.action;
-
-      if (action === "ui-only") {
-        closeMenu();
-        return;
-      }
-
-      if (action === "logout") {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        location.href = "#";
-      }
-    });
-
-    const searchForm = document.querySelector(".input-box");
-    const searchIcon = document.querySelector(".search-icon");
-    const searchInput = document.querySelector("#fieldInput");
-
-    searchIcon.addEventListener("mousedown", () => {
-      searchIcon.classList.add("is-active");
-    });
-
-    searchIcon.addEventListener("mouseup", () => {
-      searchIcon.classList.remove("is-active");
-    });
-
-    searchIcon.addEventListener("mouseleave", () => {
-      searchIcon.classList.remove("is-active");
-    });
-
-    searchIcon.addEventListener("click", () => {
-      if (!searchInput.value.trim()) return;
-      searchForm.submit();
-    });
-  </script>
-
-  <script>
-    const PRODUCTS_KEY = "hodu_products";
-
-    const formatPrice = (value) => {
-      const n = Number(value || 0);
-      return n.toLocaleString("ko-KR") + "원";
-    };
-
-    const getProducts = () => {
-      try {
-        const raw = localStorage.getItem(PRODUCTS_KEY);
-        const parsed = raw ? JSON.parse(raw) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch {
-        return [];
-      }
-    };
-
-    const renderProducts = (products) => {
-      const list = document.getElementById("productList");
-      const empty = document.getElementById("emptyState");
-
-      if (!list || !empty) return;
-
-      list.innerHTML = "";
-
-      if (!products.length) {
-        empty.hidden = false;
-        return;
-      }
-
-      empty.hidden = true;
-
-      const html = products.map((p) => {
-        const id = encodeURIComponent(p.id ?? "");
-        const seller = p.seller ?? "판매자";
-        const name = p.name ?? "상품명";
-        const price = formatPrice(p.price);
-        const img = p.image ?? "../assets/images/product-placeholder.png";
-
-        return `
-          <li>
-            <a class="product-card" href="../products/detail.html?id=${id}">
-              <div class="thumb">
-                <img src="${img}" alt="${name}">
-              </div>
-              <div class="meta">
-                <p class="seller">${seller}</p>
-                <p class="name">${name}</p>
-                <p class="price">${price}</p>
-              </div>
-            </a>
-          </li>
-        `;
-      }).join("");
-
-      list.insertAdjacentHTML("beforeend", html);
-    };
-  </script>
-
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      renderProducts(getProducts());
-
-      new Swiper(".banner-swiper", {
-        loop: true,
-        autoplay: {
-          delay: 3500,
-          disableOnInteraction: false,
-        },
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
-        },
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true,
-        },
-      });
-    });
-  </script>
-
+  <script type="module" src="../assets/js/pages/home.js"></script>
 </body>
 </html>
