@@ -31,7 +31,12 @@
             <span class="cart__col-price">상품금액</span>
           </header>
 
-          <!-- Cart Items -->
+          <!-- Cart Empty State -->
+          <div class="cart__empty" hidden>
+            <p class="cart__empty-title">장바구니에 담긴 상품이 없습니다.</p>
+            <p class="cart__empty-desc">원하는 상품을 장바구니에 담아보세요!</p>
+          </div>
+
           <!-- Cart Items -->
           <ul class="cart__list">
             <!-- Cart Item 1 -->
@@ -191,6 +196,30 @@
         <button type="submit" class="cart__order-btn">주문하기</button>
       </form>
     </main>
+
+    <!-- Delete Confirm Modal -->
+    <div
+      class="modal"
+      id="deleteModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+      hidden
+    >
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <button type="button" class="modal__close" aria-label="닫기"></button>
+        <p class="modal__message" id="modalTitle">상품을 삭제하시겠습니까?</p>
+        <div class="modal__actions">
+          <button type="button" class="modal__btn modal__btn--cancel">
+            취소
+          </button>
+          <button type="button" class="modal__btn modal__btn--confirm">
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <!-- 추후 연동 예정 -->
