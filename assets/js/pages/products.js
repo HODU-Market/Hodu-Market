@@ -48,6 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startTimer();
     
+    function updateReviewStars() {
+        const container = document.querySelector('.stars-container');
+        const score = parseFloat(container.dataset.score); // 5.0 가져오기
+        const stars = container.querySelectorAll('.star-svg');
+    
+        stars.forEach((star, index) => {
+            // 현재 인덱스(0~4)가 점수보다 작으면 색 채움
+            if (index < Math.floor(score)) {
+                star.classList.add('filled');
+            } else {
+                star.classList.remove('filled');
+            }
+        });
+    }
+
+    updateReviewStars();
+
+
     function updateResult() {
         const count = parseInt(quantityInput.value);
         totalCount.textContent = count;
