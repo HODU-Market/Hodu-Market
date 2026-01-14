@@ -59,7 +59,7 @@
 
 .cart__checkbox input[type="checkbox"]:checked::after,
 .cart-item__checkbox input[type="checkbox"]:checked::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -70,12 +70,48 @@
   border-radius: 50%;
 }
 
+/* ========== Cart Empty State ========== */
+.cart__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150px 0;
+  text-align: center;
+}
+
+.cart__empty[hidden] {
+  display: none;
+}
+
+.cart__empty-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-dark);
+  margin-bottom: 17px;
+}
+
+.cart__empty-desc {
+  font-size: 14px;
+  color: var(--color-gray-400);
+}
+
+/* 빈 장바구니일 때 체크박스 비활성화 */
+.cart__checkbox input[type="checkbox"]:disabled {
+  border-color: var(--color-gray-300);
+  cursor: not-allowed;
+}
+
 /* ========== Cart List ========== */
 .cart__list {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin-top: 35px;
+}
+
+.cart__list:empty {
+  display: none;
 }
 
 /* ========== Cart Item ========== */
@@ -184,7 +220,7 @@
 
 .cart-item__delete::before,
 .cart-item__delete::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -250,7 +286,7 @@
 }
 
 .cart__summary-operator::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 16px;
   height: 2px;
@@ -258,7 +294,7 @@
 }
 
 .cart__summary-operator.plus::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 2px;
   height: 16px;
@@ -291,4 +327,8 @@
 
 .cart__order-btn:hover {
   opacity: 0.9;
+}
+
+.is-hidden {
+  display: none !important;
 }

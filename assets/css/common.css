@@ -318,3 +318,8 @@ img {
 .modal__btn--confirm:hover {
   opacity: 0.9;
 }
+
+/* 모든 요소에서 [hidden] 속성이 있으면 무조건 안 보이게 설정 */
+[hidden] {
+  display: none !important;
+}
