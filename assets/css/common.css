@@ -147,7 +147,6 @@ img {
   justify-content: center;
   align-items: center;
   position: relative;
-  transition: background-color 0.2s ease;
 }
 
 .qty-control__btn--minus {
@@ -158,24 +157,24 @@ img {
   border-radius: 0 5px 5px 0;
 }
 
-/* -/+ 아이콘 */
-.qty-control__btn--minus::before,
-.qty-control__btn--plus::before {
+/* +/- 아이콘 */
+.qty-control__btn--minus::before {
   content: "";
   width: 18px;
   height: 2px;
   background-color: var(--color-gray-300);
 }
 
-.qty-control__btn::before,
+.qty-control__btn--plus::before,
 .qty-control__btn--plus::after {
   content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* 정확한 중앙 정렬 */
   background-color: var(--color-gray-300);
-  transition: background-color 0.2s;
+}
+
+.qty-control__btn--plus::before {
+  width: 18px;
+  height: 2px;
 }
 
 .qty-control__btn--plus::after {
@@ -185,7 +184,7 @@ img {
 
 /* 비활성화 상태 (재고 없음) */
 .qty-control__btn:disabled {
-  background-color: var(--color-gray-200);
+  background-color: var(--color-gray-300);
   cursor: not-allowed;
 }
 
