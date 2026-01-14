@@ -333,7 +333,7 @@ img {
   height: var(--header-height);
   background: var(--color-white);
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
 }
 
 .header-inner{
@@ -382,56 +382,56 @@ img {
   transform: translateY(-50%);
   width: 28px;
   height: 28px;
-}
-
-.search-icon:active{
-  transform: translateY(-50%) scale(0.88);
-}
-
-.nav{
-  margin-left: auto;
-}
-
-.nav-list{
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  gap: 22px;
-  align-items: center;
-}
-
-.nav-list li a,
-.mypage-btn{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  color: var(--color-dark);
-  font-size: 12px;
-  background: transparent;
-  border: 0;
   cursor: pointer;
 }
 
-.shopping-icon,
-.user-icon{
-  width: 32px;
-  height: 32px;
+.search-icon:hover,
+.search-icon:active{
+  cursor: pointer;
+}
+
+.nav{ 
+  margin-left: auto;
+}
+
+.nav-list{ 
+  list-style: none;
+  margin: 0; 
+  padding: 0; 
+  display: flex; 
+  gap: 22px; 
+  align-items: center;
+} 
+
+.nav-list li a, 
+.mypage-btn{ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 6px; 
+  text-decoration: none; 
+  font-size: 12px; 
+  background: transparent; 
+  border: 0; 
+  cursor: pointer; 
+} 
+
+.shopping-icon, .user-icon{ 
+  width: 32px; 
+  height: 32px; 
   display: block;
-}
+} 
 
-.mypage{
-  position: relative;
-}
+.mypage{ 
+  position: relative; 
+} 
 
-.mypage.is-open .mypage-btn{
-  color: var(--color-primary);
-}
-
-.mypage.is-open .user-icon{
+.mypage.is-open .mypage-btn{ 
   filter: var(--header-icon-filter);
+} 
+
+.mypage.is-open .user-icon{ 
+  filter: var(--header-icon-filter); 
 }
 
 .dropdown{
@@ -494,7 +494,6 @@ img {
   font-size: 12px;
   line-height: 1.2;
   text-align: center;
-  color: var(--color-dark);
   font-weight: 400;
 }
 
@@ -503,8 +502,7 @@ img {
 }
 
 .header-cart:active .header-cart-link span{
-  color: var(--color-primary);
-  font-weight: 700;
+  filter: var(--header-icon-filter);
 }
 
 .main{
