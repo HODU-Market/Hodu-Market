@@ -21,31 +21,33 @@ const cartEmpty = {
     this.checkEmpty();
   },
 
+  // cart.js의 checkEmpty 함수 수정
   checkEmpty() {
     const items = document.querySelectorAll(".cart-item");
     const isEmpty = items.length === 0;
 
-    // 빈 상태 메시지
-    if (this.emptyState) {
-      this.emptyState.hidden = !isEmpty;
-    }
+    const toggleElement = (el, shouldHide) => {
+      if (!el) return;
+      if (shouldHide) {
+        el.classList.add("is-hidden"); // 클래스 추가로 숨김
+      } else {
+        el.classList.remove("is-hidden"); // 클래스 제거로 노출
+      }
+    };
 
-    // 상품 목록
-    if (this.cartList) {
-      this.cartList.hidden = isEmpty;
-    }
+    // 1. 빈 상태 메시지
+    toggleElement(this.emptyState, !isEmpty);
 
-    // 결제 금액 요약
-    if (this.cartSummary) {
-      this.cartSummary.hidden = isEmpty;
-    }
+    // 2. 상품 목록
+    toggleElement(this.cartList, isEmpty);
 
-    // 주문하기 버튼
-    if (this.orderBtn) {
-      this.orderBtn.hidden = isEmpty;
-    }
+    // 3. 결제 금액 요약
+    toggleElement(this.cartSummary, isEmpty);
 
-    // 빈 상태일 때 전체 선택 체크박스 비활성화
+    // 4. 주문하기 버튼
+    toggleElement(this.orderBtn, isEmpty);
+
+    // 5. 전체 선택 체크박스 비활성화
     if (this.selectAll) {
       this.selectAll.disabled = isEmpty;
       this.selectAll.checked = false;

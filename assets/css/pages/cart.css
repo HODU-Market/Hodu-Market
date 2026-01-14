@@ -330,6 +330,24 @@
   opacity: 0.9;
 }
 
+/* 중괄호를 닫고 밖으로 꺼내세요 */
+.text-ir {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 전역 숨김 클래스 추가 */
 .is-hidden {
+  display: none !important;
+}
+
+/* HTML hidden 속성 지원용 (선택 사항) */
+[hidden] {
   display: none !important;
 }
