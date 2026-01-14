@@ -1,16 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const priceElement = document.querySelector('.price');
-    const unitPrice = parseInt(priceElement.dataset.price);
+    const unitPrice = priceElement ? parseInt(priceElement.dataset.price, 10) : 0;
     
-    const quantityInput = document.querySelector('.quantity-input');
+    const quantityInput = document.querySelector('.qty-control__input');
     const totalCount = document.querySelector('.total-count');
     const totalMoney = document.querySelector('.total-money');
 
-    const btnMinus = document.querySelector('.btn-minus');
-    const btnPlus = document.querySelector('.btn-plus');
+    const btnMinus = document.querySelector('.qty-control__btn--minus');
+    const btnPlus = document.querySelector('.qty-control__btn--plus');
 
     function startTimer() {
         const timerElement = document.getElementById('realtime-timer');
+        if (!timerElement) {
+            return;
+        }
     
         function updateTimer() {
             const now = new Date();
@@ -48,41 +51,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startTimer();
     
-    function updateReviewStars() {
-        const container = document.querySelector('.stars-container');
-        const score = parseFloat(container.dataset.score); // 5.0 가져오기
-        const stars = container.querySelectorAll('.star-svg');
-    
-        stars.forEach((star, index) => {
-            // 현재 인덱스(0~4)가 점수보다 작으면 색 채움
-            if (index < Math.floor(score)) {
-                star.classList.add('filled');
-            } else {
-                star.classList.remove('filled');
-            }
-        });
-    }
-
-    updateReviewStars();
-
 
     function updateResult() {
-        const count = parseInt(quantityInput.value);
+        if (!quantityInput || !totalCount || !totalMoney) {
+            return;
+        }
+        const count = parseInt(quantityInput.value, 10) || 1;
         totalCount.textContent = count;
         totalMoney.textContent = (unitPrice * count).toLocaleString();
     }
 
-    btnPlus.addEventListener('click', () => {
-        quantityInput.value = parseInt(quantityInput.value) + 1;
+    if (priceElement && quantityInput && totalCount && totalMoney) {
         updateResult();
-    });
-
-    btnMinus.addEventListener('click', () => {
-        if (parseInt(quantityInput.value) > 1) {
-            quantityInput.value = parseInt(quantityInput.value) - 1;
-            updateResult();
+        if (btnPlus) {
+            btnPlus.addEventListener('click', updateResult);
         }
-    });
+        if (btnMinus) {
+            btnMinus.addEventListener('click', updateResult);
+        }
+    }
 
 
     const tabItems = document.querySelectorAll('.tab-item');
@@ -90,29 +77,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabNav = document.querySelector('.product-tabs');
 
 
-    tabItems.forEach(item => {
-        item.addEventListener('click', () => {
-            const targetId = item.getAttribute('data-tab');
-            const targetSection = document.getElementById(targetId);
-            
-            if (targetSection) {
-                // 상단 고정된 탭 메뉴의 높이 측정
-                const navHeight = tabNav.offsetHeight;
-                const targetPosition = targetSection.offsetTop - navHeight;
+    if (tabItems.length && contentSections.length && tabNav) {
+        tabItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetId = item.getAttribute('data-tab');
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    // 상단 고정된 탭 메뉴의 높이 측정
+                    const navHeight = tabNav.offsetHeight;
+                    const targetPosition = targetSection.offsetTop - navHeight;
 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
-            }
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
-    });
+    }
 
     const observerOptions = {
         root: null,
         rootMargin: '-100px 0px -70% 0px',
         threshold: 0
     };
+
+    if (!contentSections.length || !tabItems.length) {
+        return;
+    }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
