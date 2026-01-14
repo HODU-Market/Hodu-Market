@@ -36,7 +36,7 @@
       <nav class="nav" aria-label="메인메뉴">
         <ul class="nav-list">
           <li class="cart">
-            <a href="../cart/index.html" class="cart-link">
+            <a href="../cart/shopcart.html" class="cart-link">
               <img class="shopping-icon" src="../assets/images/icons/icon-shopping-cart.png" alt="">
               <span>장바구니</span>
             </a>
@@ -169,6 +169,27 @@
         localStorage.removeItem("refreshToken");
         location.href = "#";
       }
+    });
+
+    const searchForm = document.querySelector(".input-box");
+    const searchIcon = document.querySelector(".search-icon");
+    const searchInput = document.querySelector("#fieldInput");
+
+    searchIcon.addEventListener("mousedown", () => {
+      searchIcon.classList.add("is-active");
+    });
+
+    searchIcon.addEventListener("mouseup", () => {
+      searchIcon.classList.remove("is-active");
+    });
+
+    searchIcon.addEventListener("mouseleave", () => {
+      searchIcon.classList.remove("is-active");
+    });
+
+    searchIcon.addEventListener("click", () => {
+      if (!searchInput.value.trim()) return;
+      searchForm.submit();
     });
   </script>
 
