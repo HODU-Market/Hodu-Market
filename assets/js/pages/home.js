@@ -1,4 +1,4 @@
-// home.js
+// /assets/js/pages/home.js
 document.addEventListener("DOMContentLoaded", () => {
   initBannerSwiper();
   initHeaderUI();
