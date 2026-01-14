@@ -1,1 +1,160 @@
-<!-- 회원가입 -->
+<!DOCTYPE html>
+<html lang="ko-KR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>회원가입 - 호두마켓</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/icons/favicon.svg">
+    <link rel="stylesheet" href="../assets/css/reset.css" />
+    <link rel="stylesheet" href="../assets/css/common.css" />
+    <link rel="stylesheet" href="../assets/css/pages/signup.css" />
+  </head>
+  <body>
+    <img class="logo" src="../assets/images/Logo-hodu.png" alt="로고">
+
+    <div class="signup-box">
+        <div class="tabs">
+            <div class="tab active">구매회원가입</div>
+            <div class="tab">판매회원가입</div>
+        </div>
+
+        <form id="buyer-form" class="signup-form active">
+            <div class="input-group">
+                <label class="id" for="user-id">아이디</label>
+                <div class="input-with-btn">
+                    <input type="text" id="user-id" class="input" placeholder="">
+                    <button type="button" class="check-btn">중복확인</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="user-pw">비밀번호</label>
+                <div class="input-with-icon">
+                    <input type="password" id="user-pw" class="input">
+                    <span class="icon-check" id="pw-status"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="user-pw-check">비밀번호 재확인</label>
+                <div class="input-with-icon">
+                <input type="password" id="user-pw-check" class="input">
+                <span class="icon-check" id="pw-check-status"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="name" for="user-name">이름</label>
+                <input type="text" id="user-name" class="input">
+            </div>
+
+            <div class="input-group">
+                <label>휴대폰 번호</label>
+                <div class="phone-inputs">
+                    <select class="input select">
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="016">016</option>
+                        <option value="017">017</option>
+                        <option value="018">018</option>
+                        <option value="019">019</option>
+                    </select>
+                    <input type="number" class="input phone">
+                    <input type="number" class="input phone">
+                </div>
+            </div>
+        </form>
+
+        <form id="seller-form" class="signup-form">
+            <div class="input-group">
+                <label class="id" for="user-id">아이디</label>
+                <div class="input-with-btn">
+                    <input type="text" id="user-id" class="input" placeholder="">
+                    <button type="button" class="check-btn">중복확인</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="user-pw">비밀번호</label>
+                <div class="input-with-icon">
+                    <input type="password" id="user-pw" class="input">
+                    <span class="icon-check" id="pw-status"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="user-pw-check">비밀번호 재확인</label>
+                <div class="input-with-icon">
+                <input type="password" id="user-pw-check" class="input">
+                <span class="icon-check" id="pw-check-status"></span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="name" for="user-name">이름</label>
+                <input type="text" id="user-name" class="input">
+            </div>
+
+            <div class="input-group">
+                <label>휴대폰 번호</label>
+                <div class="phone-inputs">
+                    <select class="input select">
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="016">016</option>
+                        <option value="017">017</option>
+                        <option value="018">018</option>
+                        <option value="019">019</option>
+                    </select>
+                    <input type="number" class="input phone">
+                    <input type="number" class="input phone">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label class="seller-num" for="seller-num">사업자 등록 번호</label>
+                <div class="input-with-btn">
+                    <input type="number" id="seller-num" class="input phone">
+                    <button type="button" class="check-btn">인증</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <div class="store-name">
+                    <label for="store-name">스토어 이름</label>
+                    <input type="text" id="store-name" class="input">
+                </div>
+            </div>
+        </form>
+
+        <div class="agreement-box">
+            <input type="checkbox" id="agree-check" class="check-custom">
+            <label for="agree-check">
+                호두샵의 <span>이용약관</span> 및 <span>개인정보처리방침</span>에 대한 내용을 확인하였고 동의합니다.
+            </label>
+        </div>
+
+        <button type="submit" class="join-btn">가입하기</button>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const buyerForm = document.getElementById('buyer-form');
+        const sellerForm = document.getElementById('seller-form');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'))
+                tab.classList.add('active');
+
+                if (index === 0) {
+                    buyerForm.classList.add('active');
+                    sellerForm.classList.remove('active');
+                } else {
+                    sellerForm.classList.add('active');
+                    buyerForm.classList.remove('active');
+                }
+            });
+        });
+    </script>
+  </body>
+</html> 
