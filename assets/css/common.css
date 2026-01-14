@@ -416,6 +416,12 @@ img {
   cursor: pointer; 
 } 
 
+.nav-list li a span,
+.mypage-btn span{
+  color: #767676;
+}
+
+
 .shopping-icon, .user-icon{ 
   width: 32px; 
   height: 32px; 
@@ -426,7 +432,7 @@ img {
   position: relative; 
 } 
 
-.mypage.is-open .mypage-btn{ 
+.mypage.is-open .mypage-btn { 
   filter: var(--header-icon-filter);
 } 
 
