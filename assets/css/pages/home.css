@@ -18,6 +18,7 @@
     display: flex;
     align-items: center;
     gap: 30px;
+    position: relative;
 }
 
 .logo{
@@ -26,11 +27,18 @@
     height: 38px;
 }
 
+.logo a:hover img,
+.logo a:active img{
+    filter: brightness(0) saturate(100%)
+        invert(83%) sepia(18%)
+        saturate(496%) hue-rotate(345deg);
+}
+
 .input-box{
-    position: relative;    
+    position: relative;
+    width: 400px;
     height: 46px;
-    flex: 1;
-    max-width: 400px;
+    margin-right: 598px;
 }
 
 .input-box .input{
@@ -44,8 +52,8 @@
 }
 
 .input-box .input:focus{
+    border-color: #E3C1A4;
     outline: none;
-    border-color: #333; 
 }
 
 .search-icon{
@@ -55,16 +63,20 @@
     transform: translateY(-50%);
     width: 28px;
     height: 28px;
-    cursor: pointer;
-    transition: transform 0.12s ease, filter 0.12s ease;
 }
 
-.search-icon:active{
-    transform: translateY(-50%) scale(0.88);
+.search-icon:hover,
+.search-icon.is-active {
+    filter: brightness(0) saturate(100%)
+            invert(83%) sepia(18%)
+            saturate(496%) hue-rotate(345deg);
 }
 
 .nav{
-    margin-left: auto;
+    position: absolute;
+    top: 50%;
+    right: 80px;
+    transform: translateY(-50%);
 }
 
 .nav-list{
@@ -73,7 +85,7 @@
     padding: 0;
     display: flex;
     gap: 22px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .nav-list li a,
@@ -145,6 +157,12 @@
     background: #fff;
 }
 
+.cart.is-active .shopping-icon{
+    filter: brightness(0) saturate(100%)
+        invert(83%) sepia(18%)
+        saturate(496%) hue-rotate(345deg);
+}
+
 .cart{
     display: flex;
     align-items: center;
@@ -154,35 +172,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     gap: 6px;
     height: 100%;
+    justify-content: center;
+    padding-top: 3px;
 }
 
 .cart-link img{
     width: 32px;
     height: 32px;
+    object-fit: contain;
     display: block;
 }
 
 .cart-link span{
     display: block;
-    font-size: 12px;
-    line-height: 1.2;
-    text-align: center;
-    color: #333;
-    font-weight: 400;
-}
-
-.cart:active .shopping-icon{
-    filter: brightness(0) saturate(100%)
-        invert(83%) sepia(18%)
-        saturate(496%) hue-rotate(345deg);
-}
-
-.cart:active .cart-link span{
-    color: #E3C1A4;
-    font-weight: 700;
+    line-height: 1;
 }
 
 .main{
