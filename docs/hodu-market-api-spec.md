@@ -2,6 +2,12 @@
 
 ## 0. 접속하기/요청 URL
 
+### Base URL
+
+```
+https://api.wenivops.co.kr/services/open-market
+```
+
 ### 테스트 계정
 
 #### 구매자(buyer)
