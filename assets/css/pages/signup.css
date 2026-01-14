@@ -1,0 +1,259 @@
+* {
+    box-sizing: border-box;
+    font-family: 'SpokaHanSansNeo';
+}
+
+.logo {
+    width: 238px;
+    height: 74px;
+    display: block;
+    margin: 70px auto 70px;
+}
+
+.signup-box {
+    width: 550px;
+    margin: 40px auto 0;
+    position: relative;
+    border-top: none;
+}
+
+.tabs {
+    display: flex;
+    margin-top: -1px;
+    font-weight: 500;
+}
+
+.tab {
+    flex: 1;
+    padding: 20px;
+    cursor: pointer;
+    background: #f2f2f2;
+    border: 1px solid #c4c4c4;
+    border-bottom: 1px solid #c4c4c4;
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+    border-radius: 10px 10px 0 0;
+}
+
+.tab:first-child {
+    border-right: none;
+}
+
+.tab:last-child {
+    border-top-right-radius: 10px;
+}
+
+.tab.active {
+    background: white;
+    z-index: 2;
+    border-bottom: 1px solid white;
+}
+
+.tap:not(.active) {
+    border-bottom: 1px solid #c4c4c4;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: white;
+}
+
+.form.active {
+    display: block;
+}
+
+.signup-form {
+    display: none;
+    border: 1px solid #c4c4c4;
+    border-radius: 0 0 10px 10px;
+    border-top: none;
+    padding: 0 35px;
+    background: white;
+    position: relative;
+    z-index: 2;
+}
+
+.signup-form.active {
+    display: block;
+}
+
+.input-group {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group .id {
+    margin-top: 40px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    line-height: 20px;
+    color: #767676;
+}
+
+.input {
+    width: 100%;
+    padding: 16px 17px;
+    font-size: 16px;
+    border: 1px solid #C4C4C4;
+    outline: none;
+    border-radius: 5px;
+}
+
+.input-with-btn {
+    display: flex;
+    gap: 12px;
+}
+
+.check-btn {
+    width: 122px;
+    height: 54px;
+    background-color: #3e3f3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.input-with-icon {
+    position: relative;
+    width: 100%;
+}
+
+.icon-check {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    
+    background-image: url('../../images/icons/icon-check-off.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; 
+    margin-right: 13px;
+}
+
+.icon-check.active {
+    background-image: url('../../images/icons/icon-check-on.png');
+}
+
+.name {
+    margin-top: 38px;
+}
+
+.phone-inputs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    margin-bottom: 36px;
+}
+
+.input.select {
+    width: 152px;
+    height: 54px;
+    text-align-last: center;
+    padding-right: 37px;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    background: url('../../images/icons/icon-up-arrow.svg') no-repeat;
+    background-size: 22px 22px;
+    background-position: right 14px center;
+}
+
+.input.select::-ms-expand {
+    display: none;
+}
+
+.phone {
+    flex: 1;
+    text-align: center;
+}
+
+.phone::-webkit-outer-spin-button,
+.phone::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.phone[type=number] {
+    -moz-appearance: textfield;
+}
+
+.phone:hover::-webkit-inner-spin-button,
+.phone:focus::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+.seller-num {
+    margin-top: 2px;
+}
+
+.store-name .input {
+    margin-bottom: 36px;
+}
+
+.agreement-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    margin: 30px 0;
+    padding: 0 35px;
+}
+
+.agreement-box label {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #767676;
+    cursor: pointer;
+}
+
+.check-custom {
+    width: 16px;
+    height: 16px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.agreement-box label span {
+    text-decoration: underline;
+    font-weight: 700;
+}
+
+.join-btn {
+    display: block;
+    width: 480px;
+    height: 60px;
+    margin: 34px auto 110px;
+    padding: 19px;
+    background-color: #3e3f3c;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.join-btn:disabled {
+    background-color: #C4C4C4;
+    cursor: default;
+}
