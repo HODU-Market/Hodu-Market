@@ -57,17 +57,23 @@ document.addEventListener('DOMContentLoaded', initQtyControl);
 
 
 // header, footer 공통 컴포넌트 로드
+const headerSnippet = document.getElementById("header-snippet");
+const footerSnippet = document.getElementById("footer-snippet");
 
-fetch("../components/header.html")
-.then(response => response.text())
-.then(data => {
-    document.getElementById("header-snippet").innerHTML = data;
-});
+if (headerSnippet) {
+  fetch("../components/header.html")
+    .then(response => response.text())
+    .then(data => {
+      headerSnippet.innerHTML = data;
+    });
+}
 
-fetch("../components/footer.html")
-.then(response => response.text())
-.then(data => {
-    document.getElementById("footer-snippet").innerHTML = data;
-});
+if (footerSnippet) {
+  fetch("../components/footer.html")
+    .then(response => response.text())
+    .then(data => {
+      footerSnippet.innerHTML = data;
+    });
+}
 
 
