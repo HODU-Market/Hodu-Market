@@ -299,7 +299,8 @@ const cartUI = {
             cart_item_id: cartId,
           };
           sessionStorage.setItem("orderData", JSON.stringify(orderData));
-          window.location.href = "/order.html";
+          alert("주문 페이지 준비 중입니다.");
+          return;
         }
       });
     });
@@ -643,7 +644,7 @@ const loginModal = {
 
   confirmLogin() {
     this.close();
-    window.location.href = "/accounts/login.html";
+    window.location.href = "/join/login.html";
   },
 };
 
@@ -757,7 +758,7 @@ const orderButton = {
     };
 
     sessionStorage.setItem("orderData", JSON.stringify(orderData));
-    window.location.href = "/order.html";
+    alert("주문 페이지 준비 중입니다.");
   },
 };
 

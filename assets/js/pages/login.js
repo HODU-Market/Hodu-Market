@@ -42,12 +42,15 @@ window.handleLogin = async (loginType) => {
         const data = await res.json();
 
         if (res.ok) {
-            localStorage.setItem("access_token", data.token);
-            
+            localStorage.setItem("access_token", data.access);
+            if (data.refresh) {
+                localStorage.setItem("refresh_token", data.refresh);
+            }
+
             localStorage.setItem("user_info", JSON.stringify({
                 user_type: loginType.toUpperCase()
             }));
-            
+
             alert("로그인되었습니다!");
             location.href = "../index.html"; 
         } else {
