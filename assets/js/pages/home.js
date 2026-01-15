@@ -263,7 +263,7 @@ function renderProducts(products, { append } = { append: false }) {
 
       return `
         <li>
-          <a class="product-card" href="../products/product.html?id=${id}">
+          <a class="product-card" href="./products/product.html?id=${id}">
             <div class="thumb">
               <img src="${escapeHtml(img)}" alt="${escapeHtml(p.name)}" loading="lazy">
             </div>
@@ -290,4 +290,3 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-7
