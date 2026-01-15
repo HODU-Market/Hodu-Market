@@ -1,30 +1,25 @@
-// /assets/js/pages/home.js
+// assets/js/pages/home.js
 import { fetchProducts } from "../api/products.js";
+
+let allProducts = [];
+let productsRendered = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   initBannerSwiper();
   initHeaderUI();
   initSearchUI();
-  initProducts();
+  initProductsOnce();
 });
 
 function initBannerSwiper() {
-  if (!document.querySelector(".banner-swiper")) return;
+  const el = document.querySelector(".banner-swiper");
+  if (!el || typeof Swiper === "undefined") return;
 
-  new Swiper(".banner-swiper", {
+  new Swiper(el, {
     loop: true,
-    autoplay: {
-      delay: 3500,
-      disableOnInteraction: false,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
+    autoplay: { delay: 4000, disableOnInteraction: false },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    pagination: { el: ".swiper-pagination", clickable: true },
   });
 }
 
@@ -32,132 +27,80 @@ function initHeaderUI() {
   const mypage = document.querySelector(".mypage");
   const mypageBtn = document.querySelector(".mypage-btn");
   const dropdown = document.querySelector(".dropdown");
-  const cart = document.querySelector(".cart");
-  const cartLink = document.querySelector(".cart-link");
 
   if (!mypage || !mypageBtn || !dropdown) return;
 
-  cartLink?.addEventListener("click", () => {
-    cart?.classList.add("is-active");
-  });
-
-  const openMenu = () => {
-    mypage.classList.add("is-open");
-    mypageBtn.setAttribute("aria-expanded", "true");
-  };
-
-  const closeMenu = () => {
-    mypage.classList.remove("is-open");
-    mypageBtn.setAttribute("aria-expanded", "false");
-  };
-
   mypageBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    mypage.classList.contains("is-open") ? closeMenu() : openMenu();
+    mypage.classList.toggle("is-open");
+    mypageBtn.setAttribute(
+      "aria-expanded",
+      mypage.classList.contains("is-open")
+    );
   });
 
-  document.addEventListener("click", (e) => {
-    if (!mypage.contains(e.target)) closeMenu();
+  document.addEventListener("click", () => {
+    mypage.classList.remove("is-open");
+    mypageBtn.setAttribute("aria-expanded", "false");
   });
 
   dropdown.addEventListener("click", (e) => {
     const btn = e.target.closest(".dropdown-item");
     if (!btn) return;
 
-    const action = btn.dataset.action;
-
-    if (action === "ui-only") {
-      closeMenu();
-      return;
-    }
-
-    if (action === "logout") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+    if (btn.dataset.action === "logout") {
+      localStorage.clear();
       location.href = "../index.html";
     }
   });
 }
 
 function initSearchUI() {
-  const searchForm = document.querySelector(".input-box");
-  const searchIcon = document.querySelector(".search-icon");
-  const searchInput = document.querySelector("#fieldInput");
+  const form = document.querySelector(".input-box");
+  const input = document.querySelector("#fieldInput");
+  const icon = document.querySelector(".search-icon");
 
-  if (!searchForm || !searchIcon || !searchInput) return;
+  if (!form || !input || !icon) return;
 
-  const params = new URLSearchParams(window.location.search);
-  const preset = params.get("q");
-  if (preset) searchInput.value = preset;
-
-  searchIcon.addEventListener("mousedown", () => {
-    searchIcon.classList.add("is-active");
-  });
-
-  searchIcon.addEventListener("mouseup", () => {
-    searchIcon.classList.remove("is-active");
-  });
-
-  searchIcon.addEventListener("mouseleave", () => {
-    searchIcon.classList.remove("is-active");
-  });
-
-  searchIcon.addEventListener("click", () => {
-    if (!searchInput.value.trim()) return;
-    searchForm.requestSubmit();
-  });
-
-  searchForm.addEventListener("submit", (e) => {
+  // submit = 검색 실행
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const keyword = searchInput.value.trim();
-    const url = new URL(window.location.href);
+    const q = input.value.trim();
 
-    if (keyword) {
-      url.searchParams.set("q", keyword);
-    } else {
-      url.searchParams.delete("q");
+    try {
+      const results = await fetchAllProducts({ search: q });
+      allProducts = results;
+      renderProducts(allProducts);
+      setEmptyState(allProducts.length === 0);
+    } catch (err) {
+      console.error("검색 실패:", err);
     }
-
-    window.location.href = url.toString();
   });
+
+  // 아이콘 클릭 시 포커스만 (원하면 여기서도 submit 트리거 가능)
+  icon.addEventListener("click", () => input.focus());
 }
 
-async function initProducts() {
-  const params = new URLSearchParams(window.location.search);
-  const search = params.get("q")?.trim() || "";
-  const isSearch = Boolean(search);
+async function initProductsOnce() {
+  if (productsRendered) return;
 
   try {
-    const data = await fetchProducts({ search });
-    let products = data?.results || [];
-
-    if (search && !products.length) {
-      const allProducts = await fetchAllProducts();
-      const keyword = search.toLowerCase();
-      products = allProducts.filter((product) => {
-        const name = product?.name?.toLowerCase() || "";
-        const seller =
-          product?.seller?.store_name ||
-          product?.seller?.name ||
-          product?.seller?.username ||
-          "";
-        return name.includes(keyword) || seller.toLowerCase().includes(keyword);
-      });
-    }
-
-    renderProducts(products, { isSearch });
+    allProducts = await fetchAllProducts(); // 전체
+    renderProducts(allProducts);
+    setEmptyState(allProducts.length === 0);
+    productsRendered = true;
   } catch (err) {
-    console.error("Failed to load products:", err);
-    renderProducts([], { isSearch });
+    console.error("상품 로드 실패:", err);
+    setEmptyState(true);
   }
 }
 
-async function fetchAllProducts() {
+async function fetchAllProducts({ search = "" } = {}) {
   const results = [];
   let nextUrl = null;
 
   do {
-    const data = await fetchProducts({ nextUrl });
+    const data = await fetchProducts({ nextUrl, search });
     results.push(...(data?.results || []));
     nextUrl = data?.next || null;
   } while (nextUrl);
@@ -165,51 +108,36 @@ async function fetchAllProducts() {
   return results;
 }
 
-function formatPrice(value) {
-  const n = Number(value || 0);
-  return n.toLocaleString("ko-KR") + "원";
+function setEmptyState(isEmpty) {
+  const emptyEl = document.getElementById("emptyState");
+  if (!emptyEl) return;
+  emptyEl.hidden = !isEmpty;
 }
 
-function renderProducts(products, { isSearch } = {}) {
+function renderProducts(products) {
   const list = document.getElementById("productList");
-  const empty = document.getElementById("emptyState");
-
   if (!list) return;
 
-  list.innerHTML = "";
-
-  if (!products.length) {
-    if (empty) empty.hidden = !isSearch;
-    return;
-  }
-
-  if (empty) empty.hidden = true;
-
-  const html = products
+  list.innerHTML = products
     .map((p) => {
-      const id = encodeURIComponent(p.id ?? "");
-      const seller =
-        p.seller?.store_name || p.seller?.name || p.seller?.username || "판매자";
-      const name = p.name ?? "상품명";
-      const price = formatPrice(p.price);
+      const id = encodeURIComponent(p.id);
+      const seller = p.seller?.store_name || p.seller?.name || "판매자";
       const img = p.image || "../assets/images/sample image.png";
 
       return `
         <li>
           <a class="product-card" href="../products/product.html?id=${id}">
             <div class="thumb">
-              <img src="${img}" alt="${name}">
+              <img src="${img}" alt="${p.name}">
             </div>
             <div class="meta">
               <p class="seller">${seller}</p>
-              <p class="name">${name}</p>
-              <p class="price">${price}</p>
+              <p class="name">${p.name}</p>
+              <p class="price">${Number(p.price).toLocaleString()}원</p>
             </div>
           </a>
         </li>
       `;
     })
     .join("");
-
-  list.insertAdjacentHTML("beforeend", html);
 }
