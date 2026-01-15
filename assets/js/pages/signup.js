@@ -12,7 +12,7 @@ const initSignup = () => {
     const submitBtn = document.querySelector(".join-btn");
     const agreeCheck = document.getElementById("agree-check");
 
-    // 1. 메시지 표시 함수
+    // 메시지 표시 함수
     const setMessage = (inputId, errorId, message, type) => {
         const inputEl = document.getElementById(inputId);
         const errorEl = document.getElementById(errorId);
@@ -29,14 +29,14 @@ const initSignup = () => {
         errorEl.style.display = "block";
     };
 
-    // 2. [추가됨] 휴대폰 번호 최대 4자리 제한 함수
+    // 휴대폰 번호 최대 4자리 제한
     const handlePhoneInput = (e) => {
         if (e.target.value.length > 4) {
             e.target.value = e.target.value.slice(0, 4);
         }
     };
 
-    // 3. 아이디 중복 확인 (성공했던 주소)
+    // 1. 아이디 중복 확인 (명세서 1.3 기준)
     const checkId = async () => {
         const prefix = state.currentType === "BUYER" ? "user" : "seller";
         const inputId = `${prefix}-id`;
@@ -56,10 +56,10 @@ const initSignup = () => {
             });
             const data = await res.json();
             if (res.ok) {
-                setMessage(inputId, errorId, "사용 가능한 아이디입니다.", "success");
+                setMessage(inputId, errorId, data.message || "사용 가능한 아이디입니다.", "success");
                 state.isIdVerified = true;
             } else {
-                setMessage(inputId, errorId, data.FAIL || "이미 사용 중인 아이디입니다.", "error");
+                setMessage(inputId, errorId, data.error || "이미 사용 중인 아이디입니다.", "error");
                 state.isIdVerified = false;
             }
             updateButtonState();
@@ -68,24 +68,25 @@ const initSignup = () => {
         }
     };
 
-    // 4. 사업자 번호 인증
+    // 2. 사업자등록번호 검증 (명세서 1.4 기준)
     const checkBusinessNum = async () => {
         const businessNum = document.getElementById("seller-num").value;
         if (!businessNum) {
-            alert("사업자 번호를 입력해주세요.");
+            alert("사업자등록번호를 입력해주세요.");
             return;
         }
         try {
-            const res = await fetch(`${BASE_URL}/accounts/validate-company-registration-number/`, {
+            const res = await fetch(`${BASE_URL}/accounts/seller/validate-registration-number//`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ company_registration_number: businessNum }),
             });
+            const data = await res.json();
             if (res.ok) {
-                alert("인증되었습니다.");
+                alert(data.message || "인증되었습니다.");
                 state.isBusinessNumVerified = true;
             } else {
-                alert("유효하지 않은 번호입니다.");
+                alert(data.error || "유효하지 않은 번호입니다.");
                 state.isBusinessNumVerified = false;
             }
             updateButtonState();
@@ -94,7 +95,7 @@ const initSignup = () => {
         }
     };
 
-    // 5. 비밀번호 실시간 체크 (아이콘 활성화)
+    // 3. 비밀번호 실시간 체크 (아이콘)
     const handlePwInput = () => {
         const prefix = state.currentType === "BUYER" ? "user" : "seller";
         const pw = document.getElementById(`${prefix}-pw`).value;
@@ -112,7 +113,7 @@ const initSignup = () => {
         updateButtonState();
     };
 
-    // 6. 회원가입 제출
+    // 4. 회원가입 제출 (명세서 1.1, 1.2 기준)
     const handleSignupSubmit = async (e) => {
         e.preventDefault();
         const prefix = state.currentType === "BUYER" ? "user" : "seller";
@@ -126,16 +127,21 @@ const initSignup = () => {
             password: document.getElementById(`${prefix}-pw`).value,
             name: document.getElementById(`${prefix}-name`).value,
             phone_number: `${phonePrefix}${phoneInputs[0].value}${phoneInputs[1].value}`,
-            user_type: state.currentType
         };
 
+        // 판매자 추가 필드
         if (state.currentType === "SELLER") {
             signupData.company_registration_number = document.getElementById("seller-num").value;
             signupData.store_name = document.getElementById("store-name").value;
         }
 
+        // 명세서에 따른 주소 분기
+        const signupPath = state.currentType === "BUYER" 
+            ? "/accounts/buyer/signup/" 
+            : "/accounts/seller/signup/";
+
         try {
-            const res = await fetch(`${BASE_URL}/accounts/signup/`, {
+            const res = await fetch(`${BASE_URL}${signupPath}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(signupData),
@@ -145,14 +151,16 @@ const initSignup = () => {
                 alert("가입 완료! 로그인 페이지로 이동합니다.");
                 location.href = "login.html";
             } else {
-                alert(JSON.stringify(data)); 
+                // 에러 메시지가 객체 형태로 올 수 있으므로 처리
+                const errorMsg = typeof data === 'object' ? JSON.stringify(data) : data;
+                alert(`가입 실패: ${errorMsg}`);
             }
         } catch (error) {
             alert("가입 요청 중 오류 발생");
         }
     };
 
-    // --- 공통 로직 및 이벤트 바인딩 ---
+    // 탭 전환 및 이벤트 바인딩
     tabs.forEach((tab, index) => {
         tab.addEventListener("click", () => {
             tabs.forEach(t => t.classList.remove("active"));
@@ -183,13 +191,11 @@ const initSignup = () => {
         }
     };
 
-    // 이벤트 리스너 설정
     document.getElementById("user-check-btn")?.addEventListener("click", checkId);
     document.getElementById("seller-check-btn")?.addEventListener("click", checkId);
     document.getElementById("seller-num-btn")?.addEventListener("click", checkBusinessNum);
     submitBtn.addEventListener("click", handleSignupSubmit);
     
-    // [수정] 모든 input에 핸드폰 글자 제한 및 비밀번호 체크 적용
     document.querySelectorAll("input").forEach(input => {
         if (input.classList.contains("phone")) {
             input.addEventListener("input", handlePhoneInput);
@@ -199,7 +205,6 @@ const initSignup = () => {
             updateButtonState();
         });
     });
-
     agreeCheck.addEventListener("change", updateButtonState);
 };
 
