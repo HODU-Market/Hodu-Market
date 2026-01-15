@@ -82,6 +82,15 @@ input {
   font-family: inherit;
 }
 
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="search"]::-ms-clear {
+  display: none;
+}
+
 img {
   max-width: 100%;
   vertical-align: top;
@@ -334,6 +343,7 @@ img {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
   width: 100%;
   height: var(--header-height);
   background: var(--color-white);
@@ -343,6 +353,7 @@ img {
 
 .header-inner {
   max-width: var(--layout-max-width);
+  width: 100%;
   height: var(--header-height);
   margin: 0 auto;
   padding: 0 var(--layout-side-padding);
@@ -361,7 +372,7 @@ img {
 .input-box {
   position: relative;
   height: 46px;
-  flex: 1;
+  flex: 0 0 400px;
   max-width: 400px;
 }
 
