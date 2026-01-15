@@ -23,8 +23,9 @@
                 <label class="id" for="user-id">아이디</label>
                 <div class="input-with-btn">
                     <input type="text" id="user-id" class="input" placeholder="">
-                    <button type="button" class="check-btn">중복확인</button>
+                    <button type="button" class="check-btn" id="user-check-btn">중복확인</button>
                 </div>
+                <p id="user-id-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -41,6 +42,7 @@
                 <input type="password" id="user-pw-check" class="input">
                 <span class="icon-check" id="pw-check-status"></span>
                 </div>
+                <p id="user-pw-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -72,6 +74,7 @@
                     <input type="text" id="seller-id" class="input" placeholder="">
                     <button type="button" class="check-btn" id="seller-check-btn">중복확인</button>
                 </div>
+                <p id="seller-id-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -88,6 +91,7 @@
                 <input type="password" id="seller-pw-check" class="input">
                 <span class="icon-check" id="seller-pw-check-status"></span>
                 </div>
+                <p id="seller-pw-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -135,167 +139,7 @@
 
         <button type="submit" class="join-btn" disabled>가입하기</button>
     </div>
-
-    <script>
-        let isBuyerIdChecked = false;
-        let isSellerIdChecked = false;
-
-        const tabs = document.querySelectorAll('.tab');
-        const buyerForm = document.getElementById('buyer-form');
-        const sellerForm = document.getElementById('seller-form');
-
-        tabs.forEach((tab, index) => {
-            tab.addEventListener('click', () => {
-                tabs.forEach(t => t.classList.remove('active'))
-                tab.classList.add('active');
-
-                if (index === 0) {
-                    buyerForm.classList.add('active');
-                    sellerForm.classList.remove('active');
-                } else {
-                    sellerForm.classList.add('active');
-                    buyerForm.classList.remove('active');
-                }
-            });
-        });
-
-        const existingIds = ['hodu', 'admin', 'user123'];
-
-        function checkIdDuplication(inputId, msgId) {
-            const input = document.getElementById(inputId);
-            const value = input.value.trim();
-            const isBuyer = inputId === 'user-id';
-
-            let msg = document.getElementById(msgId);
-            if (!msg) {
-                msg = document.createElement('span');
-                msg.id = msgId;
-                msg.className = 'error-msg';
-                input.closest('.input-group').appendChild(msg);
-            }
-
-            if (value === "") {
-                msg.textContent = "아이디를 입력해주세요.";
-                msg.style.color = "#EB5757";
-                input.style.borderColor = "#EB5757";
-                if (isBuyer) isBuyerIdChecked = false; else isSellerIdChecked = false;
-                updateJoinButtonState();
-                return;
-            }
-
-            if (existingIds.includes(value)) {
-                msg.textContent = "이미 사용 중인 아이디입니다.";
-                msg.style.color = "#EB5757";
-                input.style.borderColor = "#EB5757";
-            } else {
-                msg.textContent = "멋진 아이디네요 :)";
-                msg.style.color = "#E3C1A4";
-                input.style.borderColor = "#C4C4C4";
-                if (isBuyer) isBuyerIdChecked = true; else isSellerIdChecked = true;
-            }
-            updateJoinButtonState();
-        }
-
-        document.getElementById('user-id').addEventListener('input', () => {
-            isBuyerIdChecked = false;
-            updateJoinButtonState();
-        })
-        document.getElementById('seller-id').addEventListener('input', () => {
-            isSellerIdChecked = false;
-            updateJoinButtonState();
-        })
-
-        const buyerIdBtn = document.querySelector('#buyer-form .check-btn');
-        buyerIdBtn.addEventListener('click', () => {
-            checkIdDuplication('user-id', 'buyer-id-msg');
-        })
-
-        const sellerIdBtn = document.getElementById('seller-check-btn');
-        sellerIdBtn.addEventListener('click', () => {
-            checkIdDuplication('seller-id', 'seller-id-msg');
-        });
-
-        function handlePasswordStatus(pwId, rePwId, pwStatusId, reStatusId) {
-            const pwInput = document.getElementById(pwId);
-            const rePwInput = document.getElementById(rePwId);
-            const pwStatus = document.getElementById(pwStatusId);
-            const reStatus = document.getElementById(reStatusId);
-
-            pwInput.addEventListener('input', () => {
-                if (pwInput.value.length >= 8) {
-                    pwStatus.classList.add('active');
-                } else {
-                    pwStatus.classList.remove('active');
-                }
-                checkMatch();
-            });
-
-            rePwInput.addEventListener('input', checkMatch);
-
-            function checkMatch() {
-                if (rePwInput.value !== "" && pwInput.value === rePwInput.value) {
-                    reStatus.classList.add('active');
-                } else {
-                    reStatus.classList.remove('active');
-                }
-            }
-        }
-
-        handlePasswordStatus('user-pw', 'user-pw-check', 'pw-status', 'pw-check-status');
-
-        handlePasswordStatus('seller-pw', 'seller-pw-check', 'seller-pw-status', 'seller-pw-check-status');
-
-        const joinBtn = document.querySelector('.join-btn');
-        const agreeCheck = document.getElementById('agree-check');
-
-        function updateJoinButtonState() {
-            const isBuyer = buyerForm.classList.contains('active');
-            let isAllFilled = false;
-
-            if (isBuyer) {
-                const idOk = isBuyerIdChecked;
-                const pwOk = document.getElementById('pw-status').classList.contains('active');
-                const pwCheckOk = document.getElementById('pw-check-status').classList.contains('active');
-                const nameOk = document.getElementById('user-name').value.trim() !== "";
-                const phoneOk = document.querySelectorAll('#buyer-form .phone')[0].value !== "" && document.querySelectorAll('#buyer-form .phone')[1].value !== "";
-
-                isAllFilled = idOk && pwOk && pwCheckOk && nameOk && phoneOk;
-            } else {
-                const idOk = isSellerIdChecked;
-                const pwOk = document.getElementById('seller-pw-status').classList.contains('active');
-                const pwCheckOk = document.getElementById('seller-pw-check-status').classList.contains('active');
-                const nameOk = document.getElementById('seller-name').value.trim() !== "";
-                const phoneOk = document.getElementById('seller-phone-mid').value !== "" && document.getElementById('seller-phone-end').value !== "";
-                const sellerNumOk = document.getElementById('seller-num').value !== "";
-                const storeNameOk = document.getElementById('store-name').value.trim() !== "";
-
-                isAllFilled = idOk && pwOk && pwCheckOk && nameOk && phoneOk && sellerNumOk && storeNameOk;
-            }
-
-            if (isAllFilled && agreeCheck.checked) {
-                joinBtn.disabled = false;
-            } else {
-                joinBtn.disabled = true;
-            }
-        }
-
-        document.querySelectorAll('.input').forEach(input => {
-            input.addEventListener('input', updateJoinButtonState);
-        });
-
-        agreeCheck.addEventListener('change', updateJoinButtonState);
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', updateJoinButtonState);
-        });
-
-        joinBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            alert('호두마켓에 오신 것을 환영합니다! 가입이 완료되었습니다. :)')
-
-            window.location.href = './login.html';
-        });
-    </script>
+    <script src="../assets/js/common.js"></script>
+    <script type="module" src="../assets/js/pages/signup.js"></script>
   </body>
 </html> 
