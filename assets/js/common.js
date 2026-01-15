@@ -10,8 +10,11 @@ function initQtyControl() {
   const qtyControls = document.querySelectorAll('.qty-control');
 
   qtyControls.forEach((control) => {
+    // Skip controls managed by page-specific scripts.
+    if (control.dataset.qtyCustom === "true") return;
     const minusBtn = control.querySelector('.qty-control__btn--minus');
     const plusBtn = control.querySelector('.qty-control__btn--plus');
+
     const input = control.querySelector('.qty-control__input');
     const stock = parseInt(control.dataset.stock, 10) || 0;
 
@@ -108,5 +111,4 @@ function initHeaderUI() {
     }
   });
 }
-
 

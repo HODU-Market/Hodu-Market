@@ -75,9 +75,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderProduct(product) {
         const name = product?.product_name || product?.name || "상품명";
+        const sellerName =
+            product?.seller?.store_name ||
+            product?.seller?.name ||
+            product?.seller?.username ||
+            product?.seller_name ||
+            product?.store_name ||
+            "";
         unitPrice = Number(product?.price ?? 0);
         currentStock = Number(product?.stock ?? 0);
 
+        if (kickerElement) kickerElement.textContent = sellerName || "판매점";
         if (titleElement) titleElement.textContent = name;
         if (priceElement) {
             priceElement.textContent = formatNumber(unitPrice);
