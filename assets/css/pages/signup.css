@@ -166,7 +166,6 @@ html {
     align-items: center;
     gap: 12px;
     font-size: 16px;
-    margin-bottom: 36px;
 }
 
 .input.select {
@@ -345,4 +344,10 @@ html {
 
 .icon-check.active {
     background-image: url('../../images/icons/icon-check-on.png');
+}
+
+
+/* 3. 만약 에러 메시지가 없을 때를 위해 input-group에 최소 간격 유지 */
+.input-group:has(.phone-inputs) {
+    margin-bottom: 36px;
 }
