@@ -28,9 +28,35 @@ export async function request(path, options = {}) {
         signal,
       });
 
+      // 204 No Content 또는 빈 응답 처리
+      const contentLength = res.headers.get("content-length");
+      const isEmpty = res.status === 204 || contentLength === "0";
+
+      if (isEmpty) {
+        if (!res.ok) {
+          const error = new Error("Request failed");
+          error.status = res.status;
+          throw error;
+        }
+        return { success: true };
+      }
+
       const contentType = res.headers.get("content-type") || "";
       const isJson = contentType.includes("application/json");
-      const data = isJson ? await res.json() : await res.text();
+
+      // 텍스트를 먼저 읽고, JSON인 경우 파싱 시도
+      const text = await res.text();
+      let data;
+
+      if (isJson && text) {
+        try {
+          data = JSON.parse(text);
+        } catch {
+          data = text;
+        }
+      } else {
+        data = text || { success: true };
+      }
 
       if (!res.ok) {
         const error = new Error(typeof data === "string" ? data : data?.detail || "Request failed");
