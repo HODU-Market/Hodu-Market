@@ -160,16 +160,22 @@ import { fetchProductDetail } from "../api/products.api.js";
         // 초기 실행 후 1초마다 반복 실행
         updateTimer();
         setInterval(updateTimer, 1000);
-    }
+      }});
 
-    async function loadProduct(productId) {
-        try {
-        const product = await fetchProductDetail(productId);
-        renderProduct(product);
-        } catch (error) {
-        console.error("상품 정보 로드 실패:", error);
-        renderError("상품 정보를 불러오지 못했습니다.");
-        }
+function initTimer() {
+  const timerElement = document.getElementById("realtime-timer");
+  if (!timerElement) return;
+
+  function updateTimer() {
+    const now = new Date();
+    const midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+
+    const diff = midnight - now;
+
+    if (diff <= 0) {
+      timerElement.textContent = "00:00:00";
+      return;
     }
 
     function renderProduct(product) {
@@ -279,11 +285,11 @@ import { fetchProductDetail } from "../api/products.api.js";
         });
     }
 
-    const observerOptions = {
-        root: null,
-        rootMargin: "-100px 0px -70% 0px",
-        threshold: 0,
-    };
+  const observerOptions = {
+    root: null,
+    rootMargin: "-100px 0px -70% 0px",
+    threshold: 0,
+  };
 
     if (!contentSections.length || !tabItems.length) {
         return;
@@ -302,7 +308,6 @@ import { fetchProductDetail } from "../api/products.api.js";
             });
         }
         });
-    }, observerOptions);
+      })}};
 
-    contentSections.forEach((section) => observer.observe(section));
-    });
+  contentSections.forEach((section) => observer.observe(section));

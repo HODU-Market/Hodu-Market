@@ -1,31 +1,54 @@
-// /assets/js/pages/home.js
-import { fetchProducts } from "../api/products.api.js";
+// assets/js/pages/home.js
+import { fetchProducts } from "../api/products.js";
 
-const IMAGE_FALLBACK = "../assets/images/sample image.png";
+let allProducts = [];
+let productsRendered = false;
+
+// pagination / search state
+let nextUrl = null;
+let currentSearch = "";
+let isLoading = false;
+
 document.addEventListener("DOMContentLoaded", () => {
+  if (!isLoggedIn()) {
+    showLoggedOutView();
+    return;
+  }
+
   initBannerSwiper();
   initHeaderUI();
   initSearchUI();
-  initProducts();
+  initLoadMoreUI();
+  initProductsOnce();
 });
 
-function initBannerSwiper() {
-  if (!document.querySelector(".banner-swiper")) return;
+function isLoggedIn() {
+  return Boolean(
+    localStorage.getItem("token") ||
+      localStorage.getItem("access_token") ||
+      localStorage.getItem("accessToken")
+  );
+}
 
-  new Swiper(".banner-swiper", {
+function showLoggedOutView() {
+  const header = document.querySelector("header");
+  const main = document.querySelector("main");
+  const footer = document.querySelector("footer");
+
+  if (header) header.hidden = true;
+  if (main) main.hidden = true;
+  if (footer) footer.hidden = true;
+}
+
+function initBannerSwiper() {
+  const el = document.querySelector(".banner-swiper");
+  if (!el || typeof Swiper === "undefined") return;
+
+  new Swiper(el, {
     loop: true,
-    autoplay: {
-      delay: 3500,
-      disableOnInteraction: false,
-    },
-    navigation: {
-      nextEl: ".swiper-button-next",
-      prevEl: ".swiper-button-prev",
-    },
-    pagination: {
-      el: ".swiper-pagination",
-      clickable: true,
-    },
+    autoplay: { delay: 4000, disableOnInteraction: false },
+    navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    pagination: { el: ".swiper-pagination", clickable: true },
   });
 }
 
@@ -33,198 +56,212 @@ function initHeaderUI() {
   const mypage = document.querySelector(".mypage");
   const mypageBtn = document.querySelector(".mypage-btn");
   const dropdown = document.querySelector(".dropdown");
-  const cart = document.querySelector(".cart");
-  const cartLink = document.querySelector(".cart-link");
 
   if (!mypage || !mypageBtn || !dropdown) return;
 
-  cartLink?.addEventListener("click", () => {
-    cart?.classList.add("is-active");
-  });
-
-  const openMenu = () => {
-    mypage.classList.add("is-open");
-    mypageBtn.setAttribute("aria-expanded", "true");
-  };
-
-  const closeMenu = () => {
-    mypage.classList.remove("is-open");
-    mypageBtn.setAttribute("aria-expanded", "false");
-  };
-
   mypageBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    mypage.classList.contains("is-open") ? closeMenu() : openMenu();
+    mypage.classList.toggle("is-open");
+    mypageBtn.setAttribute(
+      "aria-expanded",
+      mypage.classList.contains("is-open")
+    );
   });
 
-  document.addEventListener("click", (e) => {
-    if (!mypage.contains(e.target)) closeMenu();
+  document.addEventListener("click", () => {
+    mypage.classList.remove("is-open");
+    mypageBtn.setAttribute("aria-expanded", "false");
   });
 
   dropdown.addEventListener("click", (e) => {
     const btn = e.target.closest(".dropdown-item");
     if (!btn) return;
 
-    const action = btn.dataset.action;
-
-    if (action === "ui-only") {
-      closeMenu();
-      return;
-    }
-
-    if (action === "logout") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
-      location.href = "#";
+    if (btn.dataset.action === "logout") {
+      localStorage.clear();
+      showLoggedOutView();
+      location.href = "../index.html";
     }
   });
 }
 
 function initSearchUI() {
-  const searchForm = document.querySelector(".input-box");
-  const searchIcon = document.querySelector(".search-icon");
-  const searchInput = document.querySelector("#fieldInput");
+  const form = document.querySelector(".input-box");
+  const input = document.querySelector("#fieldInput");
+  const icon = document.querySelector(".search-icon");
 
-  if (!searchForm || !searchIcon || !searchInput) return;
+  if (!form || !input || !icon) return;
 
-  searchIcon.addEventListener("mousedown", () => {
-    searchIcon.classList.add("is-active");
+  // submit = 검색 실행
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const q = input.value.trim();
+
+    currentSearch = q;
+    nextUrl = null;
+
+    try {
+      await loadProducts({ reset: true });
+    } catch (err) {
+      console.error("검색 실패:", err);
+    }
   });
 
-  searchIcon.addEventListener("mouseup", () => {
-    searchIcon.classList.remove("is-active");
-  });
+  // 아이콘 클릭 시 포커스만
+  icon.addEventListener("click", () => input.focus());
+}
 
-  searchIcon.addEventListener("mouseleave", () => {
-    searchIcon.classList.remove("is-active");
-  });
+function initLoadMoreUI() {
+  const btn = document.getElementById("btnLoadMore");
+  if (!btn) return;
 
-  const handleSearch = () => {
-    const keyword = searchInput.value.trim();
-    setSearchQuery(keyword);
-    loadProducts({ search: keyword });
-  };
-
-  searchForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    handleSearch();
-  });
-
-  searchIcon.addEventListener("click", () => {
-    handleSearch();
+  btn.addEventListener("click", async () => {
+    try {
+      await loadProducts({ reset: false });
+    } catch (err) {
+      console.error("더보기 실패:", err);
+    }
   });
 }
 
-function initProducts() {
-  const search = getSearchQuery();
-  const searchInput = document.querySelector("#fieldInput");
-  if (searchInput && search) {
-    searchInput.value = search;
-  }
-  loadProducts({ search });
-}
+async function initProductsOnce() {
+  if (productsRendered) return;
 
-function formatPrice(value) {
-  const n = Number(value || 0);
-  return n.toLocaleString("ko-KR") + "원";
-}
+  // “로그인 하면 불러오기” 대응:
+  // 토큰이 있는 경우(로그인 상태)면 즉시 API 로드 시도.
+  // 토큰이 없어도 공개 API면 정상 로드되므로, 일단 시도하되 실패하면 샘플 유지.
+  try {
+    currentSearch = "";
+    nextUrl = null;
 
-function getSearchQuery() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("q")?.trim() || "";
-}
-
-function setSearchQuery(value) {
-  const url = new URL(window.location.href);
-  if (value) {
-    url.searchParams.set("q", value);
-  } else {
-    url.searchParams.delete("q");
+    await loadProducts({ reset: true });
+    productsRendered = true;
+  } catch (err) {
+    console.error("상품 로드 실패(샘플 유지):", err);
+    // 실패 시: 기존 HTML 샘플 목록 유지, emptyState는 건드리지 않음
   }
   window.history.replaceState({}, "", url);
 }
 
-async function loadProducts({ search } = {}) {
+/**
+ * 핵심 로더:
+ * - reset=true: 첫 페이지 로드 + 기존(샘플)목록은 "성공 후" 교체
+ * - reset=false: nextUrl 있으면 다음 페이지 append
+ */
+async function loadProducts({ reset } = { reset: false }) {
+  if (isLoading) return;
+  isLoading = true;
+
   const list = document.getElementById("productList");
-  if (!list) return;
+  const emptyEl = document.getElementById("emptyState");
+  const moreBtn = document.getElementById("btnLoadMore");
 
-  renderMessage(list, "product-loading", "상품을 불러오는 중입니다.");
-
-  try {
-    const data = await fetchProducts({ search });
-    const products = Array.isArray(data?.results) ? data.results : [];
-    renderProducts(list, products);
-  } catch (error) {
-    console.error("상품 목록 로드 실패:", error);
-    renderMessage(list, "product-error", "상품 정보를 불러오지 못했습니다.");
-  }
-}
-
-function renderMessage(list, className, message) {
-  list.innerHTML = "";
-  const item = document.createElement("li");
-  item.className = className;
-  item.textContent = message;
-  list.appendChild(item);
-}
-
-function renderProducts(list, products) {
-  list.innerHTML = "";
-
-  if (!products.length) {
-    renderMessage(list, "empty", "등록된 상품이 없습니다.");
+  if (!list) {
+    isLoading = false;
     return;
   }
 
-  const fragment = document.createDocumentFragment();
-  products.forEach((product) => {
-    fragment.appendChild(createProductCard(product));
-  });
-  list.appendChild(fragment);
+  // 현재 샘플(정적) 목록이 있는지 여부
+  const hasStaticItems = list.children.length > 0 && !list.dataset.hydrated;
+
+  try {
+    // fetchProducts 호출 규칙:
+    // - nextUrl이 있으면 그 URL로 다음 페이지
+    // - nextUrl이 없으면 search 파라미터로 첫 페이지
+    const data = await fetchProducts({
+      nextUrl: reset ? null : nextUrl,
+      search: reset ? currentSearch : "",
+    });
+
+    const results = data?.results || [];
+    nextUrl = data?.next || null;
+
+    if (reset) {
+      // reset일 때만 allProducts를 새로 구성
+      allProducts = [...results];
+
+      // “원래 메인페이지 상품목록 유지”:
+      // API 성공 전에는 샘플 유지, 성공했으니 여기서 교체
+      renderProducts(results, { append: false });
+      list.dataset.hydrated = "true";
+    } else {
+      // 더보기 = append
+      allProducts.push(...results);
+      renderProducts(results, { append: true });
+      list.dataset.hydrated = "true";
+    }
+
+    // empty state
+    if (emptyEl) {
+      const isEmpty = allProducts.length === 0;
+      emptyEl.hidden = !isEmpty;
+    }
+
+    // 더보기 버튼
+    if (moreBtn) {
+      moreBtn.hidden = !nextUrl;
+    }
+  } catch (err) {
+    // reset 상황에서도, 기존 샘플이 있다면 유지해야 함
+    if (reset && hasStaticItems) {
+      // 샘플 유지(아무 것도 변경하지 않음)
+      if (moreBtn) moreBtn.hidden = true;
+      if (emptyEl) emptyEl.hidden = true;
+      throw err;
+    }
+
+    // 샘플이 없거나 이미 hydrated 된 이후 실패면 empty 처리
+    if (reset) {
+      allProducts = [];
+      if (emptyEl) emptyEl.hidden = false;
+      if (moreBtn) moreBtn.hidden = true;
+    }
+
+    throw err;
+  } finally {
+    isLoading = false;
+  }
 }
 
-function createProductCard(product) {
-  const id = encodeURIComponent(product?.id ?? "");
-  const seller =
-    product?.seller?.store_name ||
-    product?.seller?.name ||
-    product?.seller?.username ||
-    "판매자";
-  const name = product?.name || "상품명";
-  const price = formatPrice(product?.price);
-  const imgSrc = product?.image || IMAGE_FALLBACK;
+function renderProducts(products, { append } = { append: false }) {
+  const list = document.getElementById("productList");
+  if (!list) return;
 
-  const li = document.createElement("li");
-  const link = document.createElement("a");
-  link.className = "product-card";
-  link.href = `../products/product.html?id=${id}`;
+  const html = (products || [])
+    .map((p) => {
+      const id = encodeURIComponent(p.id);
+      const seller = p.seller?.store_name || p.seller?.name || "판매자";
+      const img = p.image || "../assets/images/sample image.png";
 
-  const thumb = document.createElement("div");
-  thumb.className = "thumb";
+      return `
+        <li>
+          <a class="product-card" href="../products/product.html?id=${id}">
+            <div class="thumb">
+              <img src="${escapeHtml(img)}" alt="${escapeHtml(p.name)}">
+            </div>
+            <div class="meta">
+              <p class="seller">${escapeHtml(seller)}</p>
+              <p class="name">${escapeHtml(p.name)}</p>
+              <p class="price">${Number(p.price).toLocaleString()}원</p>
+            </div>
+          </a>
+        </li>
+      `;
+    })
+    .join("");
 
-  const img = document.createElement("img");
-  img.src = imgSrc;
-  img.alt = name;
-  thumb.appendChild(img);
-
-  const meta = document.createElement("div");
-  meta.className = "meta";
-
-  const sellerEl = document.createElement("p");
-  sellerEl.className = "seller";
-  sellerEl.textContent = seller;
-
-  const nameEl = document.createElement("p");
-  nameEl.className = "name";
-  nameEl.textContent = name;
-
-  const priceEl = document.createElement("p");
-  priceEl.className = "price";
-  priceEl.textContent = price;
-
-  meta.append(sellerEl, nameEl, priceEl);
-  link.append(thumb, meta);
-  li.appendChild(link);
-
-  return li;
+  if (append) {
+    list.insertAdjacentHTML("beforeend", html);
+  } else {
+    list.innerHTML = html;
+  }
 }
+
+function escapeHtml(str) {
+  return String(str ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+} 
