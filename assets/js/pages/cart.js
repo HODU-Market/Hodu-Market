@@ -26,6 +26,7 @@ const cartData = {
       // 로그인 체크
       if (!tokenManager.isLoggedIn()) {
         cartUI.showLoginRequired();
+        loginModal.open();
         return;
       }
 
@@ -59,7 +60,7 @@ const cartData = {
 
       // 재고 체크
       if (newQuantity > item.product.stock) {
-        alert(`재고가 부족합니다. (최대 ${item.product.stock}개)`);
+        stockModal.open(item.product.stock);
         return;
       }
 
@@ -340,11 +341,15 @@ const cartUI = {
     const stock = parseInt(control.dataset.stock, 10) || 0;
     const value = parseInt(input.value, 10) || 1;
 
-    // 수량이 1이면 - 버튼 비활성화
-    if (minusBtn) minusBtn.disabled = value <= 1;
+    // 수량이 1이면 - 버튼 비활성화 (스타일만)
+    if (minusBtn) {
+      minusBtn.classList.toggle("is-disabled", value <= 1);
+    }
 
-    // 수량이 재고와 같거나 재고가 0이면 + 버튼 비활성화
-    if (plusBtn) plusBtn.disabled = value >= stock || stock === 0;
+    // 수량이 재고와 같거나 재고가 0이면 + 버튼 비활성화 (스타일만)
+    if (plusBtn) {
+      plusBtn.classList.toggle("is-disabled", value >= stock || stock === 0);
+    }
   },
 
   // 아이템 요소 제거
@@ -532,6 +537,37 @@ const cartCheckbox = {
 };
 
 /**
+ * 공통 모달 유틸리티
+ */
+const modalUtils = {
+  openModal(modal) {
+    if (modal) {
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+    }
+  },
+
+  closeModal(modal) {
+    if (modal) {
+      modal.hidden = true;
+      document.body.style.overflow = "";
+    }
+  },
+
+  bindCloseEvents(modal, closeCallback) {
+    if (!modal) return;
+
+    const overlay = modal.querySelector(".modal__overlay");
+    const closeBtn = modal.querySelector(".modal__close");
+    const cancelBtn = modal.querySelector(".modal__btn--cancel");
+
+    overlay?.addEventListener("click", closeCallback);
+    closeBtn?.addEventListener("click", closeCallback);
+    cancelBtn?.addEventListener("click", closeCallback);
+  },
+};
+
+/**
  * 삭제 확인 모달 관리
  */
 const deleteModal = {
@@ -544,14 +580,9 @@ const deleteModal = {
 
     if (!this.modal) return;
 
-    const overlay = this.modal.querySelector(".modal__overlay");
-    const closeBtn = this.modal.querySelector(".modal__close");
-    const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
-    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+    modalUtils.bindCloseEvents(this.modal, () => this.close());
 
-    overlay?.addEventListener("click", () => this.close());
-    closeBtn?.addEventListener("click", () => this.close());
-    cancelBtn?.addEventListener("click", () => this.close());
+    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
     confirmBtn?.addEventListener("click", () => this.confirmDelete());
 
     document.addEventListener("keydown", (e) => {
@@ -562,17 +593,11 @@ const deleteModal = {
   },
 
   open() {
-    if (this.modal) {
-      this.modal.hidden = false;
-      document.body.style.overflow = "hidden";
-    }
+    modalUtils.openModal(this.modal);
   },
 
   close() {
-    if (this.modal) {
-      this.modal.hidden = true;
-      document.body.style.overflow = "";
-    }
+    modalUtils.closeModal(this.modal);
     this.targetItem = null;
     this.targetCartId = null;
   },
@@ -582,6 +607,116 @@ const deleteModal = {
       await cartData.removeItem(this.targetCartId);
     }
     this.close();
+  },
+};
+
+/**
+ * 로그인 필요 모달 관리
+ */
+const loginModal = {
+  modal: null,
+
+  init() {
+    this.modal = document.getElementById("loginModal");
+
+    if (!this.modal) return;
+
+    modalUtils.bindCloseEvents(this.modal, () => this.close());
+
+    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+    confirmBtn?.addEventListener("click", () => this.confirmLogin());
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+        this.close();
+      }
+    });
+  },
+
+  open() {
+    modalUtils.openModal(this.modal);
+  },
+
+  close() {
+    modalUtils.closeModal(this.modal);
+  },
+
+  confirmLogin() {
+    this.close();
+    window.location.href = "/accounts/login.html";
+  },
+};
+
+/**
+ * 장바구니 존재 모달 관리
+ */
+const cartExistsModal = {
+  modal: null,
+
+  init() {
+    this.modal = document.getElementById("cartExistsModal");
+
+    if (!this.modal) return;
+
+    modalUtils.bindCloseEvents(this.modal, () => this.close());
+
+    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+    confirmBtn?.addEventListener("click", () => this.confirmGoToCart());
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+        this.close();
+      }
+    });
+  },
+
+  open() {
+    modalUtils.openModal(this.modal);
+  },
+
+  close() {
+    modalUtils.closeModal(this.modal);
+  },
+
+  confirmGoToCart() {
+    this.close();
+    window.location.href = "/cart/shopcart.html";
+  },
+};
+
+/**
+ * 재고 초과 모달 관리
+ */
+const stockModal = {
+  modal: null,
+
+  init() {
+    this.modal = document.getElementById("stockModal");
+
+    if (!this.modal) return;
+
+    modalUtils.bindCloseEvents(this.modal, () => this.close());
+
+    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+    confirmBtn?.addEventListener("click", () => this.close());
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+        this.close();
+      }
+    });
+  },
+
+  open(maxStock) {
+    const maxSpan = document.getElementById("stockModalMax");
+    if (maxSpan) {
+      maxSpan.textContent = maxStock;
+    }
+    modalUtils.openModal(this.modal);
+  },
+
+  close() {
+    modalUtils.closeModal(this.modal);
   },
 };
 
@@ -632,6 +767,9 @@ document.addEventListener("DOMContentLoaded", () => {
   cartEmpty.init();
   cartCheckbox.init();
   deleteModal.init();
+  loginModal.init();
+  cartExistsModal.init();
+  stockModal.init();
   orderButton.init();
 
   // 장바구니 데이터 로드
@@ -639,4 +777,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 외부에서 사용할 수 있도록 export
-export { cartData, addToCart };
+export { cartData, addToCart, loginModal, cartExistsModal, stockModal };

@@ -65,6 +65,7 @@ if (headerSnippet) {
     .then(response => response.text())
     .then(data => {
       headerSnippet.innerHTML = data;
+      initHeaderUI();
     });
 }
 
@@ -74,6 +75,38 @@ if (footerSnippet) {
     .then(data => {
       footerSnippet.innerHTML = data;
     });
+}
+
+function initHeaderUI() {
+  const mypage = document.querySelector(".mypage");
+  const mypageBtn = document.querySelector(".mypage-btn");
+  const dropdown = document.querySelector(".dropdown");
+
+  if (!mypage || !mypageBtn || !dropdown) return;
+
+  mypageBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    mypage.classList.toggle("is-open");
+    mypageBtn.setAttribute(
+      "aria-expanded",
+      mypage.classList.contains("is-open")
+    );
+  });
+
+  document.addEventListener("click", () => {
+    mypage.classList.remove("is-open");
+    mypageBtn.setAttribute("aria-expanded", "false");
+  });
+
+  dropdown.addEventListener("click", (e) => {
+    const btn = e.target.closest(".dropdown-item");
+    if (!btn) return;
+
+    if (btn.dataset.action === "logout") {
+      localStorage.clear();
+      location.href = "../index.html";
+    }
+  });
 }
 
 

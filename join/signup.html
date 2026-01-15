@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="../assets/css/pages/signup.css" />
   </head>
   <body>
-    <img class="logo" src="../assets/images/Logo-hodu.png" alt="로고">
+    <a href="../index.html">
+        <img class="logo" src="../assets/images/Logo-hodu.png" alt="로고">
+    </a>
+    
 
     <div class="signup-box">
         <div class="tabs">
@@ -34,6 +37,7 @@
                     <input type="password" id="user-pw" class="input">
                     <span class="icon-check" id="pw-status"></span>
                 </div>
+                <p id="user-pw-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -43,11 +47,13 @@
                 <span class="icon-check" id="pw-check-status"></span>
                 </div>
                 <p id="user-pw-error" class="error-msg"></p>
+                <p id="user-pw-check-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
                 <label class="name" for="user-name">이름</label>
                 <input type="text" id="user-name" class="input">
+                <p id="user-name-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -61,9 +67,10 @@
                         <option value="018">018</option>
                         <option value="019">019</option>
                     </select>
-                    <input type="number" class="input phone">
+                    <input type="number" id="user-phone-1" class="input phone">
                     <input type="number" class="input phone">
                 </div>
+                <p id="user-phone-error" class="error-msg"></p>
             </div>
         </form>
 
@@ -83,6 +90,7 @@
                     <input type="password" id="seller-pw" class="input">
                     <span class="icon-check" id="seller-pw-status"></span>
                 </div>
+                <p id="seller-pw-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -92,11 +100,13 @@
                 <span class="icon-check" id="seller-pw-check-status"></span>
                 </div>
                 <p id="seller-pw-error" class="error-msg"></p>
+                <p id="seller-pw-check-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
                 <label class="name" for="seller-name">이름</label>
                 <input type="text" id="seller-name" class="input">
+                <p id="seller-name-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -110,9 +120,10 @@
                         <option value="018">018</option>
                         <option value="019">019</option>
                     </select>
-                    <input type="number" id="seller-phone-mid" class="input phone">
+                    <input type="number" id="seller-phone-1" class="input phone">
                     <input type="number" id="seller-phone-end" class="input phone">
                 </div>
+                <p id="seller-phone-error" class="error-msg"></p>
             </div>
 
             <div class="input-group">
@@ -121,12 +132,15 @@
                     <input type="number" id="seller-num" class="input phone">
                     <button type="button" class="check-btn" id="seller-num-btn">인증</button>
                 </div>
+                <p id="seller-num-error" class="error-msg"></p>
             </div>
+
             <div class="input-group">
                 <div class="store-name">
                     <label for="store-name">스토어 이름</label>
                     <input type="text" id="store-name" class="input">
                 </div>
+                <p id="store-name-error" class="error-msg"></p>
             </div>
         </form>
 
