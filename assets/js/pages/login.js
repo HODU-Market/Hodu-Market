@@ -42,15 +42,15 @@ window.handleLogin = async (loginType) => {
         const data = await res.json();
 
         if (res.ok) {
-            // 로그인 성공 시 토큰과 유저 타입 저장
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("userType", loginType.toUpperCase());
+            localStorage.setItem("access_token", data.token);
             
-            // ✅ 성공 알림 후 메인 페이지(index.html)로 이동
+            localStorage.setItem("user_info", JSON.stringify({
+                user_type: loginType.toUpperCase()
+            }));
+            
             alert("로그인되었습니다!");
             location.href = "../index.html"; 
         } else {
-            // [유효성 검사 3] 아이디/비밀번호가 서버 데이터와 일치하지 않을 경우
             errorMsg.textContent = "아이디 또는 비밀번호가 일치하지 않습니다.";
             errorMsg.style.display = "block";
         }
@@ -60,7 +60,6 @@ window.handleLogin = async (loginType) => {
     }
 };
 
-// 탭 전환 시 에러 메시지 숨김 처리 (추가해두면 UX가 좋아집니다)
 window.showForm = (type) => {
     document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -70,7 +69,6 @@ window.showForm = (type) => {
     if (type === 'buyer') tabs[0].classList.add('active');
     else tabs[1].classList.add('active');
 
-    // 다른 탭으로 넘어가면 이전 에러 메시지 삭제
     document.querySelectorAll('.error-msg').forEach(msg => {
         msg.style.display = 'none';
         msg.textContent = '';
