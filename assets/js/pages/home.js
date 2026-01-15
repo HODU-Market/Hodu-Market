@@ -5,11 +5,34 @@ let allProducts = [];
 let productsRendered = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (!isLoggedIn()) {
+    applyLoggedOutLayout();
+    return;
+  }
+
   initBannerSwiper();
   initHeaderUI();
   initSearchUI();
   initProductsOnce();
 });
+
+function isLoggedIn() {
+  return Boolean(
+    localStorage.getItem("token") ||
+      localStorage.getItem("access_token") ||
+      localStorage.getItem("accessToken")
+  );
+}
+
+function applyLoggedOutLayout() {
+  const header = document.querySelector("header");
+  const main = document.querySelector("main");
+  const footer = document.querySelector("footer");
+
+  if (header) header.hidden = true;
+  if (main) main.hidden = true;
+  if (footer) footer.hidden = true;
+}
 
 function initBannerSwiper() {
   const el = document.querySelector(".banner-swiper");
@@ -50,6 +73,7 @@ function initHeaderUI() {
 
     if (btn.dataset.action === "logout") {
       localStorage.clear();
+      applyLoggedOutLayout();
       location.href = "../index.html";
     }
   });
