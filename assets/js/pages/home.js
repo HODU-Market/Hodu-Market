@@ -140,6 +140,7 @@ async function initProductsOnce() {
     console.error("상품 로드 실패(샘플 유지):", err);
     // 실패 시: 기존 HTML 샘플 목록 유지, emptyState는 건드리지 않음
   }
+  window.history.replaceState({}, "", url);
 }
 
 /**

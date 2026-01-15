@@ -354,9 +354,6 @@ body {
 }
 
 
-
-
-
 .bar {
     width: 15px;
     background-color: var(--color-gray-200);
@@ -417,6 +414,14 @@ body {
     border: 1px solid var(--color-gray-200);
     border-radius: 8px;
     text-align: center;
+}
+
+.product-description {
+    margin-top: 20px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--color-gray-400);
+    white-space: pre-line;
 }
 
 /* 택배배송 / 무료배송 줄 */

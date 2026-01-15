@@ -252,6 +252,11 @@ const cartUI = {
 
   // 아이템 이벤트 바인딩
   bindItemEvents() {
+    // 초기 버튼 상태 설정
+    document.querySelectorAll(".cart-item").forEach((cartItem) => {
+      this.updateQtyButtonState(cartItem);
+    });
+
     // 수량 버튼 이벤트
     document.querySelectorAll(".qty-control__btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
@@ -319,6 +324,27 @@ const cartUI = {
     if (totalPrice) {
       totalPrice.textContent = `${(unitPrice * quantity).toLocaleString()}원`;
     }
+
+    // 버튼 상태 업데이트
+    this.updateQtyButtonState(itemEl);
+  },
+
+  // 수량 버튼 활성화/비활성화 상태 업데이트
+  updateQtyButtonState(cartItem) {
+    const control = cartItem.querySelector(".qty-control");
+    if (!control) return;
+
+    const minusBtn = control.querySelector(".qty-control__btn--minus");
+    const plusBtn = control.querySelector(".qty-control__btn--plus");
+    const input = control.querySelector(".qty-control__input");
+    const stock = parseInt(control.dataset.stock, 10) || 0;
+    const value = parseInt(input.value, 10) || 1;
+
+    // 수량이 1이면 - 버튼 비활성화
+    if (minusBtn) minusBtn.disabled = value <= 1;
+
+    // 수량이 재고와 같거나 재고가 0이면 + 버튼 비활성화
+    if (plusBtn) plusBtn.disabled = value >= stock || stock === 0;
   },
 
   // 아이템 요소 제거

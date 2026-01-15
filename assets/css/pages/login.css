@@ -1,4 +1,9 @@
-/* logo.css */
+/* login.css */
+
+html {
+    /* 스크롤바가 있든 없든 항상 공간을 확보하여 중앙을 고정함 */
+    overflow-y: scroll; 
+}
 
 * {
     box-sizing: border-box;
@@ -9,14 +14,12 @@
     width: 238px;
     height: 74px;
     display: block;
-    margin: 100px auto 70px;
+    margin: 85px auto 70px;
 }
 
 .login-box {
     width: 550px;
-    margin: 40px auto 0;
-    position: relative;
-    border-top: none;
+    margin: 0 auto;
 }
 
 .tabs {
@@ -29,9 +32,9 @@
     flex: 1;
     padding: 20px;
     cursor: pointer;
-    background: #f2f2f2;
-    border: 1px solid #c4c4c4;
-    border-bottom: 1px solid #c4c4c4;
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-300);
+    border-bottom: 1px solid var(--color-gray-300);
     font-size: 18px;
     text-align: center;
     position: relative;
@@ -47,13 +50,13 @@
 }
 
 .tab.active {
-    background: white;
+    background: var(--color-white);
     z-index: 2;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--color-white);
 }
 
 .tap:not(.active) {
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid var(--color-gray-300);
 }
 
 .tab.active::after {
@@ -63,17 +66,17 @@
     left: 0;
     width: 100%;
     height: 1px;
-    background: white;
+    background: var(--color-white);
 }
 
 .form {
-    border: 1px solid #c4c4c4;
+    border: 1px solid var(--color-gray-300);
     border-radius: 0 0 10px 10px;
     border-top: none;
     padding: 35px 30px 35px;
     display: none;
     font-size: 16px;
-    background: white;
+    background: var(--color-white);
     position: relative;
     z-index: 2;
 }
@@ -85,7 +88,7 @@
 .input {
     width: 100%;
     border: none;
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid var(--color-gray-300);
     padding: 12px 4px;
     margin-bottom: 18px;
     font-size: 14px;
@@ -95,8 +98,8 @@
 .btn {
     width: 100%;
     padding: 14px;
-    background: #E3C1A4;
-    color: #fff;
+    background: var(--color-primary);
+    color: var(--color-white);
     border: none;
     border-radius: 5px;
     font-weight: bold;
@@ -108,7 +111,7 @@
     margin-top: 30px;
     text-align: center;
     font-size: 13px;
-    color: #333;
+    color: var(--color-dark);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -116,11 +119,11 @@
 }
 
 .error-msg {
-  color: #EB5757;
-  font-size: 16px;
-  margin-bottom: 15px;
-  display: none;
-  text-align: left;
-  margin-top: 8px;
-  margin-bottom: -10px;
+    color: var(--color-point);
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: none;
+    text-align: left;
+    margin-top: 8px;
+    margin-bottom: -10px;
 }
