@@ -199,7 +199,7 @@
 
 .cart-item__order-btn {
   padding: 10px 35px;
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   color: var(--color-white);
   border-radius: 5px;
   font-size: 16px;
@@ -318,7 +318,7 @@
   width: 220px;
   padding: 19px 0;
   margin: 0 auto;
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary);
   color: var(--color-white);
   border-radius: 5px;
   font-size: 24px;
@@ -337,7 +337,7 @@
   height: 1px;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }
@@ -350,4 +350,10 @@
 /* HTML hidden 속성 지원용 (선택 사항) */
 [hidden] {
   display: none !important;
+}
+
+/* ========== Cart Modal ========== */
+.modal--cart .modal__message,
+.modal--stock .modal__message {
+  line-height: 1.6;
 }
