@@ -179,7 +179,6 @@ img {
 /* 비활성화 상태 (재고 없음) */
 .qty-control__btn:disabled {
   background-color: var(--color-gray-300);
-  background-color: transparent;
   cursor: not-allowed;
 }
 
