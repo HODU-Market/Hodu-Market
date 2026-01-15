@@ -1,4 +1,7 @@
 // /assets/js/pages/home.js
+import { fetchProducts } from "../api/products.api.js";
+
+const IMAGE_FALLBACK = "../assets/images/sample image.png";
 document.addEventListener("DOMContentLoaded", () => {
   initBannerSwiper();
   initHeaderUI();
@@ -96,72 +99,132 @@ function initSearchUI() {
     searchIcon.classList.remove("is-active");
   });
 
+  const handleSearch = () => {
+    const keyword = searchInput.value.trim();
+    setSearchQuery(keyword);
+    loadProducts({ search: keyword });
+  };
+
+  searchForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    handleSearch();
+  });
+
   searchIcon.addEventListener("click", () => {
-    if (!searchInput.value.trim()) return;
-    searchForm.submit();
+    handleSearch();
   });
 }
 
 function initProducts() {
-  renderProducts(getProducts());
+  const search = getSearchQuery();
+  const searchInput = document.querySelector("#fieldInput");
+  if (searchInput && search) {
+    searchInput.value = search;
+  }
+  loadProducts({ search });
 }
-
-const PRODUCTS_KEY = "hodu_products";
 
 function formatPrice(value) {
   const n = Number(value || 0);
   return n.toLocaleString("ko-KR") + "원";
 }
 
-function getProducts() {
+function getSearchQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("q")?.trim() || "";
+}
+
+function setSearchQuery(value) {
+  const url = new URL(window.location.href);
+  if (value) {
+    url.searchParams.set("q", value);
+  } else {
+    url.searchParams.delete("q");
+  }
+  window.history.replaceState({}, "", url);
+}
+
+async function loadProducts({ search } = {}) {
+  const list = document.getElementById("productList");
+  if (!list) return;
+
+  renderMessage(list, "product-loading", "상품을 불러오는 중입니다.");
+
   try {
-    const raw = localStorage.getItem(PRODUCTS_KEY);
-    const parsed = raw ? JSON.parse(raw) : [];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
+    const data = await fetchProducts({ search });
+    const products = Array.isArray(data?.results) ? data.results : [];
+    renderProducts(list, products);
+  } catch (error) {
+    console.error("상품 목록 로드 실패:", error);
+    renderMessage(list, "product-error", "상품 정보를 불러오지 못했습니다.");
   }
 }
 
-function renderProducts(products) {
-  const list = document.getElementById("productList");
-  const empty = document.getElementById("emptyState");
+function renderMessage(list, className, message) {
+  list.innerHTML = "";
+  const item = document.createElement("li");
+  item.className = className;
+  item.textContent = message;
+  list.appendChild(item);
+}
 
-  if (!list || !empty) return;
-
+function renderProducts(list, products) {
   list.innerHTML = "";
 
   if (!products.length) {
-    empty.hidden = false;
+    renderMessage(list, "empty", "등록된 상품이 없습니다.");
     return;
   }
 
-  empty.hidden = true;
+  const fragment = document.createDocumentFragment();
+  products.forEach((product) => {
+    fragment.appendChild(createProductCard(product));
+  });
+  list.appendChild(fragment);
+}
 
-  const html = products
-    .map((p) => {
-      const id = encodeURIComponent(p.id ?? "");
-      const seller = p.seller ?? "판매자";
-      const name = p.name ?? "상품명";
-      const price = formatPrice(p.price);
-      const img = p.image ?? "../assets/images/product-placeholder.png";
+function createProductCard(product) {
+  const id = encodeURIComponent(product?.id ?? "");
+  const seller =
+    product?.seller?.store_name ||
+    product?.seller?.name ||
+    product?.seller?.username ||
+    "판매자";
+  const name = product?.name || "상품명";
+  const price = formatPrice(product?.price);
+  const imgSrc = product?.image || IMAGE_FALLBACK;
 
-      return `
-        <li>
-          <a class="product-card" href="../products/detail.html?id=${id}">
-            <div class="thumb">
-              <img src="${img}" alt="${name}">
-            </div>
-            <div class="meta">
-              <p class="seller">${seller}</p>
-              <p class="name">${name}</p>
-              <p class="price">${price}</p>
-            </div>
-          </a>
-        </li>
-      `;
-    })
-    .join("");
+  const li = document.createElement("li");
+  const link = document.createElement("a");
+  link.className = "product-card";
+  link.href = `../products/product.html?id=${id}`;
 
-  list.insertAdjacentHTML("beforeend", html);
+  const thumb = document.createElement("div");
+  thumb.className = "thumb";
+
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.alt = name;
+  thumb.appendChild(img);
+
+  const meta = document.createElement("div");
+  meta.className = "meta";
+
+  const sellerEl = document.createElement("p");
+  sellerEl.className = "seller";
+  sellerEl.textContent = seller;
+
+  const nameEl = document.createElement("p");
+  nameEl.className = "name";
+  nameEl.textContent = name;
+
+  const priceEl = document.createElement("p");
+  priceEl.className = "price";
+  priceEl.textContent = price;
+
+  meta.append(sellerEl, nameEl, priceEl);
+  link.append(thumb, meta);
+  li.appendChild(link);
+
+  return li;
 }

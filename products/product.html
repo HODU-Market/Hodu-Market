@@ -1,215 +1,215 @@
-    <!DOCTYPE html>
-    <html lang="ko">
-    <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상품 상세 - 호두마켓</title>
-    <link rel="icon" type="image/svg+xml" href="../assets/images/icons/favicon.svg">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상품 상세 - 호두마켓</title>
+<link rel="icon" type="image/svg+xml" href="../assets/images/icons/favicon.svg">
 
-    <link rel="stylesheet" href="../assets/css/reset.css">
-    <link rel="stylesheet" href="../assets/css/common.css">
-    <link rel="stylesheet" href="../assets/css/pages/products.css">
-    </head>
-    <body>
-    <div id="app-wrapper">
-    <div id="header-snippet"></div>
+<link rel="stylesheet" href="../assets/css/reset.css">
+<link rel="stylesheet" href="../assets/css/common.css">
+<link rel="stylesheet" href="../assets/css/pages/products.css">
+</head>
+<body>
+<div id="app-wrapper">
+<div id="header-snippet"></div>
 
-    <main class="main">
-        <div class="container">
-            <section class="product">
+<main class="main">
+    <div class="container">
+        <section class="product">
 
-                <div class="product-media">
-                    <img src="../assets/images/sample image.png" alt="고롱고롱 츄르 세트">
+            <div class="product-media">
+                <img src="../assets/images/sample image.png" alt="고롱고롱 츄르 세트">
+            </div>
+            <aside class="product-info">
+            <p class="kicker">맞고 줄래 그냥 줄래?</p>
+                <h1 class="title">고롱고롱 츄르 세트</h1>
+                <p class="price" data-price="13500">13,500</p>
+                <div class="row">
+                    <div class="label">택배배송 / </div>
+                    <div class="value">무료배송</div>
                 </div>
-                <aside class="product-info">
-                <p class="kicker">맞고 줄래 그냥 줄래?</p>
-                    <h1 class="title">고롱고롱 츄르 세트</h1>
-                    <p class="price" data-price="13500">13,500</p>
-                    <div class="row">
-                        <div class="label">택배배송 / </div>
-                        <div class="value">무료배송</div>
+
+                <div class="counter-section">
+                    <div class="counter">
+                            <fieldset class="qty-control" data-stock="5">
+                                <legend class="sr-only">수량 조절</legend>
+                                <button
+                                type="button"
+                                class="qty-control__btn qty-control__btn--minus"
+                                >
+                                <span class="sr-only">수량 감소</span>
+                                </button>
+                                <input
+                                type="number"
+                                value="1"
+                                min="1"
+                                class="qty-control__input"
+                                aria-label="수량"
+                                readonly
+                                />
+                                <button
+                                type="button"
+                                class="qty-control__btn qty-control__btn--plus"
+                                >
+                                <span class="sr-only">수량 증가</span>
+                                </button>
+                            </fieldset>
+            
                     </div>
+                </div>
 
-                    <div class="counter-section">
-                        <div class="counter">
-                                <fieldset class="qty-control" data-stock="5">
-                                    <legend class="sr-only">수량 조절</legend>
-                                    <button
-                                    type="button"
-                                    class="qty-control__btn qty-control__btn--minus"
-                                    >
-                                    <span class="sr-only">수량 감소</span>
-                                    </button>
-                                    <input
-                                    type="number"
-                                    value="1"
-                                    min="1"
-                                    class="qty-control__input"
-                                    aria-label="수량"
-                                    readonly
-                                    />
-                                    <button
-                                    type="button"
-                                    class="qty-control__btn qty-control__btn--plus"
-                                    >
-                                    <span class="sr-only">수량 증가</span>
-                                    </button>
-                                </fieldset>
-                
-                        </div>
+                <div class="rowalt">
+                <div class="summary">
+                    <div class="total">총 상품 금액</div>
+                    <div class="value">총 수량 <span class="total-count">1</span>개</div>
+                    <p class="tag">|</p>
+                    <div class="money"><span class="total-money">13,500</span></div>
+                </div>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn-buy">바로 구매</button>
+                    <button type="button" class="btn-cart">장바구니</button>
+                </div>
+            </aside>
+
+            <nav class="product-tabs">
+                <ul class="tab-list">
+                    <li><button type="button" class="tab-item active" data-tab="description">상세 정보</button></li>
+                    <li><button type="button" class="tab-item" data-tab="review">리뷰</button></li>
+                    <li><button type="button" class="tab-item" data-tab="qna">Q&A</button></li>
+                    <li><button type="button" class="tab-item" data-tab="policy">반품/교환정보</button></li>
+                </ul>
+            </nav>
+            
+            <div class="tab-content-container">
+                <section id="description" class="content-item">
+
+                <div class="delivery-info">
+                    <div class="countdown-box">
+                    <span class="delivery-time-text">오늘 결제 시 <strong>내일 바로 발송!</strong></span>
+                    <p class="timer-desc">남은 시간 <span id="realtime-timer">00:00:00</span></p>
                     </div>
-
-                    <div class="rowalt">
-                    <div class="summary">
-                        <div class="total">총 상품 금액</div>
-                        <div class="value">총 수량 <span class="total-count">1</span>개</div>
-                        <p class="tag">|</p>
-                        <div class="money"><span class="total-money">13,500</span></div>
-                    </div>
-                    </div>
-                    <div class="button-group">
-                        <button type="button" class="btn-buy">바로 구매</button>
-                        <button type="button" class="btn-cart">장바구니</button>
-                    </div>
-                </aside>
-
-                <nav class="product-tabs">
-                    <ul class="tab-list">
-                        <li><button type="button" class="tab-item active" data-tab="description">상세 정보</button></li>
-                        <li><button type="button" class="tab-item" data-tab="review">리뷰</button></li>
-                        <li><button type="button" class="tab-item" data-tab="qna">Q&A</button></li>
-                        <li><button type="button" class="tab-item" data-tab="policy">반품/교환정보</button></li>
-                    </ul>
-                </nav>
-                
-                <div class="tab-content-container">
-                    <section id="description" class="content-item">
-
-                    <div class="delivery-info">
-                        <div class="countdown-box">
-                        <span class="delivery-time-text">오늘 결제 시 <strong>내일 바로 발송!</strong></span>
-                        <p class="timer-desc">남은 시간 <span id="realtime-timer">00:00:00</span></p>
-                        </div>
-                    </div>
+                </div>
 
 
-                    </section>
-
-
-                    <section id="review" class="content-item">
-                        <div class="review-dashboard">
-                            <div class="dash-column total-score">
-                                <h3>사용자 총 평점</h3>
-                                <div class="stars-container" data-score="5.0">
-                                    <div class="score-number">
-                                        <strong>5.0</strong> <span class="text-sm">/ 5</span> </div>
-                                </div>
-                            </div>
-                        
-                            <div class="dash-column review-count">
-                                <h3>전체 리뷰수</h3>
-                                <img src="../assets/images/icons/review-image.png" alt="리뷰 버블 아이콘" class="review-bubble-img">
-                                <div class="count-number">55<span class="text-xs">건</span></div> </div>
-                        
-                            <div class="dash-column score-ratio">
-                                <h3>평점 비율</h3>
-                                <div class="ratio-graph">
-                                    <div class="bar-unit"><div class="bar active" style="height: 100%;"><span class="text-xs">55</span></div><span class="text-xs">5점</span></div>
-                                    <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">4점</span></div>
-                                    <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">3점</span></div>
-                                    <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">2점</span></div>
-                                    <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">1점</span></div>
-                                </div>
-                            </div>
-                        
-                            <div class="dash-column satisfaction">
-                                <h3>품질 — "아주 좋아요"</h3>
-                                <div class="horizontal-bar-group">
-                                    <div class="h-bar-unit">
-                                        <span class="text-xs">엉성해요</span>
-                                        <div class="h-bar-bg"><div class="h-bar-fill" style="width: 0%;"></div></div>
-                                        <span class="text-xs"> 0명</span>
-                                    </div>
-                                    <div class="h-bar-unit">
-                                        <span class="text-xs">좋아요</span>
-                                        <div class="h-bar-bg"><div class="h-bar-fill" style="width: 25%;"></div></div>
-                                        <span class="text-xs"> 13명</span>
-                                    </div>
-                                    <div class="h-bar-unit highlight">
-                                        <span class="text-xs">아주 좋아요</span>
-                                        <div class="h-bar-bg"><div class="h-bar-fill" style="width: 75%;"></div></div>
-                                        <span class="text-xs"> 42명</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                 </section>
 
-                    <section id="qna" class="content-item">
-                    <div class="section-title">상품 문의</div>
-                    <table class="info-table">
-                        <colgroup>
-                            <col style="width: 150px;">
-                            <col>
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <th>문의 안내</th>
-                                <td>상품에 대한 궁금한 점을 남겨주시면 판매자가 직접 답변을 드립니다.</td>
-                            </tr>
-                            <tr>
-                                <th>운영 시간</th>
-                                <td>평일 10:00 ~ 17:00 (주말 및 공휴일 제외)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    </section>
 
-                    <section id="policy" class="content-item">
-        <div class="section-title">반품/교환정보</div>
-        <table class="info-table">
-            <colgroup>
-                <col style="width: 200px;">
-                <col>
-            </colgroup>
-            <tbody>
-                <tr>
-                    <th>반품배송비</th>
-                    <td>편도 3,000원 (최초 배송비 무료인 경우 6,000원 부과)</td>
-                </tr>
-                <tr>
-                    <th>교환배송비</th>
-                    <td>6,000원</td>
-                </tr>
-                <tr>
-                    <th>보낼 곳</th>
-                    <td>(12345) 서울특별시 마포구 고양로 호두마켓 물류센터</td>
-                </tr>
-                <tr>
-                    <th>반품/교환 사유 임의 설정</th>
-                    <td>상품 상세 페이지의 내용을 확인해 주세요.</td>
-                </tr>
-                <tr>
-                    <th>반품/교환 불가사유</th>
-                    <td class="policy-list">
-                        <ul>
-                            <li>반품요청기간이 경과한 경우</li>
-                            <li>고객님의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우</li>
-                            <li>포장을 개봉하였거나 포장이 훼손되어 상품가치가 현저히 상실된 경우</li>
-                        </ul>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-                </div>
-        </div>
-    </main>
+                <section id="review" class="content-item">
+                    <div class="review-dashboard">
+                        <div class="dash-column total-score">
+                            <h3>사용자 총 평점</h3>
+                            <div class="stars-container" data-score="5.0">
+                                <div class="score-number">
+                                    <strong>5.0</strong> <span class="text-sm">/ 5</span> </div>
+                            </div>
+                        </div>
+                    
+                        <div class="dash-column review-count">
+                            <h3>전체 리뷰수</h3>
+                            <img src="../assets/images/icons/review-image.png" alt="리뷰 버블 아이콘" class="review-bubble-img">
+                            <div class="count-number">55<span class="text-xs">건</span></div> </div>
+                    
+                        <div class="dash-column score-ratio">
+                            <h3>평점 비율</h3>
+                            <div class="ratio-graph">
+                                <div class="bar-unit"><div class="bar active" style="height: 100%;"><span class="text-xs">55</span></div><span class="text-xs">5점</span></div>
+                                <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">4점</span></div>
+                                <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">3점</span></div>
+                                <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">2점</span></div>
+                                <div class="bar-unit"><div class="bar" style="height: 0%;"></div><span class="text-xs">1점</span></div>
+                            </div>
+                        </div>
+                    
+                        <div class="dash-column satisfaction">
+                            <h3>품질 — "아주 좋아요"</h3>
+                            <div class="horizontal-bar-group">
+                                <div class="h-bar-unit">
+                                    <span class="text-xs">엉성해요</span>
+                                    <div class="h-bar-bg"><div class="h-bar-fill" style="width: 0%;"></div></div>
+                                    <span class="text-xs"> 0명</span>
+                                </div>
+                                <div class="h-bar-unit">
+                                    <span class="text-xs">좋아요</span>
+                                    <div class="h-bar-bg"><div class="h-bar-fill" style="width: 25%;"></div></div>
+                                    <span class="text-xs"> 13명</span>
+                                </div>
+                                <div class="h-bar-unit highlight">
+                                    <span class="text-xs">아주 좋아요</span>
+                                    <div class="h-bar-bg"><div class="h-bar-fill" style="width: 75%;"></div></div>
+                                    <span class="text-xs"> 42명</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </section>
 
-    <div id="footer-snippet"></div>
+                <section id="qna" class="content-item">
+                <div class="section-title">상품 문의</div>
+                <table class="info-table">
+                    <colgroup>
+                        <col style="width: 150px;">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <th>문의 안내</th>
+                            <td>상품에 대한 궁금한 점을 남겨주시면 판매자가 직접 답변을 드립니다.</td>
+                        </tr>
+                        <tr>
+                            <th>운영 시간</th>
+                            <td>평일 10:00 ~ 17:00 (주말 및 공휴일 제외)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                </section>
+
+                <section id="policy" class="content-item">
+    <div class="section-title">반품/교환정보</div>
+    <table class="info-table">
+        <colgroup>
+            <col style="width: 200px;">
+            <col>
+        </colgroup>
+        <tbody>
+            <tr>
+                <th>반품배송비</th>
+                <td>편도 3,000원 (최초 배송비 무료인 경우 6,000원 부과)</td>
+            </tr>
+            <tr>
+                <th>교환배송비</th>
+                <td>6,000원</td>
+            </tr>
+            <tr>
+                <th>보낼 곳</th>
+                <td>(12345) 서울특별시 마포구 고양로 호두마켓 물류센터</td>
+            </tr>
+            <tr>
+                <th>반품/교환 사유 임의 설정</th>
+                <td>상품 상세 페이지의 내용을 확인해 주세요.</td>
+            </tr>
+            <tr>
+                <th>반품/교환 불가사유</th>
+                <td class="policy-list">
+                    <ul>
+                        <li>반품요청기간이 경과한 경우</li>
+                        <li>고객님의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우</li>
+                        <li>포장을 개봉하였거나 포장이 훼손되어 상품가치가 현저히 상실된 경우</li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
     </div>
+    </div>
+</main>
 
-    <script src="../assets/js/common.js"></script>
-    <script src="../assets/js/pages/products.js"></script>
-    </body>
-    </html>
+<div id="footer-snippet"></div>
+</div>
+
+<script src="../assets/js/common.js"></script>
+<script type="module" src="../assets/js/pages/products.js"></script>
+</body>
+</html>
