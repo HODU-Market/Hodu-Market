@@ -7,7 +7,7 @@
     width: 238px;
     height: 74px;
     display: block;
-    margin: 70px auto 70px;
+    margin: 80px auto 70px;
 }
 
 .signup-box {
@@ -27,9 +27,9 @@
     flex: 1;
     padding: 20px;
     cursor: pointer;
-    background: #f2f2f2;
-    border: 1px solid #c4c4c4;
-    border-bottom: 1px solid #c4c4c4;
+    background: var(--color-gray-100);
+    border: 1px solid var(--color-gray-300);
+    border-bottom: 1px solid var(--color-gray-300);
     font-size: 18px;
     text-align: center;
     position: relative;
@@ -45,13 +45,13 @@
 }
 
 .tab.active {
-    background: white;
+    background: var(--color-white);
     z-index: 2;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--color-white);
 }
 
 .tap:not(.active) {
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid var(--color-gray-300);
 }
 
 .tab.active::after {
@@ -61,7 +61,7 @@
     left: 0;
     width: 100%;
     height: 1px;
-    background: white;
+    background: var(--color-white);
 }
 
 .form.active {
@@ -70,11 +70,11 @@
 
 .signup-form {
     display: none;
-    border: 1px solid #c4c4c4;
+    border: 1px solid var(--color-gray-300);
     border-radius: 0 0 10px 10px;
     border-top: none;
     padding: 0 35px;
-    background: white;
+    background: var(--color-white);
     position: relative;
     z-index: 2;
 }
@@ -98,14 +98,14 @@
     margin-bottom: 10px;
     font-size: 16px;
     line-height: 20px;
-    color: #767676;
+    color: var(--color-gray-400);
 }
 
 .input {
     width: 100%;
     padding: 16px 17px;
     font-size: 16px;
-    border: 1px solid #C4C4C4;
+    border: 1px solid var(--color-gray-300);
     outline: none;
     border-radius: 5px;
 }
@@ -118,8 +118,8 @@
 .check-btn {
     width: 122px;
     height: 54px;
-    background-color: #3e3f3c;
-    color: #fff;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
     border: none;
     border-radius: 5px;
     font-weight: 500;
@@ -222,7 +222,7 @@
 .agreement-box label {
     font-size: 16px;
     line-height: 1.5;
-    color: #767676;
+    color: var(--color-gray-400);
     cursor: pointer;
 }
 
@@ -238,14 +238,16 @@
     font-weight: 700;
 }
 
+
+
 .join-btn {
     display: block;
     width: 480px;
     height: 60px;
     margin: 34px auto 110px;
     padding: 19px;
-    background-color: #3e3f3c;
-    color: #fff;
+    background-color: var(--color-secondary);
+    color: var(--color-white);
     font-size: 18px;
     font-weight: 500;
     border: none;
@@ -254,6 +256,88 @@
 }
 
 .join-btn:disabled {
-    background-color: #C4C4C4;
+    background-color: var(--color-gray-300);
     cursor: default;
+}
+
+/* error */
+
+/* 아이디 */
+/* 기본 에러 메시지 스타일 */
+.error-msg {
+    font-size: 16px;
+    margin-top: 6px;
+    margin-left: 2px;
+    display: none; /* 기본 숨김 */
+}
+
+/* 실패 상태: 빨간색 */
+.error-msg.error {
+    color: var(--color-point);
+    display: block;
+}
+
+/* 성공 상태: 초록색 (아이디 사용 가능 시) */
+.error-msg.success {
+    color: var(--color-primary);
+    display: block;
+}
+
+/* 입력창 에러 보더 */
+.input.error {
+    border: 1px solid var(--color-point) !important;
+}
+
+.input.success {
+    border: 1px solid var(--color-gray-300) !important;
+}
+
+/* 1. 에러 메시지: 기본은 숨김, error 클래스가 붙을 때만 빨간색으로 표시 */
+.error-msg {
+    font-size: 16px;
+    margin-top: 6px;
+    margin-left: 2px;
+    display: none; 
+}
+
+/* 2. 비밀번호 불일치나 중복 아이디일 때 나타나는 스타일 */
+.error-msg.error {
+    color: var(--color-point); /* 기존에 설정하신 빨간색 변수 */
+    display: block;
+}
+
+/* 3. 성공 메시지용 */
+.error-msg.success {
+    color: var(--color-primary); /* 또는 #219653 */
+    display: block !important; /* display: none으로 되어있다면 block으로 변경 */
+}
+
+/* 4. 입력창 에러 보더: 에러 발생 시 테두리 빨간색 */
+.input.error {
+    border: 1px solid var(--color-point) !important;
+}
+
+/* 5. 입력창 성공 보더: 성공 시엔 에러 보더를 지우고 기본 보더로 유지 */
+.input.success {
+    border: 1px solid var(--color-gray-300) !important;
+}
+
+/* 6. 체크 아이콘 활성화: JS에서 .active를 붙이면 이미지가 바뀜 */
+.icon-check {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    background-image: url('../../images/icons/icon-check-off.png'); 
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; 
+    margin-right: 13px;
+    transition: background-image 0.2s; /* 부드러운 전환 효과 */
+}
+
+.icon-check.active {
+    background-image: url('../../images/icons/icon-check-on.png');
 }
