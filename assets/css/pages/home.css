@@ -131,10 +131,6 @@
     color: #111;
   }
   
-  .product-card:hover .thumb{
-    transform: translateY(-2px);
-  }
-  
   .product-card:focus-visible{
     outline: 2px solid #111;
     outline-offset: 4px;
@@ -153,5 +149,47 @@
     margin-top: 40px;
     text-align: center;
     color: var(--color-gray-400);
+  }
+  
+  /* 로그인 필요 안내 */
+  .login-required {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-required-text {
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+    background: #fff;
+  }
+
+  .product-admin{
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .product-admin .btn-edit,
+  .product-admin .btn-delete{
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid #111;
+    background: #fff;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product-admin .btn-delete{
+    background: #111;
+    color: #fff;
   }
   

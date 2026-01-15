@@ -122,3 +122,67 @@ export async function deleteProduct(productId) {
     method: "DELETE",
   });
 }
+
+/**
+ * (추가) 현재 로그인 사용자 정보 조회
+ * - seller 여부 판단 및 sellerName(명세 기준) 확보 용도
+ * - 프로젝트마다 엔드포인트가 다를 수 있어 fallback 시도
+ *
+ * @returns {Promise<Object>} me
+ */
+export async function fetchMyInfo() {
+  // 팀 프로젝트에서 자주 쓰는 후보 엔드포인트들
+  const candidates = [
+    "/accounts/user/",
+    "/accounts/profile/",
+    "/user/",
+    "/users/me/",
+    "/users/user/",
+    "/accounts/me/",
+  ];
+
+  let lastError = null;
+
+  for (const url of candidates) {
+    try {
+      // apiRequest가 baseURL 붙여주는 구조이므로 상대경로 사용
+      // 인증 필요하므로 skipAuth 옵션 없음(기본 auth 포함 기대)
+      return await apiRequest(url, { method: "GET" });
+    } catch (err) {
+      lastError = err;
+      // 다음 후보로 계속 시도
+    }
+  }
+
+  // 전부 실패하면 마지막 에러 throw
+  throw lastError || new Error("내 정보 조회 API를 찾지 못했습니다.");
+}
+
+/**
+ * (추가) user_type 빠른 확인용
+ * - "SELLER" | "BUYER" 형태 기대
+ */
+export async function getUserType() {
+  const me = await fetchMyInfo();
+  return me?.user_type || null;
+}
+
+/**
+ * (추가) 판매자 상품 조회용 sellerName 확보
+ * - 명세의 seller_name이 무엇을 의미하는지 프로젝트마다 다를 수 있어
+ *   name/store_name/username을 우선순위로 반환
+ *
+ * @returns {Promise<string|null>}
+ */
+export async function getAuthSellerName() {
+  const me = await fetchMyInfo();
+
+  // 우선순위: 명세에서 seller.name을 쓰는 경우가 많지만,
+  // 실제로는 store_name / username이 라우팅 키인 경우도 있어 안전하게 처리
+  return (
+    me?.name ||
+    me?.store_name ||
+    me?.username ||
+    null
+  );
+}
