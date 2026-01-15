@@ -1,5 +1,10 @@
 /* login.css */
 
+html {
+    /* 스크롤바가 있든 없든 항상 공간을 확보하여 중앙을 고정함 */
+    overflow-y: scroll; 
+}
+
 * {
     box-sizing: border-box;
     font-family: 'SpokaHanSansNeo';
@@ -9,14 +14,12 @@
     width: 238px;
     height: 74px;
     display: block;
-    margin: 100px auto 70px;
+    margin: 85px auto 70px;
 }
 
 .login-box {
     width: 550px;
-    margin: 40px auto 0;
-    position: relative;
-    border-top: none;
+    margin: 0 auto;
 }
 
 .tabs {
