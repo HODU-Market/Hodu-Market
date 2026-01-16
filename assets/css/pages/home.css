@@ -1,11 +1,15 @@
-.banner{
+  .banner {
     width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
     background: #f2f2f2;
   }
   
-  .banner-swiper{
+  .banner-swiper {
     width: 100%;
+    max-width: 1920px;
     height: 500px;
+    margin: 0 auto;
   }
   
   .banner-swiper img{
@@ -151,7 +155,6 @@
     color: var(--color-gray-400);
   }
   
-  /* 로그인 필요 안내 */
   .login-required {
     min-height: calc(100vh - 180px);
     display: flex;
