@@ -1,4 +1,6 @@
 import { fetchProductDetail } from "../api/products.js";
+import { addToCart } from "../api/cart.api.js";
+import { tokenManager } from "../api/config.js";
 
 const IMAGE_FALLBACK = "../assets/images/sample image.png";
 
@@ -27,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalMoney = document.querySelector(".total-money");
     const btnMinus = document.querySelector(".qty-control__btn--minus");
     const btnPlus = document.querySelector(".qty-control__btn--plus");
+    const btnCart = document.querySelector(".btn-cart");
     const descriptionSection = document.getElementById("description");
     let descriptionElement = document.querySelector(".product-description");
 
@@ -38,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let unitPrice = 0;
     let currentStock = 0;
+    let activeProductId = null;
 
     // --- 수량 및 가격 관리 함수 ---
     function updateResult() {
@@ -84,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "";
         unitPrice = Number(product?.price ?? 0);
         currentStock = Number(product?.stock ?? 0);
+        activeProductId = product?.id ?? activeProductId;
 
         if (kickerElement) kickerElement.textContent = sellerName || "판매점";
         if (titleElement) titleElement.textContent = name;
@@ -144,8 +149,45 @@ document.addEventListener("DOMContentLoaded", () => {
         updateResult();
     });
 
+    btnCart?.addEventListener("click", async () => {
+        const quantity = parseInt(quantityInput?.value, 10) || 0;
+        const productId = activeProductId ?? getProductId();
+
+        if (!productId) {
+            alert("상품 정보를 확인할 수 없습니다.");
+            return;
+        }
+
+        if (quantity < 1) {
+            alert("수량을 선택해주세요.");
+            return;
+        }
+
+        if (!tokenManager.isLoggedIn()) {
+            const move = confirm("로그인이 필요합니다. 로그인 페이지로 이동할까요?");
+            if (move) {
+                window.location.href = "../join/login.html";
+            }
+            return;
+        }
+
+        if (!tokenManager.isBuyer()) {
+            alert("구매자만 장바구니를 이용할 수 있습니다.");
+            return;
+        }
+
+        try {
+            await addToCart(productId, quantity);
+            alert("장바구니에 담았습니다.");
+        } catch (error) {
+            console.error("장바구니 추가 실패:", error);
+            alert(error?.message || "장바구니 추가에 실패했습니다.");
+        }
+    });
+
     const productId = getProductId();
     if (productId) {
+        activeProductId = productId;
         loadProduct(productId);
     }
 });
