@@ -216,6 +216,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderProduct(product) {
         const name = product?.product_name || product?.name || "상품명";
+        const description =
+            product?.info ||
+            product?.description ||
+            product?.detail ||
+            "";
         const sellerName =
             product?.seller?.store_name ||
             product?.seller?.name ||
@@ -242,6 +247,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (shippingLabel) shippingLabel.textContent = `${formatShippingMethod(shippingMethod)} / `;
         if (shippingValue) shippingValue.textContent = formatShippingFee(shippingFee);
         if (qtyControl) qtyControl.dataset.stock = String(currentStock);
+        if (descriptionElement) {
+            descriptionElement.textContent = description.trim();
+        }
         // ... 기타 렌더링 로직 생략 (기존 코드와 동일)
 
         updateQtyUI(currentStock > 0 ? 1 : 0);
@@ -250,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderError(message) {
         if (titleElement) titleElement.textContent = message;
+        if (descriptionElement) descriptionElement.textContent = "";
         unitPrice = 0;
         currentStock = 0;
         updateResult();

@@ -12,7 +12,9 @@ function buildUrl(pathOrUrl) {
 }
 
 function getAccessToken() {
-  return localStorage.getItem("accessToken");
+  return (
+    localStorage.getItem("access_token") || localStorage.getItem("accessToken")
+  );
 }
 
 export async function apiRequest(pathOrUrl, options = {}) {
