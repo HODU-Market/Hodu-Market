@@ -1,12 +1,8 @@
-// assets/js/pages/home.js
 import { fetchProducts } from "../api/products.js";
 
 let allProducts = [];
 let productsRendered = false;
 
-const initialVisibleCount = 5;
-
-// pagination / search state
 let nextUrl = null;
 let currentSearch = "";
 let isLoading = false;
@@ -36,10 +32,6 @@ function isLoggedIn() {
   return Boolean(token);
 }
 
-/**
- * ✅ 리스트/버튼 DOM 선택자 불일치 방지용
- * - 팀원 HTML이 #productList / #product-list / .product-grid 등으로 갈릴 수 있어서 모두 대응
- */
 function getProductListEl() {
   return (
     document.getElementById("productList") ||
@@ -174,10 +166,6 @@ async function initProductsOnce() {
   }
 }
 
-/**
- * - reset=true : 첫 로드/검색 (성공 시 샘플 교체)
- * - reset=false: 다음 페이지 append
- */
 async function loadProducts({ reset } = { reset: false }) {
   if (isLoading) return;
   isLoading = true;
@@ -214,21 +202,18 @@ async function loadProducts({ reset } = { reset: false }) {
 
     console.log("[products] results length:", results.length);
 
-    const visibleResults = reset ? results.slice(0, initialVisibleCount) : results;
-
     if (reset) {
-      allProducts = [...visibleResults];
-      renderProducts(visibleResults, { append: false });
+      allProducts = [...results];
+      renderProducts(results, { append: false });
       list.dataset.hydrated = "true";
-      nextUrl = null; // 홈 5개 고정이면 더보기 숨김
+      nextUrl = null;
     } else {
-      allProducts.push(...visibleResults);
-      renderProducts(visibleResults, { append: true });
-      list.dataset.hydrated = "true";
-    }
+      allProducts.push(...results);
+      renderProducts(results, { append: true });
+    }    
 
     if (emptyEl) emptyEl.hidden = allProducts.length !== 0;
-    if (moreBtn) moreBtn.hidden = true; // 홈은 고정 5개면 더보기 숨김
+    if (moreBtn) moreBtn.hidden = true;
   } catch (err) {
     console.error("[products] fetch failed:", err);
     alert(err?.payload?.detail || err?.message || "상품 API 호출 실패");

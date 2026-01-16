@@ -1,25 +1,15 @@
-// assets/js/pages/home.products.js
-import { fetchProducts } from "../api/products.js"; // 경로 확인!
+import { fetchProducts } from "../api/products.js"; 
 
-/**
- * DOM
- */
 const $list = document.querySelector("#product-list");
 const $btnMore = document.querySelector("#btn-load-more");
 
 const $searchForm = document.querySelector("#product-search-form");
 const $searchInput = document.querySelector("#product-search-input");
 
-/**
- * State
- */
 let nextUrl = null;
 let currentSearch = "";
 let isLoading = false;
 
-/**
- * Utils
- */
 function formatPrice(value) {
   const num = Number(value ?? 0);
   return `${num.toLocaleString("ko-KR")}원`;
@@ -44,8 +34,6 @@ function createProductItem(product) {
   const li = document.createElement("li");
   li.className = "product-card";
 
-  // 상세 페이지 이동 규칙: 너희 라우팅에 맞게 수정 가능
-  // 예: products/product.html?id=123
   const detailHref = `../products/product.html?id=${encodeURIComponent(product.id)}`;
 
   li.innerHTML = `
@@ -73,14 +61,10 @@ function createProductItem(product) {
   return li;
 }
 
-/**
- * Render
- */
 function renderProducts(products, { reset = false } = {}) {
   if (reset) $list.innerHTML = "";
 
   if (!products || products.length === 0) {
-    // reset 상황에서만 empty 메시지 표시
     if (reset) {
       $list.innerHTML = `<li class="product-empty">표시할 상품이 없습니다.</li>`;
     }
@@ -93,13 +77,9 @@ function renderProducts(products, { reset = false } = {}) {
 }
 
 function updateMoreButton() {
-  // nextUrl이 있으면 더보기 노출
   $btnMore.hidden = !nextUrl;
 }
 
-/**
- * Data fetch
- */
 async function loadProducts({ reset = false } = {}) {
   if (isLoading) return;
   isLoading = true;
@@ -110,7 +90,6 @@ async function loadProducts({ reset = false } = {}) {
       search: reset ? currentSearch : "",
     });
 
-    // 응답: { count, next, previous, results }
     nextUrl = data?.next ?? null;
 
     renderProducts(data?.results ?? [], { reset });
@@ -125,9 +104,6 @@ async function loadProducts({ reset = false } = {}) {
   }
 }
 
-/**
- * Events
- */
 $btnMore?.addEventListener("click", () => {
   loadProducts({ reset: false });
 });
@@ -139,7 +115,4 @@ $searchForm?.addEventListener("submit", (e) => {
   loadProducts({ reset: true });
 });
 
-/**
- * Init
- */
 loadProducts({ reset: true });
