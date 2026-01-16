@@ -210,9 +210,8 @@ const initSignup = () => {
 
             if (input.type === "number") {
                 input.addEventListener("input", (e) => {
-                    let maxLength = 10; // 기본은 10자 (사업자번호 등)
+                    let maxLength = 10;
 
-                    // 아이디에 'phone'이 포함된 경우만 4자로 제한
                     if (input.id && input.id.includes("phone")) {
                         maxLength = 4;
                     }

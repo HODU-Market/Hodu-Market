@@ -1,7 +1,4 @@
-/* login.css */
-
 html {
-    /* 스크롤바가 있든 없든 항상 공간을 확보하여 중앙을 고정함 */
     overflow-y: scroll; 
 }
 
