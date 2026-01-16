@@ -439,7 +439,10 @@ function renderProducts(products, { append } = { append: false }) {
             <div class="meta">
               <p class="seller">${escapeHtml(seller)}</p>
               <p class="name">${escapeHtml(p.name)}</p>
-              <p class="price">${Number(p.price).toLocaleString()}원</p>
+              <p class="price">
+                <span class="price-number">${Number(p.price).toLocaleString()}</span>
+                <span class="price-currency">원</span>
+              </p>
             </div>
           </a>
         </li>
