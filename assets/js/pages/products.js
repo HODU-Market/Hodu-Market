@@ -43,6 +43,71 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentStock = 0;
     let activeProductId = null;
 
+    function initScrollSpy() {
+        const tabButtons = Array.from(document.querySelectorAll(".tab-item"));
+        if (tabButtons.length === 0) return;
+
+        const sections = tabButtons
+            .map((btn) => document.getElementById(btn.dataset.tab))
+            .filter(Boolean);
+        if (sections.length === 0) return;
+
+        const tabsBar = document.querySelector(".product-tabs");
+        const getOffset = () => {
+            if (!tabsBar) return 0;
+            const top = Number.parseFloat(getComputedStyle(tabsBar).top) || 0;
+            return tabsBar.offsetHeight + top;
+        };
+
+        const setActiveTab = (tabId) => {
+            tabButtons.forEach((btn) => {
+                btn.classList.toggle("active", btn.dataset.tab === tabId);
+            });
+        };
+
+        tabButtons.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const target = document.getElementById(btn.dataset.tab);
+                if (!target) return;
+
+                const offset = getOffset();
+                const top = window.scrollY + target.getBoundingClientRect().top - offset - 8;
+                window.scrollTo({ top, behavior: "smooth" });
+                setActiveTab(btn.dataset.tab);
+            });
+        });
+
+        let ticking = false;
+        const updateActiveOnScroll = () => {
+            const offset = getOffset();
+            const scrollPos = window.scrollY + offset + 1;
+            let currentId = sections[0].id;
+
+            for (const section of sections) {
+                if (scrollPos >= section.offsetTop) {
+                    currentId = section.id;
+                } else {
+                    break;
+                }
+            }
+
+            setActiveTab(currentId);
+        };
+
+        const onScroll = () => {
+            if (ticking) return;
+            ticking = true;
+            window.requestAnimationFrame(() => {
+                updateActiveOnScroll();
+                ticking = false;
+            });
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        updateActiveOnScroll();
+    }
+
     // --- 수량 및 가격 관리 함수 ---
     function updateResult() {
         if (!quantityInput || !totalCount || !totalMoney) return;
@@ -102,6 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         // ... 기타 렌더링 로직 생략 (기존 코드와 동일)
         
+        if (shippingLabel) shippingLabel.textContent = "택배배송 / ";
+    if (shippingValue) shippingValue.textContent = "무료배송";
+    if (qtyControl) qtyControl.dataset.stock = String(product?.stock ?? 0);
+
+
         updateQtyUI(currentStock > 0 ? 1 : 0);
         updateResult();
     }
@@ -138,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- 실행부 ---
     startTimer();
+    initScrollSpy();
     
     // 수량 버튼 이벤트 바인딩
     btnPlus?.addEventListener("click", () => {
@@ -164,7 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (!tokenManager.isLoggedIn()) {
-            const move = confirm("로그인이 필요합니다. 로그인 페이지로 이동할까요?");
+            const move = confirm("로그인이 필요한 서비스 입니다. 로그인 하시겠습니까?");
             if (move) {
                 window.location.href = "../join/login.html";
             }
