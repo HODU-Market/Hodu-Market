@@ -3,7 +3,6 @@ export const API_CONFIG = {
   TIMEOUT: 10000,
 };
 
-// 토큰 관리 유틸리티
 export const tokenManager = {
   getAccessToken() {
     return localStorage.getItem("access_token");
