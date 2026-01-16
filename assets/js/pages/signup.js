@@ -65,6 +65,8 @@ const initSignup = () => {
         const errorId = `${prefix}-id-error`;
         const username = document.getElementById(inputId).value;
 
+        if (!isButtonClick) return;
+
         if (!username) {
             if (isButtonClick) setMessage(inputId, errorId, "아이디를 입력해주세요.", "error", false);
             return;
@@ -248,8 +250,6 @@ const initSignup = () => {
         pwEl.addEventListener("blur", checkPassword);
         pwCheckEl.addEventListener("input", checkPassword);
         pwCheckEl.addEventListener("blur", checkPassword);
-
-        document.getElementById(`${prefix}-id`).addEventListener("blur", () => checkId(false));
     };
 
     tabs.forEach((tab, index) => {
