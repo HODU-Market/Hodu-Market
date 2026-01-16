@@ -187,6 +187,9 @@ const cartUI = {
 
     // 이벤트 바인딩
     this.bindItemEvents();
+
+    // 전체 선택 버튼 상태 업데이트 (모든 아이템이 선택된 상태이므로)
+    cartCheckbox.updateSelectAll();
   },
 
   // 장바구니 아이템 HTML 생성 (HTML 구조에 맞춤)
