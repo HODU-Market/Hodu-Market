@@ -172,6 +172,8 @@ const cartUI = {
       emptyState.hidden = false;
     }
     this.listContainer?.classList.add("is-hidden");
+    this.summaryContainer?.classList.add("is-hidden");
+    document.querySelector(".cart__order-btn")?.classList.add("is-hidden");
   },
 
   // 장바구니 아이템 렌더링
