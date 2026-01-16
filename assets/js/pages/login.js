@@ -1,5 +1,20 @@
 const BASE_URL = "https://api.wenivops.co.kr/services/open-market";
 
+const setupEnterKey = (loginType) => {
+    const idInput = document.getElementById(`${loginType}-id`);
+    const pwInput = document.getElementById(`${loginType}-pw`);
+
+    [idInput, pwInput].forEach(input => {
+        if (input) {
+            input.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    window.handleLogin(loginType);
+                }
+            });
+        }
+    });
+};
+
 window.handleLogin = async (loginType) => {
     const idInput = document.getElementById(`${loginType}-id`);
     const pwInput = document.getElementById(`${loginType}-pw`);
@@ -58,6 +73,11 @@ window.handleLogin = async (loginType) => {
         errorMsg.style.display = "block";
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupEnterKey('buyer');
+    setupEnterKey('seller');
+});
 
 window.showForm = (type) => {
     document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
