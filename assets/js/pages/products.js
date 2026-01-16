@@ -4,6 +4,51 @@ import { tokenManager } from "../api/config.js";
 
 const IMAGE_FALLBACK = "../assets/images/sample image.png";
 
+/**
+ * 로그인 모달 관리
+ */
+const loginModal = {
+    modal: null,
+
+    init() {
+        this.modal = document.getElementById("loginModal");
+        if (!this.modal) return;
+
+        const overlay = this.modal.querySelector(".modal__overlay");
+        const closeBtn = this.modal.querySelector(".modal__close");
+        const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
+        const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+
+        overlay?.addEventListener("click", () => this.close());
+        closeBtn?.addEventListener("click", () => this.close());
+        cancelBtn?.addEventListener("click", () => this.close());
+        confirmBtn?.addEventListener("click", () => this.confirmLogin());
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+                this.close();
+            }
+        });
+    },
+
+    open() {
+        if (!this.modal) return;
+        this.modal.hidden = false;
+        document.body.style.overflow = "hidden";
+    },
+
+    close() {
+        if (!this.modal) return;
+        this.modal.hidden = true;
+        document.body.style.overflow = "";
+    },
+
+    confirmLogin() {
+        this.close();
+        window.location.href = "../join/login.html";
+    },
+};
+
 // 유틸리티 함수
 function formatNumber(value) {
     const n = Number(value);
@@ -16,6 +61,9 @@ function getProductId() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 로그인 모달 초기화
+    loginModal.init();
+
     // DOM 요소 선택
     const priceElement = document.querySelector(".price");
     const titleElement = document.querySelector(".title");
@@ -235,10 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (!tokenManager.isLoggedIn()) {
-            const move = confirm("로그인이 필요한 서비스 입니다. 로그인 하시겠습니까?");
-            if (move) {
-                window.location.href = "../join/login.html";
-            }
+            loginModal.open();
             return;
         }
 
