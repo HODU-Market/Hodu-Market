@@ -2,7 +2,7 @@ import { fetchProductDetail } from "../api/products.js";
 import { addToCart } from "../api/cart.api.js";
 import { tokenManager } from "../api/config.js";
 
-const IMAGE_FALLBACK = "../assets/images/sample image.png";
+const IMAGE_FALLBACK = "../assets/images/sample-image.png";
 
 /**
  * 로그인 모달 관리

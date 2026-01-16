@@ -428,7 +428,7 @@ function renderProducts(products, { append } = { append: false }) {
     .map((p) => {
       const id = encodeURIComponent(p.id);
       const seller = p.seller?.store_name || p.seller?.name || "판매자";
-      const img = p.image || "../assets/images/sample image.png";
+      const img = p.image || "../assets/images/sample-image.png";
 
       return `
         <li>
