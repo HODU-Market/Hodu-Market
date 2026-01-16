@@ -113,7 +113,6 @@ Hodu-Market/
 │   │   ├── common.js            # ⭐ 공통 기능 (114줄)
 │   │   ├── pages/               # 페이지별 로직
 │   │   │   ├── home.js
-│   │   │   ├── home.products.js
 │   │   │   ├── login.js
 │   │   │   ├── signup.js
 │   │   │   ├── products.js
