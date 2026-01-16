@@ -55,6 +55,17 @@ function formatNumber(value) {
     return Number.isFinite(n) ? n.toLocaleString("ko-KR") : "0";
 }
 
+function formatShippingMethod(method) {
+    if (method === "PARCEL") return "택배배송";
+    if (method === "DELIVERY") return "직접배송";
+    return "배송";
+}
+
+function formatShippingFee(fee) {
+    const amount = Number(fee ?? 0);
+    return amount <= 0 ? "무료배송" : `${formatNumber(amount)}원`;
+}
+
 function getProductId() {
     const params = new URLSearchParams(window.location.search);
     return params.get("id") || params.get("product_id");
@@ -78,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnMinus = document.querySelector(".qty-control__btn--minus");
     const btnPlus = document.querySelector(".qty-control__btn--plus");
     const btnCart = document.querySelector(".btn-cart");
+    const btnBuy = document.querySelector(".btn-buy");
     const descriptionSection = document.getElementById("description");
     let descriptionElement = document.querySelector(".product-description");
 
@@ -85,6 +97,18 @@ document.addEventListener("DOMContentLoaded", () => {
         descriptionElement = document.createElement("p");
         descriptionElement.className = "product-description";
         descriptionSection.appendChild(descriptionElement);
+    }
+
+    const isLoggedIn = tokenManager.isLoggedIn();
+    const isBuyer = tokenManager.isBuyer();
+    const isSeller = isLoggedIn && !isBuyer;
+
+    document.body.classList.toggle("is-guest", !isLoggedIn);
+    document.body.classList.toggle("is-seller", isSeller);
+
+    if (isSeller) {
+        btnBuy?.setAttribute("disabled", "disabled");
+        btnCart?.setAttribute("disabled", "disabled");
     }
 
     let unitPrice = 0;
@@ -199,6 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
             product?.seller_name ||
             product?.store_name ||
             "";
+        const shippingMethod = product?.shipping_method ?? product?.shippingMethod ?? "";
+        const shippingFee = product?.shipping_fee ?? product?.shippingFee ?? 0;
         unitPrice = Number(product?.price ?? 0);
         currentStock = Number(product?.stock ?? 0);
         activeProductId = product?.id ?? activeProductId;
@@ -213,12 +239,10 @@ document.addEventListener("DOMContentLoaded", () => {
             productImage.src = product?.image || IMAGE_FALLBACK;
             productImage.alt = name;
         }
+        if (shippingLabel) shippingLabel.textContent = `${formatShippingMethod(shippingMethod)} / `;
+        if (shippingValue) shippingValue.textContent = formatShippingFee(shippingFee);
+        if (qtyControl) qtyControl.dataset.stock = String(currentStock);
         // ... 기타 렌더링 로직 생략 (기존 코드와 동일)
-        
-        if (shippingLabel) shippingLabel.textContent = "택배배송 / ";
-    if (shippingValue) shippingValue.textContent = "무료배송";
-    if (qtyControl) qtyControl.dataset.stock = String(product?.stock ?? 0);
-
 
         updateQtyUI(currentStock > 0 ? 1 : 0);
         updateResult();
