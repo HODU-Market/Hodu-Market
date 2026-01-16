@@ -99,7 +99,8 @@ body {
 }
 
 .rowalt {
-    padding: 20px 0;
+    padding-top: 25px;
+    padding-bottom: 5px;
     display: flex;
     align-items: center;
     font-size: 14px;
@@ -135,8 +136,8 @@ body {
     gap: 15px;
 }
 
-.total { font-weight: bold; margin-right: auto; }
-.money { color: var(--color-primary); font-size: 24px; font-weight: 700; }
+.total { font-weight: 400; margin-right: auto; }
+.money { color: var(--color-primary); font-size: 30px; font-weight: 700; }
 .money::after { content: "원"; font-size: 18px; margin-left: 2px; font-weight: 300; }
 .total-count { font-size: 13px; color: var(--color-primary); }
 
@@ -164,6 +165,13 @@ body {
     border-radius: 5px; 
     font-weight: bold; 
     cursor: pointer; }
+
+body.is-seller .btn-buy,
+body.is-seller .btn-cart {
+    background-color: var(--color-gray-300);
+    color: var(--color-white);
+    cursor: not-allowed;
+}
 
     /* ========== Product Tabs ========== */
 

@@ -172,6 +172,8 @@ const cartUI = {
       emptyState.hidden = false;
     }
     this.listContainer?.classList.add("is-hidden");
+    this.summaryContainer?.classList.add("is-hidden");
+    document.querySelector(".cart__order-btn")?.classList.add("is-hidden");
   },
 
   // 장바구니 아이템 렌더링
@@ -302,7 +304,7 @@ const cartUI = {
             cart_item_id: cartId,
           };
           sessionStorage.setItem("orderData", JSON.stringify(orderData));
-          alert("주문 페이지 준비 중입니다.");
+          openPreparingModal("이 페이지는 준비중입니다.");
           return;
         }
       });
@@ -727,6 +729,44 @@ const stockModal = {
 /**
  * 주문하기 버튼 관리
  */
+
+function openPreparingModal(message = "이 페이지는 준비중입니다.") {
+  if (document.getElementById("preparing-modal")) return;
+
+  const modal = document.createElement("section");
+  modal.className = "modal";
+  modal.id = "preparing-modal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+
+  modal.innerHTML = `
+    <div class="modal__overlay" data-close="true"></div>
+    <div class="modal__content modal--login">
+      <button type="button" class="modal__close" aria-label="닫기" data-close="true"></button>
+      <p class="modal__message">${message}</p>
+      <div class="modal__actions">
+        <button type="button" class="modal__btn modal__btn--confirm" data-close="true">확인</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target?.dataset?.close === "true") {
+      modal.remove();
+    }
+  });
+
+  const onKeyDown = (e) => {
+    if (e.key === "Escape") {
+      modal.remove();
+      document.removeEventListener("keydown", onKeyDown);
+    }
+  };
+  document.addEventListener("keydown", onKeyDown);
+}
+
 const orderButton = {
   init() {
     const orderBtn = document.querySelector(".cart__order-btn");
@@ -761,7 +801,7 @@ const orderButton = {
     };
 
     sessionStorage.setItem("orderData", JSON.stringify(orderData));
-    alert("주문 페이지 준비 중입니다.");
+    openPreparingModal("이 페이지는 준비중입니다.");
   },
 };
 

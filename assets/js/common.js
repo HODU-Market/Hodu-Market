@@ -86,14 +86,9 @@ function isBuyer() {
 function renderHeaderByAuth() {
   const navList = document.getElementById("headerNav");
   if (!navList) return;
-  const headerInner = document.querySelector(".header-inner");
-  const isSellerPage = location.pathname.includes("/seller/");
 
   // 로그아웃: 장바구니 + 로그인
   if (!isLoggedIn()) {
-    if (!isSellerPage) {
-      headerInner?.classList.add("header-inner--logged-out");
-    }
     navList.classList.remove("nav-list--seller");
     navList.innerHTML = `
       <li class="header-cart">
@@ -112,8 +107,6 @@ function renderHeaderByAuth() {
     `;
     return;
   }
-
-  headerInner?.classList.remove("header-inner--logged-out");
 
   // 구매자: 장바구니 + 마이페이지
   if (isBuyer()) {
@@ -165,11 +158,6 @@ function renderHeaderByAuth() {
     </li>
   `;
   initHeaderUI();
-  const sellerBtn = navList.querySelector(".seller-btn");
-  sellerBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    openPreparingModal("이 페이지는 준비중입니다.");
-  });
 }
 
 function initHeaderUI() {
@@ -193,11 +181,6 @@ function initHeaderUI() {
     const btn = e.target.closest(".dropdown-item");
     if (!btn) return;
 
-    if (btn.dataset.action === "ui-only") {
-      openPreparingModal("이 페이지는 준비중입니다.");
-      return;
-    }
-
     if (btn.dataset.action === "logout") {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
@@ -206,41 +189,3 @@ function initHeaderUI() {
     }
   });
 }
-
-function openPreparingModal(message = "이 페이지는 준비 중입니다.") {
-  if (document.getElementById("preparing-modal")) return;
-
-  const modal = document.createElement("section");
-  modal.className = "modal";
-  modal.id = "preparing-modal";
-  modal.setAttribute("role", "dialog");
-  modal.setAttribute("aria-modal", "true");
-
-  modal.innerHTML = `
-    <div class="modal__overlay" data-close="true"></div>
-    <div class="modal__content modal--login">
-      <button type="button" class="modal__close" aria-label="닫기" data-close="true"></button>
-      <p class="modal__message">${message}</p>
-      <div class="modal__actions">
-        <button type="button" class="modal__btn modal__btn--confirm" data-close="true">확인</button>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(modal);
-
-  modal.addEventListener("click", (e) => {
-    if (e.target?.dataset?.close === "true") {
-      modal.remove();
-    }
-  });
-
-  const onKeyDown = (e) => {
-    if (e.key === "Escape") {
-      modal.remove();
-      document.removeEventListener("keydown", onKeyDown);
-    }
-  };
-  document.addEventListener("keydown", onKeyDown);
-}
-

@@ -9,13 +9,10 @@ let isLoading = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   initBannerSwiper();
+  renderHeaderByAuth();
   initHeaderUI();
-
-  if (!isLoggedIn()) {
-    showLoggedOutView();
-    return;
-  }
-
+  initLoginModal();
+  updateHeaderForAuthState();
   initSearchUI();
   initLoadMoreUI();
   initProductsOnce();
@@ -30,6 +27,117 @@ function isLoggedIn() {
     localStorage.getItem("refresh_token");
 
   return Boolean(token);
+}
+
+function openPreparingModal(message = "이 페이지는 준비중입니다.") {
+  if (document.getElementById("preparing-modal")) return;
+
+  const modal = document.createElement("section");
+  modal.className = "modal";
+  modal.id = "preparing-modal";
+  modal.setAttribute("role", "dialog");
+  modal.setAttribute("aria-modal", "true");
+
+  modal.innerHTML = `
+    <div class="modal__overlay" data-close="true"></div>
+    <div class="modal__content modal--login">
+      <button type="button" class="modal__close" aria-label="닫기" data-close="true"></button>
+      <p class="modal__message">${message}</p>
+      <div class="modal__actions">
+        <button type="button" class="modal__btn modal__btn--confirm" data-close="true">확인</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(modal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target?.dataset?.close === "true") {
+      modal.remove();
+    }
+  });
+
+  const onKeyDown = (e) => {
+    if (e.key === "Escape") {
+      modal.remove();
+      document.removeEventListener("keydown", onKeyDown);
+    }
+  };
+  document.addEventListener("keydown", onKeyDown);
+}
+
+function getUserInfo() {
+  const raw = localStorage.getItem("user_info");
+  return raw ? JSON.parse(raw) : null;
+}
+
+function isBuyer() {
+  return getUserInfo()?.user_type === "BUYER";
+}
+
+function renderHeaderByAuth() {
+  const navList = document.querySelector(".nav-list");
+  if (!navList) return;
+
+  if (!isLoggedIn()) {
+    navList.classList.remove("nav-list--seller");
+    navList.innerHTML = `
+      <li class="header-cart">
+        <a href="../cart/shopcart.html" class="header-cart-link">
+          <img
+            class="shopping-icon"
+            src="../assets/images/icons/icon-shopping-cart.svg"
+            alt=""
+          />
+          <span>장바구니</span>
+        </a>
+      </li>
+
+      <li class="mypage">
+        <button type="button" class="mypage-btn" aria-label="로그인">
+          <img class="user-icon" src="../assets/images/icons/icon-user.svg" alt="">
+          <span>로그인</span>
+        </button>
+      </li>
+    `;
+
+    const loginBtn = navList.querySelector(".mypage-btn");
+    loginBtn?.addEventListener("click", () => {
+      location.href = "../join/login.html";
+    });
+    return;
+  }
+
+  if (!isBuyer()) {
+    navList.classList.add("nav-list--seller");
+    navList.innerHTML = `
+      <li class="mypage">
+        <button type="button" class="mypage-btn" aria-haspopup="true" aria-expanded="false">
+          <img class="user-icon" src="../assets/images/icons/icon-user.svg" alt="">
+          <span>마이페이지</span>
+        </button>
+
+        <div class="dropdown" role="menu" aria-label="마이페이지 메뉴">
+          <button type="button" class="dropdown-item" data-action="ui-only">마이페이지</button>
+          <button type="button" class="dropdown-item" data-action="logout">로그아웃</button>
+        </div>
+      </li>
+      <li class="seller-center">
+        <a href="../seller/index.html" class="seller-btn">
+          <img src="../assets/images/icons/icon-shopping-bag.svg" alt="" class="seller-btn__icon">
+          <span class="seller-btn__text">판매자 센터</span>
+        </a>
+      </li>
+    `;
+    const sellerBtn = navList.querySelector(".seller-btn");
+    sellerBtn?.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPreparingModal("이 페이지는 준비중입니다.");
+    });
+    return;
+  }
+
+  navList.classList.remove("nav-list--seller");
 }
 
 function getProductListEl() {
@@ -56,15 +164,70 @@ function getEmptyEl() {
   );
 }
 
-function showLoggedOutView() {
-  const main = document.querySelector("main");
-  if (!main) return;
+/**
+ * 로그인 상태에 따라 헤더 UI 업데이트
+ */
+function updateHeaderForAuthState() {
+  const dropdown = document.querySelector(".dropdown");
+  const logoutBtn = dropdown?.querySelector('[data-action="logout"]');
+  const mypageBtn = dropdown?.querySelector('[data-action="ui-only"]');
 
-  main.innerHTML = `
-    <section class="login-required">
-      <p class="login-required-text">로그인이 필요합니다.</p>
-    </section>
-  `;
+  if (isLoggedIn()) {
+    if (logoutBtn) logoutBtn.style.display = "";
+    if (mypageBtn) mypageBtn.textContent = "마이페이지";
+  } else {
+    if (logoutBtn) logoutBtn.style.display = "none";
+    if (mypageBtn) mypageBtn.textContent = "로그인";
+  }
+}
+
+/**
+ * 로그인 모달 관리
+ */
+const loginModal = {
+  modal: null,
+
+  init() {
+    this.modal = document.getElementById("loginModal");
+    if (!this.modal) return;
+
+    const overlay = this.modal.querySelector(".modal__overlay");
+    const closeBtn = this.modal.querySelector(".modal__close");
+    const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
+    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+
+    overlay?.addEventListener("click", () => this.close());
+    closeBtn?.addEventListener("click", () => this.close());
+    cancelBtn?.addEventListener("click", () => this.close());
+    confirmBtn?.addEventListener("click", () => this.confirmLogin());
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+        this.close();
+      }
+    });
+  },
+
+  open() {
+    if (!this.modal) return;
+    this.modal.hidden = false;
+    document.body.style.overflow = "hidden";
+  },
+
+  close() {
+    if (!this.modal) return;
+    this.modal.hidden = true;
+    document.body.style.overflow = "";
+  },
+
+  confirmLogin() {
+    this.close();
+    window.location.href = "./join/login.html";
+  },
+};
+
+function initLoginModal() {
+  loginModal.init();
 }
 
 function initBannerSwiper() {
@@ -83,8 +246,19 @@ function initHeaderUI() {
   const mypage = document.querySelector(".mypage");
   const mypageBtn = document.querySelector(".mypage-btn");
   const dropdown = document.querySelector(".dropdown");
+  const cartLink = document.querySelector(".header-cart-link");
 
   if (!mypage || !mypageBtn || !dropdown) return;
+
+  // 장바구니 클릭 시 로그인 체크
+  if (cartLink) {
+    cartLink.addEventListener("click", (e) => {
+      if (!isLoggedIn()) {
+        e.preventDefault();
+        loginModal.open();
+      }
+    });
+  }
 
   mypageBtn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -104,10 +278,20 @@ function initHeaderUI() {
     const btn = e.target.closest(".dropdown-item");
     if (!btn) return;
 
+    if (btn.dataset.action === "ui-only") {
+      openPreparingModal("이 페이지는 준비중입니다.");
+      return;
+    }
+
     if (btn.dataset.action === "logout") {
       localStorage.clear();
-      showLoggedOutView();
-      location.href = "../index.html";
+      updateHeaderForAuthState();
+      location.href = "./index.html";
+    }
+
+    // 비로그인 상태에서 "로그인" 버튼 클릭 시
+    if (btn.dataset.action === "ui-only" && !isLoggedIn()) {
+      window.location.href = "./join/login.html";
     }
   });
 }
