@@ -4,10 +4,66 @@ import { tokenManager } from "../api/config.js";
 
 const IMAGE_FALLBACK = "../assets/images/sample image.png";
 
+/**
+ * 로그인 모달 관리
+ */
+const loginModal = {
+    modal: null,
+
+    init() {
+        this.modal = document.getElementById("loginModal");
+        if (!this.modal) return;
+
+        const overlay = this.modal.querySelector(".modal__overlay");
+        const closeBtn = this.modal.querySelector(".modal__close");
+        const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
+        const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+
+        overlay?.addEventListener("click", () => this.close());
+        closeBtn?.addEventListener("click", () => this.close());
+        cancelBtn?.addEventListener("click", () => this.close());
+        confirmBtn?.addEventListener("click", () => this.confirmLogin());
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+                this.close();
+            }
+        });
+    },
+
+    open() {
+        if (!this.modal) return;
+        this.modal.hidden = false;
+        document.body.style.overflow = "hidden";
+    },
+
+    close() {
+        if (!this.modal) return;
+        this.modal.hidden = true;
+        document.body.style.overflow = "";
+    },
+
+    confirmLogin() {
+        this.close();
+        window.location.href = "../join/login.html";
+    },
+};
+
 // 유틸리티 함수
 function formatNumber(value) {
     const n = Number(value);
     return Number.isFinite(n) ? n.toLocaleString("ko-KR") : "0";
+}
+
+function formatShippingMethod(method) {
+    if (method === "PARCEL") return "택배배송";
+    if (method === "DELIVERY") return "직접배송";
+    return "배송";
+}
+
+function formatShippingFee(fee) {
+    const amount = Number(fee ?? 0);
+    return amount <= 0 ? "무료배송" : `${formatNumber(amount)}원`;
 }
 
 function getProductId() {
@@ -16,6 +72,9 @@ function getProductId() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 로그인 모달 초기화
+    loginModal.init();
+
     // DOM 요소 선택
     const priceElement = document.querySelector(".price");
     const titleElement = document.querySelector(".title");
@@ -30,6 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnMinus = document.querySelector(".qty-control__btn--minus");
     const btnPlus = document.querySelector(".qty-control__btn--plus");
     const btnCart = document.querySelector(".btn-cart");
+    const btnBuy = document.querySelector(".btn-buy");
     const descriptionSection = document.getElementById("description");
     let descriptionElement = document.querySelector(".product-description");
 
@@ -37,6 +97,18 @@ document.addEventListener("DOMContentLoaded", () => {
         descriptionElement = document.createElement("p");
         descriptionElement.className = "product-description";
         descriptionSection.appendChild(descriptionElement);
+    }
+
+    const isLoggedIn = tokenManager.isLoggedIn();
+    const isBuyer = tokenManager.isBuyer();
+    const isSeller = isLoggedIn && !isBuyer;
+
+    document.body.classList.toggle("is-guest", !isLoggedIn);
+    document.body.classList.toggle("is-seller", isSeller);
+
+    if (isSeller) {
+        btnBuy?.setAttribute("disabled", "disabled");
+        btnCart?.setAttribute("disabled", "disabled");
     }
 
     let unitPrice = 0;
@@ -151,6 +223,8 @@ document.addEventListener("DOMContentLoaded", () => {
             product?.seller_name ||
             product?.store_name ||
             "";
+        const shippingMethod = product?.shipping_method ?? product?.shippingMethod ?? "";
+        const shippingFee = product?.shipping_fee ?? product?.shippingFee ?? 0;
         unitPrice = Number(product?.price ?? 0);
         currentStock = Number(product?.stock ?? 0);
         activeProductId = product?.id ?? activeProductId;
@@ -165,12 +239,10 @@ document.addEventListener("DOMContentLoaded", () => {
             productImage.src = product?.image || IMAGE_FALLBACK;
             productImage.alt = name;
         }
+        if (shippingLabel) shippingLabel.textContent = `${formatShippingMethod(shippingMethod)} / `;
+        if (shippingValue) shippingValue.textContent = formatShippingFee(shippingFee);
+        if (qtyControl) qtyControl.dataset.stock = String(currentStock);
         // ... 기타 렌더링 로직 생략 (기존 코드와 동일)
-        
-        if (shippingLabel) shippingLabel.textContent = "택배배송 / ";
-    if (shippingValue) shippingValue.textContent = "무료배송";
-    if (qtyControl) qtyControl.dataset.stock = String(product?.stock ?? 0);
-
 
         updateQtyUI(currentStock > 0 ? 1 : 0);
         updateResult();
@@ -235,10 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (!tokenManager.isLoggedIn()) {
-            const move = confirm("로그인이 필요한 서비스 입니다. 로그인 하시겠습니까?");
-            if (move) {
-                window.location.href = "../join/login.html";
-            }
+            loginModal.open();
             return;
         }
 

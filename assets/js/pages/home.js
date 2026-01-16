@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initBannerSwiper();
   renderHeaderByAuth();
   initHeaderUI();
+  initLoginModal();
+  updateHeaderForAuthState();
   initSearchUI();
   initLoadMoreUI();
   initProductsOnce();
@@ -162,15 +164,70 @@ function getEmptyEl() {
   );
 }
 
-function showLoggedOutView() {
-  const main = document.querySelector("main");
-  if (!main) return;
+/**
+ * 로그인 상태에 따라 헤더 UI 업데이트
+ */
+function updateHeaderForAuthState() {
+  const dropdown = document.querySelector(".dropdown");
+  const logoutBtn = dropdown?.querySelector('[data-action="logout"]');
+  const mypageBtn = dropdown?.querySelector('[data-action="ui-only"]');
 
-  main.innerHTML = `
-    <section class="login-required">
-      <p class="login-required-text">로그인이 필요합니다.</p>
-    </section>
-  `;
+  if (isLoggedIn()) {
+    if (logoutBtn) logoutBtn.style.display = "";
+    if (mypageBtn) mypageBtn.textContent = "마이페이지";
+  } else {
+    if (logoutBtn) logoutBtn.style.display = "none";
+    if (mypageBtn) mypageBtn.textContent = "로그인";
+  }
+}
+
+/**
+ * 로그인 모달 관리
+ */
+const loginModal = {
+  modal: null,
+
+  init() {
+    this.modal = document.getElementById("loginModal");
+    if (!this.modal) return;
+
+    const overlay = this.modal.querySelector(".modal__overlay");
+    const closeBtn = this.modal.querySelector(".modal__close");
+    const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
+    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
+
+    overlay?.addEventListener("click", () => this.close());
+    closeBtn?.addEventListener("click", () => this.close());
+    cancelBtn?.addEventListener("click", () => this.close());
+    confirmBtn?.addEventListener("click", () => this.confirmLogin());
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
+        this.close();
+      }
+    });
+  },
+
+  open() {
+    if (!this.modal) return;
+    this.modal.hidden = false;
+    document.body.style.overflow = "hidden";
+  },
+
+  close() {
+    if (!this.modal) return;
+    this.modal.hidden = true;
+    document.body.style.overflow = "";
+  },
+
+  confirmLogin() {
+    this.close();
+    window.location.href = "./join/login.html";
+  },
+};
+
+function initLoginModal() {
+  loginModal.init();
 }
 
 function initBannerSwiper() {
@@ -189,8 +246,19 @@ function initHeaderUI() {
   const mypage = document.querySelector(".mypage");
   const mypageBtn = document.querySelector(".mypage-btn");
   const dropdown = document.querySelector(".dropdown");
+  const cartLink = document.querySelector(".header-cart-link");
 
   if (!mypage || !mypageBtn || !dropdown) return;
+
+  // 장바구니 클릭 시 로그인 체크
+  if (cartLink) {
+    cartLink.addEventListener("click", (e) => {
+      if (!isLoggedIn()) {
+        e.preventDefault();
+        loginModal.open();
+      }
+    });
+  }
 
   mypageBtn.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -217,8 +285,13 @@ function initHeaderUI() {
 
     if (btn.dataset.action === "logout") {
       localStorage.clear();
-      showLoggedOutView();
-      location.href = "../index.html";
+      updateHeaderForAuthState();
+      location.href = "./index.html";
+    }
+
+    // 비로그인 상태에서 "로그인" 버튼 클릭 시
+    if (btn.dataset.action === "ui-only" && !isLoggedIn()) {
+      window.location.href = "./join/login.html";
     }
   });
 }
