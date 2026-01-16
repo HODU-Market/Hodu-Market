@@ -341,7 +341,7 @@ img {
 
 :root {
   --layout-max-width: 1280px;
-  --layout-side-padding: 80px;
+  --layout-side-padding: 320px;
   --header-height: 90px;
   --header-icon-filter: brightness(0) saturate(100%) invert(83%) sepia(18%)
     saturate(496%) hue-rotate(345deg);
@@ -353,6 +353,7 @@ img {
   left: 0;
   right: 0;
   width: 100%;
+  min-width: 1920px;
   height: var(--header-height);
   background: var(--color-white);
   z-index: 10;
@@ -360,7 +361,7 @@ img {
 }
 
 .header-inner {
-  max-width: var(--layout-max-width);
+  max-width: 1920px;
   width: 100%;
   height: var(--header-height);
   margin: 0 auto;
@@ -540,15 +541,17 @@ img {
 }
 
 .footer {
-  background: var(--color-gray-100);
-  margin-top: 80px;
+  width: 100%;
+  min-width: 1920px;
 }
 
 .footer-inner {
-  max-width: var(--layout-max-width);
+  max-width: 1920px;
+  width: 100%;
   margin: 0 auto;
-  padding: 24px var(--layout-side-padding) 40px;
+  padding: 60px 320px 40px; 
   box-sizing: border-box;
+  background: var(--color-gray-100);
 }
 
 .footer-top {
@@ -557,18 +560,33 @@ img {
   align-items: center;
 }
 
-.footer-links {
-  list-style: none;
+.footer-links{
   display: flex;
-  gap: 18px;
-  margin: 0;
-  padding: 0;
+  align-items: center;
+  flex-wrap: wrap;      /* 화면 좁아지면 줄바꿈 */
+  gap: 0;               /* 구분자는 li에서 처리 */
 }
 
-.footer-links a {
-  font-size: 14px;
-  color: var(--color-dark);
+.footer-links li{
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-links li + li::before{
+  content: "|";
+  margin: 0 16px;  
+  color: #000;        
+  font-weight: 400;
+}
+
+.footer-links a{
+  color: #000;
   text-decoration: none;
+  font-weight: 400;
+}
+
+.footer-links a.is-active{
+  font-weight: 700;   
 }
 
 .footer-sns {
