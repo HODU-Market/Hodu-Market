@@ -1,6 +1,5 @@
 const BASE_URL = "https://api.wenivops.co.kr/services/open-market";
 
-// 2. 로그인 처리 기능
 window.handleLogin = async (loginType) => {
     const idInput = document.getElementById(`${loginType}-id`);
     const pwInput = document.getElementById(`${loginType}-pw`);
@@ -9,7 +8,6 @@ window.handleLogin = async (loginType) => {
     const username = idInput.value.trim();
     const password = pwInput.value.trim();
 
-    // [유효성 검사 1] 아이디가 공란인 경우 (둘 다 공란일 때 포함)
     if (!username) {
         errorMsg.textContent = "아이디를 입력해 주세요.";
         errorMsg.style.display = "block";
@@ -17,7 +15,6 @@ window.handleLogin = async (loginType) => {
         return;
     }
 
-    // [유효성 검사 2] 아이디는 입력했으나 비밀번호가 공란인 경우
     if (!password) {
         errorMsg.textContent = "비밀번호를 입력해 주세요.";
         errorMsg.style.display = "block";
@@ -25,7 +22,6 @@ window.handleLogin = async (loginType) => {
         return;
     }
 
-    // [API 통신] 아이디와 비밀번호가 모두 입력된 상태
     try {
         const res = await fetch(`${BASE_URL}/accounts/login/`, {
             method: "POST",
@@ -35,7 +31,7 @@ window.handleLogin = async (loginType) => {
             body: JSON.stringify({
                 username: username,
                 password: password,
-                login_type: loginType.toUpperCase(), // BUYER 또는 SELLER
+                login_type: loginType.toUpperCase(),
             }),
         });
 
