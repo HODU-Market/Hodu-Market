@@ -1,0 +1,282 @@
+    body {
+        font-family: 'SpokaHanSansNeo', sans-serif;
+        background-color: var(--color-white);
+        color: var(--color-black);
+        margin: 0;
+        padding: 0;
+        scroll-behavior: smooth;
+    }
+
+    #app-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+        padding-top: 40px;
+    }
+        
+    
+    .container {
+        width: 100%;
+        max-width: 1700px;
+        margin: 0 auto;
+        padding: 0 80px;
+        box-sizing: border-box;
+    }
+    
+
+    
+
+    /* seller-product.css 에 추가 */
+
+.page-title {
+    font-size: 32px;      /* 제목의 크기 */
+    font-weight: 700;     /* 볼드체 적용 */
+    color: var(--color-black); /* 검은색 (common.css 변수) */
+    margin-bottom: 40px;  /* 아래 콘텐츠와의 간격 */
+    line-height: 1.2;
+}
+
+/* 상단 여백이 너무 붙어 보인다면 container나 main에 패딩을 조절할 수 있습니다 *
+
+
+    /* 1. 상품명을 감싸는 필드만 가로 100% 사용 */
+.product-name-field {
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+/* 2. 이미지(450px)와 나머지 폼이 나란히 배치되도록 유지 */
+.product-basic-info {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+/* 3. 나머지 폼 영역이 남은 공간을 다 쓰도록 설정 */
+.input-form-section {
+    flex: 1;
+}
+
+
+    /* 레이아웃 핵심: 주의사항 vs 나머지 전체 */
+    .form-layout-wrapper {
+    display: flex;
+    gap: 80px; /* 두 컬럼 사이 간격 */
+    align-items: flex-start;
+    }
+
+    /* 컬럼 1: 왼쪽 주의사항 (고정 너비) */
+    .side-column {
+    flex: 0 0 320px;
+    }
+
+    .notice-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--color-point); /* #eb5757 */
+    margin-bottom: 15px;
+    }
+
+    .notice-box {
+    background-color: var(--color-gray-100);
+    padding: 20px;
+    /* border-radius: 5px; */
+    font-size: 12px;
+    line-height: 1.6;
+    }
+
+    /* 컬럼 2: 오른쪽 메인 영역 (가변 너비) */
+    .main-column {
+    flex: 1;
+    }
+
+    /* 이미지와 인풋 폼을 나란히 배치 */
+    .product-basic-info {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+    }
+
+    .image-upload-section {
+    flex: 0 0 450px;
+    }
+
+    .image-box {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: var(--color-gray-200);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .upload-label {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    }
+
+    .upload-label img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    }
+
+    .input-form-section {
+    flex: 1;
+    }
+
+    /* 공통 입력 필드 스타일 */
+    .label-text {
+    display: block;
+    font-size: 14px;
+    color: var(--color-gray-400);
+    margin-bottom: 5px;
+    margin-left:5px;
+    }
+
+    .field {
+    margin-bottom: 16px;
+    }
+
+    .input-wrap {
+    position: relative;
+    display: flex;
+    width: 40%;
+    }
+
+    .input-wrap_title {
+    position: relative;
+    display: flex;
+    }
+
+    .input-field {
+    width: 100%;
+    height: 54px;
+    padding: 0 16px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    }
+
+    .input-field_title {
+    width: 100%;
+    height: 54px;
+    padding: 0 16px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 5px;
+    font-size: 16px;
+    }
+
+    .input-wrap_title.has-counter .input-field_title {
+    padding-right: 64px;
+    }
+
+    .input-wrap_title.has-counter .byte-count {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: var(--color-gray-400);
+    pointer-events: none;
+    }
+
+    .unit-box {
+    width: 54px;
+    height: 54px;
+    background-color: var(--color-gray-300);
+    color: var(--color-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 5px 5px 0;
+    }
+
+    .btn-group {
+    display: flex;
+    gap: 10px;
+    width: 80%;
+    }
+
+    .btn-tab {
+    flex: 1;
+    height: 54px;
+    border: 1px solid var(--color-gray-300);
+    border-radius: 5px;
+    background-color: var(--color-white);
+    color: var(--color-gray-400);
+    font-size: 16px;
+    font-weight: 500;
+    }
+
+    .btn-tab.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+    }
+
+    /* 상세 정보 에디터 영역 */
+    .editor-placeholder {
+    width: 100%;
+    height: 400px;
+    background-color: var(--color-gray-100);
+    border: 1px solid var(--color-gray-300);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    color: var(--color-gray-300);
+    margin-top: 10px;
+    padding: 24px;
+    box-sizing: border-box;
+    text-align: left;
+    white-space: pre-wrap;
+    }
+
+    .editor-placeholder.has-content {
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 16px;
+    color: var(--color-gray-400);
+    line-height: 1.6;
+    }
+
+    /* Align editor with input column (image 450px + gap 40px). */
+    .editor-section {
+
+        width: 100%;
+    }
+
+    /* 버튼 스타일 */
+    .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 14px;
+    margin-top: 50px;
+    margin-bottom: 150px;
+    }
+
+    .btn-white {
+    width: 200px;
+    height: 60px;
+    border: 1px solid var(--color-gray-300);
+    background: var(--color-white);
+    color: var(--color-gray-400);
+    border-radius: 5px;
+    font-weight: 700;
+    }
+
+    .btn-primary {
+    width: 200px;
+    height: 60px;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: 5px;
+    font-weight: 700;
+    }
