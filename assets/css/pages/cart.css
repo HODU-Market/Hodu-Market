@@ -272,7 +272,7 @@
   width: 100%;
 }
 
-.cart__summary_container {
+.cart__summary-container {
   display: flex;
   align-items: center;
   gap: 0;

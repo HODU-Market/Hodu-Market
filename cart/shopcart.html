@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>장바구니 - 호두마켓</title>
+    <meta name="description" content="호두마켓 장바구니. 선택하신 고양이 용품을 확인하고 주문하실 수 있습니다." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#e3c1a4" />
+
     <link
       rel="icon"
       type="image/svg+xml"
@@ -20,7 +24,7 @@
       <div id="header-snippet"></div>
 
       <!-- Main -->
-      <main class="cart">
+      <main class="cart" id="main-content">
         <h2 class="cart__title">장바구니</h2>
 
         <!-- Cart Form -->
@@ -55,7 +59,7 @@
             <h3 class="sr-only">결제 금액 요약</h3>
             <dl class="cart__summary-list">
 
-              <div class="cart__summary_container">
+              <div class="cart__summary-container">
 
                 <div class="cart__summary-item">
                 <dt>총 상품금액</dt>
@@ -127,16 +131,16 @@
       <!-- Login Required Modal -->
       <div
         class="modal modal--login"
-        id="loginModal"
+        id="login-modal"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="loginModalTitle"
+        aria-labelledby="login-modal-title"
         hidden
       >
         <div class="modal__overlay"></div>
         <div class="modal__content">
           <button type="button" class="modal__close" aria-label="닫기"></button>
-          <p class="modal__message" id="loginModalTitle">
+          <p class="modal__message" id="login-modal-title">
             로그인이 필요한 서비스입니다.<br />로그인 하시겠습니까?
           </p>
           <div class="modal__actions">
