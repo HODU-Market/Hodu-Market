@@ -40,37 +40,6 @@
 
 <img width="1499" height="663" alt="스크린샷 2026-01-17 103836" src="https://github.com/user-attachments/assets/4f459f5b-4422-4d77-a07e-46d465662a3c" />
 
-
-```
-Day 1: 프로젝트 셋업 & 기획
-├── 프로젝트 구조 설계 (MPA 아키텍처 결정)
-├── API 명세서 분석 및 문서화
-└── GitHub 협업 환경 구축 (브랜치 전략, 이슈 템플릿, Wiki 명세화)
-
-Day 2: 공통 모듈 & 페이지 레이아웃
-├── 각 페이지 HTML 마크업
-├── common.css 작성 (CSS Variables, 기본 스타일)
-├── common.js 작성 (헤더/푸터 로드, 수량 조절)
-└── 헤더/푸터 컴포넌트 개발
-
-Day 3: 핵심 기능 구현
-├── API 연동 
-├── 로그인/회원가입 기능 (구매자/판매자 분리)
-├── 홈페이지 상품 목록 & 배너
-├── 상품 상세 페이지
-└── 장바구니 CRUD 기능
-
-Day 4: QA
-├── 에러 핸들링 보완
-├── UI/UX 개선 
-├── 버그 수정
-└── 코드 리뷰 & 리팩토링
-
-Day 5: 배포
-├── 페이지 흐름 최종 점검
-└── GITHUB PAGES을 활용한 배포
-
-```
 ---
 
 ## 프로젝트 구조 (MPA)
@@ -78,69 +47,6 @@ Day 5: 배포
 본 프로젝트는 **MPA (Multi-Page Application)** 구조를 채택하여 각 페이지가 독립적인 HTML 파일로 구성됩니다.
 
 <img width="1201" height="717" alt="스크린샷 2026-01-17 102154" src="https://github.com/user-attachments/assets/58cb5346-e5d4-4acb-bee7-3c07c1d04488" />
-
-```
-Hodu-Market/
-│
-├── index.html                    # 홈페이지 (메인 진입점)
-│
-├── join/                         # 인증 관련 페이지
-│   ├── login.html               # 로그인
-│   └── signup.html              # 회원가입
-│
-├── products/                     # 상품 관련 페이지
-│   └── product.html             # 상품 상세
-│
-├── cart/                         # 장바구니 페이지
-│   └── shopcart.html
-│
-├── page404/                      # 에러 페이지
-│   └── notfound.html            # 404 Not Found
-│
-├── components/                   # 재사용 컴포넌트 (HTML Snippet)
-│   ├── header.html              # 공통 헤더
-│   ├── footer.html              # 공통 푸터
-│   └── item.html                # 상품 카드 컴포넌트
-│
-├── assets/                       # 정적 자원
-│   ├── css/
-│   │   ├── common.css           # ⭐ 공통 스타일 (647줄)
-│   │   ├── reset.css            # CSS 리셋
-│   │   └── pages/               # 페이지별 스타일
-│   │       ├── home.css
-│   │       ├── login.css
-│   │       ├── signup.css
-│   │       ├── products.css
-│   │       ├── cart.css
-│   │       └── notfound.css
-│   │
-│   ├── js/
-│   │   ├── common.js            # ⭐ 공통 기능 (114줄)
-│   │   ├── pages/               # 페이지별 로직
-│   │   │   ├── home.js
-│   │   │   ├── login.js
-│   │   │   ├── signup.js
-│   │   │   ├── products.js
-│   │   │   └── cart.js
-│   │   └── api/                 # API 통신 모듈
-│   │       ├── config.js        # API 설정, 토큰 관리
-│   │       ├── http.js          # HTTP 요청 유틸리티
-│   │       ├── auth.js          # 인증 API
-│   │       ├── products.js      # 상품 API
-│   │       ├── cart.api.js      # 장바구니 API
-│   │       └── client.js        # API 클라이언트
-│   │
-│   └── images/                  # 이미지 리소스
-│       ├── logo.svg
-│       ├── banner[1-4].png
-│       └── icons/
-│
-├── docs/                         # 문서
-│   └── hodu-market-api-spec.md  # API 명세서
-│
-└── .github/
-    └── ISSUE_TEMPLATE/          # 이슈 템플릿
-```
 
 ### MPA 구조 선택 이유
 
