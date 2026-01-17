@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 - 호두마켓</title>
+    <meta name="description" content="호두마켓 로그인 페이지. 구매회원 또는 판매회원으로 로그인하실 수 있습니다." />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#e3c1a4" />
+
     <script>
       if (localStorage.getItem("access_token")) {
         location.replace("../index.html");
@@ -21,19 +25,19 @@
     
     <div class="login-box">
       <div class="tabs">
-        <div class="tab active" onclick="showForm('buyer')">구매회원 로그인</div>
-        <div class="tab" onclick="showForm('seller')">판매회원 로그인</div>
+        <div class="tab active" data-login-type="buyer">구매회원 로그인</div>
+        <div class="tab" data-login-type="seller">판매회원 로그인</div>
       </div>
 
       <div id="buyer" class="form active">
         <input class="input" type="text" placeholder="아이디" id="buyer-id">
-        <input class="input" type="password" placeholder="비밀번호" id="buyer-pw"><p class="error-msg" id="buyer-error"></p> <button class="btn" onclick="handleLogin('buyer')">로그인</button>
+        <input class="input" type="password" placeholder="비밀번호" id="buyer-pw"><p class="error-msg" id="buyer-error"></p> <button class="btn" data-login-type="buyer">로그인</button>
       </div>
 
       <div id="seller" class="form">
         <input class="input" type="text" placeholder="아이디" id="seller-id">
         <input class="input" type="password" placeholder="비밀번호" id="seller-pw">
-        <p class="error-msg" id="seller-error"></p> <button class="btn" onclick="handleLogin('seller')">로그인</button>
+        <p class="error-msg" id="seller-error"></p> <button class="btn" data-login-type="seller">로그인</button>
       </div>
     </div>
 

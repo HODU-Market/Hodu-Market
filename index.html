@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>호두마켓 - 고양이 물품 전문 쇼핑몰</title>
+    <meta name="description" content="고양이를 위한 모든 것! 호두마켓에서 사랑스러운 고양이 용품을 만나보세요. 캣 타워, 장난감, 간식, 사료 등 다양한 고양이 제품을 합리적인 가격에 제공합니다." />
+    <meta name="keywords" content="고양이용품, 고양이쇼핑몰, 캣타워, 고양이간식, 고양이장난감, 반려묘용품, 호두마켓" />
+    <meta name="author" content="호두마켓" />
+    <meta name="theme-color" content="#e3c1a4" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="호두마켓 - 고양이 물품 전문 쇼핑몰" />
+    <meta property="og:description" content="고양이를 위한 모든 것! 호두마켓에서 사랑스러운 고양이 용품을 만나보세요." />
+    <meta property="og:image" content="https://hodumarket.com/assets/images/og-image.jpg" />
+    <meta property="og:url" content="https://hodumarket.com" />
+    <meta property="og:site_name" content="호두마켓" />
 
     <link
       rel="icon"
@@ -17,11 +29,40 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
+
+    <!-- Schema.org Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "호두마켓",
+      "url": "https://hodumarket.com",
+      "logo": "https://hodumarket.com/assets/images/logo.svg",
+      "description": "고양이를 위한 모든 것! 호두마켓에서 사랑스러운 고양이 용품을 만나보세요.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "제주특별자치도",
+        "addressLocality": "제주시",
+        "streetAddress": "동광고로 137 제주코딩베이스캠프"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "areaServed": "KR",
+        "availableLanguage": "Korean"
+      },
+      "sameAs": [
+        "https://www.instagram.com/weniv_official/",
+        "https://www.facebook.com/wenivcorp/",
+        "https://www.youtube.com/@weniv/featured"
+      ]
+    }
+    </script>
   </head>
   <body>
 
     <div id="header-snippet"></div>
-    <main class="main">
+    <main class="main" id="main-content">
       <section class="banner" aria-label="프로모션 배너">
         <div class="swiper banner-swiper">
           <div class="swiper-wrapper">
@@ -60,7 +101,7 @@
 
       <section class="products" aria-label="상품 목록">
         <div class="container">
-          <ul class="product-grid" id="productList">
+          <ul class="product-grid" id="product-list">
             <li>
               <a class="product-card" href="../products/product.html">
                 <div class="thumb">
@@ -126,7 +167,7 @@
               </a>
             </li>
           </ul>
-          <p id="emptyState" class="empty" hidden>검색 결과가 없습니다.</p>
+          <p id="empty-state" class="empty" hidden>검색 결과가 없습니다.</p>
           <nav class="pagination" id="pagination" aria-label="페이지네이션" hidden></nav>
         </div>
       </section>
@@ -135,16 +176,16 @@
     <!-- Login Required Modal -->
     <div
       class="modal modal--login"
-      id="loginModal"
+      id="login-modal"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="loginModalTitle"
+      aria-labelledby="login-modal-title"
       hidden
     >
       <div class="modal__overlay"></div>
       <div class="modal__content">
         <button type="button" class="modal__close" aria-label="닫기"></button>
-        <p class="modal__message" id="loginModalTitle">
+        <p class="modal__message" id="login-modal-title">
           로그인이 필요한 서비스입니다.<br />로그인 하시겠습니까?
         </p>
         <div class="modal__actions">

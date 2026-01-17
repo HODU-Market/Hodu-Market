@@ -4,17 +4,53 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>상품 상세 - 호두마켓</title>
+<meta name="description" content="호두마켓에서 고양이를 위한 특별한 상품을 만나보세요. 상세한 상품 정보와 리뷰를 확인하고 구매하실 수 있습니다." />
+<meta name="keywords" content="고양이용품 구매, 고양이쇼핑, 반려묘용품, 호두마켓" />
+<meta name="theme-color" content="#e3c1a4" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="product" />
+<meta property="og:title" content="상품 상세 - 호두마켓" />
+<meta property="og:description" content="호두마켓에서 고양이를 위한 특별한 상품을 만나보세요." />
+<meta property="og:site_name" content="호두마켓" />
+
     <link rel="icon" type="image/svg+xml" href="../assets/images/icons/favicon.svg">
 
 <link rel="stylesheet" href="../assets/css/reset.css">
 <link rel="stylesheet" href="../assets/css/common.css">
 <link rel="stylesheet" href="../assets/css/pages/products.css">
+
+<!-- Schema.org Product (동적으로 업데이트됨) -->
+<script type="application/ld+json" id="product-schema">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "상품명",
+  "description": "상품 설명",
+  "image": "https://hodumarket.com/assets/images/sample-image.png",
+  "brand": {
+    "@type": "Brand",
+    "name": "호두마켓"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://hodumarket.com/products/product.html",
+    "priceCurrency": "KRW",
+    "price": "0",
+    "availability": "https://schema.org/InStock",
+    "seller": {
+      "@type": "Organization",
+      "name": "호두마켓"
+    }
+  }
+}
+</script>
 </head>
 <body>
 <div id="app-wrapper">
 <div id="header-snippet"></div>
 
-<main class="main">
+<main class="main" id="main-content">
     <div class="container">
         <section class="product">
 
@@ -211,16 +247,16 @@
     <!-- Login Required Modal -->
     <div
     class="modal modal--login"
-    id="loginModal"
+    id="login-modal"
     role="dialog"
     aria-modal="true"
-    aria-labelledby="loginModalTitle"
+    aria-labelledby="login-modal-title"
     hidden
     >
     <div class="modal__overlay"></div>
     <div class="modal__content">
         <button type="button" class="modal__close" aria-label="닫기"></button>
-        <p class="modal__message" id="loginModalTitle">
+        <p class="modal__message" id="login-modal-title">
         로그인이 필요한 서비스입니다.<br />로그인 하시겠습니까?
         </p>
         <div class="modal__actions">

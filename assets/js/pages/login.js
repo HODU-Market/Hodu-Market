@@ -77,6 +77,28 @@ window.handleLogin = async (loginType) => {
 document.addEventListener('DOMContentLoaded', () => {
     setupEnterKey('buyer');
     setupEnterKey('seller');
+
+    // 탭 전환 이벤트 리스너
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const loginType = tab.getAttribute('data-login-type');
+            if (loginType) {
+                window.showForm(loginType);
+            }
+        });
+    });
+
+    // 로그인 버튼 이벤트 리스너
+    const loginButtons = document.querySelectorAll('.btn[data-login-type]');
+    loginButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const loginType = button.getAttribute('data-login-type');
+            if (loginType) {
+                window.handleLogin(loginType);
+            }
+        });
+    });
 });
 
 window.showForm = (type) => {

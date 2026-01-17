@@ -103,6 +103,24 @@ img {
   border: 0;
 }
 
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  z-index: 9999;
+  padding: 10px 20px;
+  background-color: var(--color-dark);
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.skip-link:focus {
+  top: 0;
+  left: 0;
+}
+
 .custom-checkbox {
   appearance: none;
   -webkit-appearance: none;

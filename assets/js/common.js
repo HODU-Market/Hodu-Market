@@ -67,7 +67,7 @@ if (headerSnippet) {
 }
 
 if (footerSnippet) {
-  fetch("../components/footer.html")
+  fetch(`${PATH.components}/footer.html`)
     .then(response => response.text())
     .then(data => {
       footerSnippet.innerHTML = data;

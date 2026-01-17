@@ -1,5 +1,6 @@
 // cart.js
 import { tokenManager } from "../api/config.js";
+import { Modal } from "../utils/modal.js";
 import {
   fetchCart,
   addToCart,
@@ -60,7 +61,7 @@ const cartData = {
 
       // 재고 체크
       if (newQuantity > item.product.stock) {
-        stockModal.open(item.product.stock);
+        stockModal.open({ maxStock: item.product.stock });
         return;
       }
 
@@ -282,9 +283,10 @@ const cartUI = {
       btn.addEventListener("click", (e) => {
         const cartItem = e.target.closest(".cart-item");
         const cartId = parseInt(cartItem.dataset.cartId, 10);
-        deleteModal.targetItem = cartItem;
-        deleteModal.targetCartId = cartId;
-        deleteModal.open();
+        deleteModal.open({
+          targetCartId: cartId,
+          targetItem: cartItem,
+        });
       });
     });
 
@@ -543,188 +545,45 @@ const cartCheckbox = {
 };
 
 /**
- * 공통 모달 유틸리티
- */
-const modalUtils = {
-  openModal(modal) {
-    if (modal) {
-      modal.hidden = false;
-      document.body.style.overflow = "hidden";
-    }
-  },
-
-  closeModal(modal) {
-    if (modal) {
-      modal.hidden = true;
-      document.body.style.overflow = "";
-    }
-  },
-
-  bindCloseEvents(modal, closeCallback) {
-    if (!modal) return;
-
-    const overlay = modal.querySelector(".modal__overlay");
-    const closeBtn = modal.querySelector(".modal__close");
-    const cancelBtn = modal.querySelector(".modal__btn--cancel");
-
-    overlay?.addEventListener("click", closeCallback);
-    closeBtn?.addEventListener("click", closeCallback);
-    cancelBtn?.addEventListener("click", closeCallback);
-  },
-};
-
-/**
  * 삭제 확인 모달 관리
  */
-const deleteModal = {
-  modal: null,
-  targetItem: null,
-  targetCartId: null,
-
-  init() {
-    this.modal = document.getElementById("deleteModal");
-
-    if (!this.modal) return;
-
-    modalUtils.bindCloseEvents(this.modal, () => this.close());
-
-    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
-    confirmBtn?.addEventListener("click", () => this.confirmDelete());
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !this.modal.hidden) {
-        this.close();
-      }
-    });
-  },
-
-  open() {
-    modalUtils.openModal(this.modal);
-  },
-
-  close() {
-    modalUtils.closeModal(this.modal);
-    this.targetItem = null;
-    this.targetCartId = null;
-  },
-
-  async confirmDelete() {
-    if (this.targetCartId) {
-      await cartData.removeItem(this.targetCartId);
+const deleteModal = new Modal("deleteModal", {
+  confirmCallback: async (state) => {
+    if (state.targetCartId) {
+      await cartData.removeItem(state.targetCartId);
     }
-    this.close();
   },
-};
+});
 
 /**
  * 로그인 필요 모달 관리
  */
-const loginModal = {
-  modal: null,
-
-  init() {
-    this.modal = document.getElementById("loginModal");
-
-    if (!this.modal) return;
-
-    modalUtils.bindCloseEvents(this.modal, () => this.close());
-
-    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
-    confirmBtn?.addEventListener("click", () => this.confirmLogin());
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
-        this.close();
-      }
-    });
-  },
-
-  open() {
-    modalUtils.openModal(this.modal);
-  },
-
-  close() {
-    modalUtils.closeModal(this.modal);
-  },
-
-  confirmLogin() {
-    this.close();
+const loginModal = new Modal("login-modal", {
+  confirmCallback: () => {
     window.location.href = "/join/login.html";
   },
-};
+});
 
 /**
  * 장바구니 존재 모달 관리
  */
-const cartExistsModal = {
-  modal: null,
-
-  init() {
-    this.modal = document.getElementById("cartExistsModal");
-
-    if (!this.modal) return;
-
-    modalUtils.bindCloseEvents(this.modal, () => this.close());
-
-    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
-    confirmBtn?.addEventListener("click", () => this.confirmGoToCart());
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
-        this.close();
-      }
-    });
-  },
-
-  open() {
-    modalUtils.openModal(this.modal);
-  },
-
-  close() {
-    modalUtils.closeModal(this.modal);
-  },
-
-  confirmGoToCart() {
-    this.close();
+const cartExistsModal = new Modal("cartExistsModal", {
+  confirmCallback: () => {
     window.location.href = "/cart/shopcart.html";
   },
-};
+});
 
 /**
  * 재고 초과 모달 관리
  */
-const stockModal = {
-  modal: null,
-
-  init() {
-    this.modal = document.getElementById("stockModal");
-
-    if (!this.modal) return;
-
-    modalUtils.bindCloseEvents(this.modal, () => this.close());
-
-    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
-    confirmBtn?.addEventListener("click", () => this.close());
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
-        this.close();
-      }
-    });
-  },
-
-  open(maxStock) {
+const stockModal = new Modal("stockModal", {
+  beforeOpen: (data) => {
     const maxSpan = document.getElementById("stockModalMax");
-    if (maxSpan) {
-      maxSpan.textContent = maxStock;
+    if (maxSpan && data.maxStock !== undefined) {
+      maxSpan.textContent = data.maxStock;
     }
-    modalUtils.openModal(this.modal);
   },
-
-  close() {
-    modalUtils.closeModal(this.modal);
-  },
-};
+});
 
 /**
  * 주문하기 버튼 관리
