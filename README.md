@@ -38,6 +38,9 @@
 
 ## WBS 추진일정
 
+<img width="1499" height="663" alt="스크린샷 2026-01-17 103836" src="https://github.com/user-attachments/assets/4f459f5b-4422-4d77-a07e-46d465662a3c" />
+
+
 ```
 Day 1: 프로젝트 셋업 & 기획
 ├── 프로젝트 구조 설계 (MPA 아키텍처 결정)
@@ -73,6 +76,8 @@ Day 5: 배포
 ## 프로젝트 구조 (MPA)
 
 본 프로젝트는 **MPA (Multi-Page Application)** 구조를 채택하여 각 페이지가 독립적인 HTML 파일로 구성됩니다.
+
+<img width="1201" height="717" alt="스크린샷 2026-01-17 102154" src="https://github.com/user-attachments/assets/58cb5346-e5d4-4acb-bee7-3c07c1d04488" />
 
 ```
 Hodu-Market/
