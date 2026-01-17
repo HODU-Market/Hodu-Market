@@ -54,7 +54,7 @@ const headerSnippet = document.getElementById("header-snippet");
 const footerSnippet = document.getElementById("footer-snippet");
 
 if (headerSnippet) {
-  fetch("../components/header.html")
+  fetch(`${PATH.components}/header.html`)
     .then(response => response.text())
     .then(data => {
       headerSnippet.innerHTML = data;
@@ -151,7 +151,7 @@ function renderHeaderByAuth() {
     </li>
 
     <li class="seller-center">
-      <a href="${PATH.root}/seller/index.html" class="seller-btn">
+      <a href="${PATH.root}/seller/seller-product.html" class="seller-btn">
         <img src="${PATH.assets}/images/icons/icon-shopping-bag.svg" alt="" class="seller-btn__icon">
         <span class="seller-btn__text">판매자 센터</span>
       </a>
