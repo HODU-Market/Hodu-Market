@@ -1,6 +1,5 @@
-const isRootPage =
-  location.pathname === "/" ||
-  location.pathname.endsWith("/index.html");
+const fileName = location.pathname.split('/').pop();
+const isRootPage = fileName === '' || fileName === 'index.html';
 
 const isSellerProductPage = location.pathname.endsWith("/seller-product.html");
 
