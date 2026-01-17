@@ -6,8 +6,12 @@ let productsRendered = false;
 let nextUrl = null;
 let currentSearch = "";
 let isLoading = false;
+let currentPage = 1;
+let pageSize = null;
+let totalPages = 1;
 
 document.addEventListener("DOMContentLoaded", () => {
+  currentPage = getPageFromQuery();
   initBannerSwiper();
   renderHeaderByAuth();
   initHeaderUI();
@@ -15,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   updateHeaderForAuthState();
   initSearchUI();
   initLoadMoreUI();
+  initPaginationUI();
   initProductsOnce();
 });
 
@@ -164,6 +169,29 @@ function getEmptyEl() {
   );
 }
 
+function getPaginationEl() {
+  return (
+    document.getElementById("pagination") ||
+    document.querySelector("[data-role='pagination']")
+  );
+}
+
+function getPageFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("page");
+  const page = Number.parseInt(raw, 10);
+  return Number.isFinite(page) && page > 0 ? page : 1;
+}
+
+function setPageInUrl(page, { replace = false } = {}) {
+  const url = new URL(window.location.href);
+  if (page > 1) url.searchParams.set("page", String(page));
+  else url.searchParams.delete("page");
+
+  if (replace) history.replaceState(null, "", url);
+  else history.pushState(null, "", url);
+}
+
 /**
  * 로그인 상태에 따라 헤더 UI 업데이트
  */
@@ -310,6 +338,10 @@ function initSearchUI() {
 
     currentSearch = input.value.trim();
     nextUrl = null;
+    currentPage = 1;
+    pageSize = null;
+    totalPages = 1;
+    setPageInUrl(currentPage, { replace: true });
 
     try {
       await loadProducts({ reset: true });
@@ -336,6 +368,43 @@ function initLoadMoreUI() {
   });
 }
 
+function initPaginationUI() {
+  const pagination = getPaginationEl();
+  if (!pagination) return;
+  if (pagination.dataset.bound === "true") return;
+  pagination.dataset.bound = "true";
+
+  pagination.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-page]");
+    if (!btn) return;
+    if (btn.disabled) return;
+    const nextPage = Number.parseInt(btn.dataset.page, 10);
+    if (!Number.isFinite(nextPage) || nextPage < 1) return;
+    if (nextPage === currentPage) return;
+
+    currentPage = nextPage;
+    setPageInUrl(currentPage);
+
+    try {
+      await loadProducts({ reset: true, scrollTop: true });
+    } catch (err) {
+      console.error("페이지 이동 실패:", err);
+    }
+  });
+
+  window.addEventListener("popstate", async () => {
+    const nextPage = getPageFromQuery();
+    if (nextPage === currentPage) return;
+    currentPage = nextPage;
+
+    try {
+      await loadProducts({ reset: true, scrollTop: true });
+    } catch (err) {
+      console.error("페이지 이동 실패:", err);
+    }
+  });
+}
+
 async function initProductsOnce() {
   if (productsRendered) return;
 
@@ -343,6 +412,7 @@ async function initProductsOnce() {
     currentSearch = "";
     nextUrl = null;
 
+    setPageInUrl(currentPage, { replace: true });
     await loadProducts({ reset: true });
     productsRendered = true;
   } catch (err) {
@@ -350,7 +420,7 @@ async function initProductsOnce() {
   }
 }
 
-async function loadProducts({ reset } = { reset: false }) {
+async function loadProducts({ reset, scrollTop = false } = { reset: false }) {
   if (isLoading) return;
   isLoading = true;
 
@@ -377,12 +447,16 @@ async function loadProducts({ reset } = { reset: false }) {
     const data = await fetchProducts({
       nextUrl: reset ? null : nextUrl,
       search: reset ? currentSearch : "",
+      page: currentPage,
     });
 
     console.log("[products] response:", data);
 
     const results = data?.results || [];
     nextUrl = data?.next || null;
+    const count = typeof data?.count === "number" ? data.count : null;
+    const hasNext = Boolean(data?.next);
+    const hasPrevious = Boolean(data?.previous);
 
     console.log("[products] results length:", results.length);
 
@@ -398,6 +472,17 @@ async function loadProducts({ reset } = { reset: false }) {
 
     if (emptyEl) emptyEl.hidden = allProducts.length !== 0;
     if (moreBtn) moreBtn.hidden = true;
+
+    updatePagination({
+      count,
+      hasNext,
+      hasPrevious,
+      resultsLength: results.length,
+    });
+
+    if (scrollTop) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   } catch (err) {
     console.error("[products] fetch failed:", err);
     alert(err?.payload?.detail || err?.message || "상품 API 호출 실패");
@@ -418,6 +503,115 @@ async function loadProducts({ reset } = { reset: false }) {
   } finally {
     isLoading = false;
   }
+}
+
+function updatePagination({
+  count,
+  hasNext,
+  hasPrevious,
+  resultsLength,
+}) {
+  const pagination = getPaginationEl();
+  if (!pagination) return;
+
+  if (!count || count <= 0) {
+    pagination.hidden = true;
+    return;
+  }
+
+  if (!pageSize && resultsLength > 0) {
+    if (!hasNext && hasPrevious) {
+      const inferred = (count - resultsLength) / (currentPage - 1);
+      if (Number.isFinite(inferred) && Math.abs(inferred - Math.round(inferred)) < 0.001) {
+        pageSize = Math.round(inferred);
+      }
+    } else {
+      pageSize = resultsLength;
+    }
+  }
+
+  if (!pageSize) {
+    pagination.hidden = true;
+    return;
+  }
+
+  totalPages = Math.ceil(count / pageSize);
+
+  if (totalPages <= 1) {
+    pagination.hidden = true;
+    return;
+  }
+
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+    setPageInUrl(currentPage, { replace: true });
+  }
+
+  const windowSize = 5;
+  const halfWindow = Math.floor(windowSize / 2);
+  let startPage = Math.max(1, currentPage - halfWindow);
+  let endPage = Math.min(totalPages, currentPage + halfWindow);
+
+  if (endPage - startPage + 1 < windowSize) {
+    if (startPage === 1) {
+      endPage = Math.min(totalPages, startPage + windowSize - 1);
+    } else if (endPage === totalPages) {
+      startPage = Math.max(1, endPage - windowSize + 1);
+    }
+  }
+
+  const buttons = [];
+  const pushNavButton = (label, page, disabled = false) => {
+    buttons.push(`
+      <button
+        type="button"
+        class="page-btn page-btn--nav"
+        data-page="${page}"
+        aria-label="${label}"
+        ${disabled ? "disabled" : ""}
+      >
+        ${label}
+      </button>
+    `);
+  };
+
+  const pushPageButton = (page) => {
+    const isActive = page === currentPage;
+    buttons.push(`
+      <button
+        type="button"
+        class="page-btn${isActive ? " is-active" : ""}"
+        data-page="${page}"
+        aria-current="${isActive ? "page" : "false"}"
+        ${isActive ? "disabled" : ""}
+      >
+        ${page}
+      </button>
+    `);
+  };
+
+  const pushEllipsis = () => {
+    buttons.push('<span class="page-ellipsis" aria-hidden="true">...</span>');
+  };
+
+  pushNavButton("‹", Math.max(1, currentPage - 1), currentPage === 1);
+
+  pushPageButton(1);
+  if (startPage > 2) pushEllipsis();
+
+  for (let page = startPage; page <= endPage; page += 1) {
+    if (page !== 1 && page !== totalPages) pushPageButton(page);
+  }
+
+  if (endPage < totalPages - 1) pushEllipsis();
+  if (totalPages > 1) pushPageButton(totalPages);
+
+  pushNavButton("›", Math.min(totalPages, currentPage + 1), currentPage === totalPages);
+
+  const pageButtons = buttons.join("");
+
+  pagination.innerHTML = pageButtons;
+  pagination.hidden = false;
 }
 
 function renderProducts(products, { append } = { append: false }) {

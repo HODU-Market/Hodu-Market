@@ -1,12 +1,19 @@
 import { apiRequest } from "./client.js";
 
-export async function fetchProducts({ nextUrl = null, search = "" } = {}) {
+export async function fetchProducts({
+  nextUrl = null,
+  search = "",
+  page,
+} = {}) {
   if (nextUrl) {
     return apiRequest(nextUrl, { method: "GET" });
   }
 
-  const qs = search ? `?search=${encodeURIComponent(search)}` : "";
-  return apiRequest(`/products/${qs}`, { method: "GET" });
+  const params = new URLSearchParams();
+  if (search) params.set("search", search);
+  if (page) params.set("page", String(page));
+  const qs = params.toString();
+  return apiRequest(`/products/${qs ? `?${qs}` : ""}`, { method: "GET" });
 }
 
 export async function fetchSellerProducts(
