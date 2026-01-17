@@ -47,7 +47,8 @@
 
 본 프로젝트는 **MPA (Multi-Page Application)** 구조를 채택하여 각 페이지가 독립적인 HTML 파일로 구성됩니다.
 
-<img width="1201" height="717" alt="스크린샷 2026-01-17 102154" src="https://github.com/user-attachments/assets/58cb5346-e5d4-4acb-bee7-3c07c1d04488" />
+<img width="1091" height="824" alt="image" src="https://github.com/user-attachments/assets/c73d60ea-59c7-4634-ac95-0a17814c58da" />
+
 
 ### MPA 구조 선택 이유
 
