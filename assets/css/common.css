@@ -337,9 +337,10 @@ img {
 .header {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 50%;
   right: 0;
   width: 100%;
+  transform: translateX(-50%);
   max-width: 1920px;
   height: var(--header-height);
   background: var(--color-white);
@@ -618,6 +619,7 @@ img {
 .footer {
   width: 100%;
   max-width: 1920px;  
+  margin: 0 auto;
 }
 
 .footer-inner {
