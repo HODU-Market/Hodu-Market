@@ -128,17 +128,12 @@ function renderHeaderByAuth() {
         </div>
       </li>
       <li class="seller-center">
-        <a href="../seller/index.html" class="seller-btn">
+        <a href="../seller/seller-product.html" class="seller-btn">
           <img src="../assets/images/icons/icon-shopping-bag.svg" alt="" class="seller-btn__icon">
           <span class="seller-btn__text">판매자 센터</span>
         </a>
       </li>
     `;
-    const sellerBtn = navList.querySelector(".seller-btn");
-    sellerBtn?.addEventListener("click", (e) => {
-      e.preventDefault();
-      openPreparingModal("이 페이지는 준비중입니다.");
-    });
     return;
   }
 
