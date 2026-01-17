@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initBannerSwiper();
   renderHeaderByAuth();
   initHeaderUI();
+  initHeaderDropdownWhenReady();
   initLoginModal();
   updateHeaderForAuthState();
   initSearchUI();
@@ -319,6 +320,23 @@ function initHeaderUI() {
   });
 }
 
+function initHeaderDropdownWhenReady() {
+  const host = document.getElementById("header-snippet");
+  if (!host) return;
+  if (host.querySelector(".mypage") && host.querySelector(".dropdown")) {
+    initHeaderUI();
+    return;
+  }
+
+  const observer = new MutationObserver(() => {
+    if (host.querySelector(".mypage") && host.querySelector(".dropdown")) {
+      initHeaderUI();
+      observer.disconnect();
+    }
+  });
+
+  observer.observe(host, { childList: true, subtree: true });
+}
 function initSearchUI() {
   const form = document.querySelector(".input-box");
   const input = document.querySelector("#fieldInput");
