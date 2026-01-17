@@ -135,6 +135,7 @@ function renderHeaderByAuth() {
         </a>
       </li>
     `;
+    initHeaderUI();
     return;
   }
 

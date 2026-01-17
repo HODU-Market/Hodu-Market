@@ -366,8 +366,8 @@ function initSellerHeaderSwap() {
 
   observer.observe(headerHost, { childList: true, subtree: true });
 }
+
 document.addEventListener("DOMContentLoaded", () => {
-  initSellerHeaderSwap();
   const updateNameCount = setupNameCounter();
   const shippingTabs = setupShippingTabs();
   const imagePreview = setupImagePreview();
