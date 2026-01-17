@@ -30,7 +30,7 @@
 |      이름      |                        GitHub                        | 담당 파트                              |
 | :------------: | :--------------------------------------------------: | :------------------------------------- |
 |     정준서     |        [@HeyJunN](https://github.com/HeyJunN)        |             장바구니 페이지             |
-|     김혜진     |       [@kimjinx2](https://github.com/kimjinx2)       |             상품 상세 페이지            |
+|     김혜진     |     [@ohhu-code](https://github.com/ohhu-code)       |             상품 상세 페이지            |
 |     손은애     | [@sonenae10-blip](https://github.com/sonenae10-blip) |               메인페이지                |
 |     김재이     | [@wn5zdvnvkp-dev](https://github.com/wn5zdvnvkp-dev) |             로그인/회원가입             |
 
