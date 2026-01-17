@@ -337,7 +337,37 @@ async function loadProductDetail(productId, helpers = {}) {
   }
 }
 
+function replaceHeaderToSellerCenter() {
+  const host = document.getElementById("header-snippet") || document;
+  const mypage = host.querySelector(".mypage");
+  if (!mypage) return false;
+
+  const sellerLi = document.createElement("li");
+  sellerLi.className = "seller-center";
+  sellerLi.innerHTML = `
+    <a href="../seller/index.html" class="seller-btn">
+      <img src="../assets/images/icons/icon-shopping-bag.svg" alt="" class="seller-btn__icon">
+      <span class="seller-btn__text">\uD310\uB9E4\uC790 \uC13C\uD130</span>
+    </a>
+  `;
+
+  mypage.replaceWith(sellerLi);
+  return true;
+}
+
+function initSellerHeaderSwap() {
+  const headerHost = document.getElementById("header-snippet");
+  if (!headerHost) return;
+  if (replaceHeaderToSellerCenter()) return;
+
+  const observer = new MutationObserver(() => {
+    if (replaceHeaderToSellerCenter()) observer.disconnect();
+  });
+
+  observer.observe(headerHost, { childList: true, subtree: true });
+}
 document.addEventListener("DOMContentLoaded", () => {
+  initSellerHeaderSwap();
   const updateNameCount = setupNameCounter();
   const shippingTabs = setupShippingTabs();
   const imagePreview = setupImagePreview();

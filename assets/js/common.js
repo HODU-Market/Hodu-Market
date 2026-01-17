@@ -2,6 +2,8 @@ const isRootPage =
   location.pathname === "/" ||
   location.pathname.endsWith("/index.html");
 
+const isSellerProductPage = location.pathname.endsWith("/seller-product.html");
+
 const PATH = {
   components: isRootPage ? "./components" : "../components",
   assets: isRootPage ? "./assets" : "../assets",
@@ -55,10 +57,12 @@ const footerSnippet = document.getElementById("footer-snippet");
 
 if (headerSnippet) {
   fetch(`${PATH.components}/header.html`)
-    .then(response => response.text())
-    .then(data => {
+    .then((response) => response.text())
+    .then((data) => {
       headerSnippet.innerHTML = data;
-      renderHeaderByAuth(); 
+
+      renderHeaderByAuth();
+      initHeaderUI(); 
     });
 }
 
@@ -166,17 +170,33 @@ function initHeaderUI() {
   const dropdown = document.querySelector(".dropdown");
   if (!mypage || !mypageBtn || !dropdown) return;
 
+  // 중복 바인딩 방지
+  if (mypageBtn.dataset.bound === "true") return;
+  mypageBtn.dataset.bound = "true";
+
   mypageBtn.addEventListener("click", (e) => {
     e.stopPropagation();
     mypage.classList.toggle("is-open");
-    mypageBtn.setAttribute("aria-expanded", mypage.classList.contains("is-open"));
+    mypageBtn.setAttribute(
+      "aria-expanded",
+      mypage.classList.contains("is-open") ? "true" : "false"
+    );
   });
 
-  document.addEventListener("click", () => {
-    mypage.classList.remove("is-open");
-    mypageBtn.setAttribute("aria-expanded", "false");
-  });
+  // 문서 클릭 시 닫기 (중복 방지 위해 한 번만)
+  if (document.body.dataset.mypageDocBound !== "true") {
+    document.body.dataset.mypageDocBound = "true";
 
+    document.addEventListener("click", () => {
+      const mp = document.querySelector(".mypage");
+      const btn = document.querySelector(".mypage-btn");
+      if (!mp || !btn) return;
+      mp.classList.remove("is-open");
+      btn.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  // 드롭다운 클릭
   dropdown.addEventListener("click", (e) => {
     const btn = e.target.closest(".dropdown-item");
     if (!btn) return;
@@ -185,7 +205,8 @@ function initHeaderUI() {
       localStorage.removeItem("access_token");
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user_info");
-      location.href = "../index.html";
+      location.href = `${PATH.root}/index.html`;
     }
   });
 }
+
