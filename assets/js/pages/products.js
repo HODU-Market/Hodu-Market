@@ -1,53 +1,18 @@
 import { fetchProductDetail } from "../api/products.js";
 import { addToCart } from "../api/cart.api.js";
 import { tokenManager } from "../api/config.js";
+import { Modal } from "../utils/modal.js";
 
 const IMAGE_FALLBACK = "../assets/images/sample-image.png";
 
 /**
  * 로그인 모달 관리
  */
-const loginModal = {
-    modal: null,
-
-    init() {
-        this.modal = document.getElementById("loginModal");
-        if (!this.modal) return;
-
-        const overlay = this.modal.querySelector(".modal__overlay");
-        const closeBtn = this.modal.querySelector(".modal__close");
-        const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
-        const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
-
-        overlay?.addEventListener("click", () => this.close());
-        closeBtn?.addEventListener("click", () => this.close());
-        cancelBtn?.addEventListener("click", () => this.close());
-        confirmBtn?.addEventListener("click", () => this.confirmLogin());
-
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && this.modal && !this.modal.hidden) {
-                this.close();
-            }
-        });
-    },
-
-    open() {
-        if (!this.modal) return;
-        this.modal.hidden = false;
-        document.body.style.overflow = "hidden";
-    },
-
-    close() {
-        if (!this.modal) return;
-        this.modal.hidden = true;
-        document.body.style.overflow = "";
-    },
-
-    confirmLogin() {
-        this.close();
+const loginModal = new Modal("login-modal", {
+    confirmCallback: () => {
         window.location.href = "../join/login.html";
     },
-};
+});
 
 // 유틸리티 함수
 function formatNumber(value) {

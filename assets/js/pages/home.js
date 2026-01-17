@@ -1,4 +1,5 @@
 import { fetchProducts } from "../api/products.js";
+import { Modal } from "../utils/modal.js";
 
 let allProducts = [];
 let productsRendered = false;
@@ -16,24 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
   renderHeaderByAuth();
   initHeaderUI();
   initHeaderDropdownWhenReady();
-  initLoginModal();
+  loginModal.init();
   updateHeaderForAuthState();
   initSearchUI();
   initLoadMoreUI();
   initPaginationUI();
   initProductsOnce();
 });
-
-function isLoggedIn() {
-  const token =
-    localStorage.getItem("token") ||
-    localStorage.getItem("access_token") ||
-    localStorage.getItem("accessToken") ||
-    localStorage.getItem("refresh") ||
-    localStorage.getItem("refresh_token");
-
-  return Boolean(token);
-}
 
 function openPreparingModal(message = "이 페이지는 준비중입니다.") {
   if (document.getElementById("preparing-modal")) return;
@@ -70,15 +60,6 @@ function openPreparingModal(message = "이 페이지는 준비중입니다.") {
     }
   };
   document.addEventListener("keydown", onKeyDown);
-}
-
-function getUserInfo() {
-  const raw = localStorage.getItem("user_info");
-  return raw ? JSON.parse(raw) : null;
-}
-
-function isBuyer() {
-  return getUserInfo()?.user_type === "BUYER";
 }
 
 function renderHeaderByAuth() {
@@ -144,7 +125,6 @@ function renderHeaderByAuth() {
 
 function getProductListEl() {
   return (
-    document.getElementById("productList") ||
     document.getElementById("product-list") ||
     document.querySelector(".product-grid")
   );
@@ -160,7 +140,7 @@ function getLoadMoreBtnEl() {
 
 function getEmptyEl() {
   return (
-    document.getElementById("emptyState") ||
+    document.getElementById("empty-state") ||
     document.querySelector(".empty") ||
     document.querySelector("[data-role='empty']")
   );
@@ -209,51 +189,11 @@ function updateHeaderForAuthState() {
 /**
  * 로그인 모달 관리
  */
-const loginModal = {
-  modal: null,
-
-  init() {
-    this.modal = document.getElementById("loginModal");
-    if (!this.modal) return;
-
-    const overlay = this.modal.querySelector(".modal__overlay");
-    const closeBtn = this.modal.querySelector(".modal__close");
-    const cancelBtn = this.modal.querySelector(".modal__btn--cancel");
-    const confirmBtn = this.modal.querySelector(".modal__btn--confirm");
-
-    overlay?.addEventListener("click", () => this.close());
-    closeBtn?.addEventListener("click", () => this.close());
-    cancelBtn?.addEventListener("click", () => this.close());
-    confirmBtn?.addEventListener("click", () => this.confirmLogin());
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.modal && !this.modal.hidden) {
-        this.close();
-      }
-    });
-  },
-
-  open() {
-    if (!this.modal) return;
-    this.modal.hidden = false;
-    document.body.style.overflow = "hidden";
-  },
-
-  close() {
-    if (!this.modal) return;
-    this.modal.hidden = true;
-    document.body.style.overflow = "";
-  },
-
-  confirmLogin() {
-    this.close();
+const loginModal = new Modal("login-modal", {
+  confirmCallback: () => {
     window.location.href = "./join/login.html";
   },
-};
-
-function initLoginModal() {
-  loginModal.init();
-}
+});
 
 function initBannerSwiper() {
   const el = document.querySelector(".banner-swiper");
@@ -340,7 +280,7 @@ function initHeaderDropdownWhenReady() {
 }
 function initSearchUI() {
   const form = document.querySelector(".input-box");
-  const input = document.querySelector("#fieldInput");
+  const input = document.querySelector("#field-input");
   const icon = document.querySelector(".search-icon");
 
   if (!form || !input || !icon) return;
@@ -444,8 +384,8 @@ async function loadProducts({ reset, scrollTop = false } = { reset: false }) {
 
   if (!list) {
     isLoading = false;
-    console.error("상품 리스트 DOM을 찾지 못했습니다. #productList 또는 .product-grid 확인 필요");
-    alert("상품 리스트 DOM을 찾지 못했습니다. HTML에서 productList 또는 product-grid를 확인하세요.");
+    console.error("상품 리스트 DOM을 찾지 못했습니다. #product-list 또는 .product-grid 확인 필요");
+    alert("상품 리스트 DOM을 찾지 못했습니다. HTML에서 product-list 또는 product-grid를 확인하세요.");
     return;
   }
 
