@@ -340,7 +340,7 @@ img {
   left: 0;
   right: 0;
   width: 100%;
-  min-width: 1920px;
+  max-width: 1920px;
   height: var(--header-height);
   background: var(--color-white);
   z-index: 10;
@@ -591,11 +591,11 @@ img {
   height: 54px;
   padding: 0 20px;
 
-  background-color: #3a3a3a;
+  background-color: var(--color-black);
   border-radius: 5px;
   border: 0;
 
-  color: #ffffff;
+  color: var(--color-white);
   font-size: 18px;
   font-weight: 400;
   line-height: 1;
@@ -617,7 +617,7 @@ img {
 
 .footer {
   width: 100%;
-  min-width: 1920px;
+  max-width: 1920px;  
 }
 
 .footer-inner {
@@ -650,12 +650,12 @@ img {
 .footer-links li + li::before {
   content: "|";
   margin: 0 16px;
-  color: #000;
+  color: var(--color-black);
   font-weight: 400;
 }
 
 .footer-links a {
-  color: #000;
+  color: var(--color-black);
   text-decoration: none;
   font-weight: 400;
 }
