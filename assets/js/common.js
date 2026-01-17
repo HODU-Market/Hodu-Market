@@ -59,10 +59,11 @@ if (headerSnippet) {
   fetch(`${PATH.components}/header.html`)
     .then((response) => response.text())
     .then((data) => {
-      headerSnippet.innerHTML = data;
+      const fixedData = data.replaceAll('../', `${PATH.root}/`);
+      headerSnippet.innerHTML = fixedData;
 
       renderHeaderByAuth();
-      initHeaderUI(); 
+      initHeaderUI();
     });
 }
 
@@ -70,7 +71,8 @@ if (footerSnippet) {
   fetch(`${PATH.components}/footer.html`)
     .then(response => response.text())
     .then(data => {
-      footerSnippet.innerHTML = data;
+      const fixedData = data.replaceAll('../', `${PATH.root}/`);
+      footerSnippet.innerHTML = fixedData;
     });
 }
 

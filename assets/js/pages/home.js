@@ -70,10 +70,10 @@ function renderHeaderByAuth() {
     navList.classList.remove("nav-list--seller");
     navList.innerHTML = `
       <li class="header-cart">
-        <a href="../cart/shopcart.html" class="header-cart-link">
+        <a href="./cart/shopcart.html" class="header-cart-link">
           <img
             class="shopping-icon"
-            src="../assets/images/icons/icon-shopping-cart.svg"
+            src="./assets/images/icons/icon-shopping-cart.svg"
             alt=""
           />
           <span>장바구니</span>
@@ -82,7 +82,7 @@ function renderHeaderByAuth() {
 
       <li class="mypage">
         <button type="button" class="mypage-btn" aria-label="로그인">
-          <img class="user-icon" src="../assets/images/icons/icon-user.svg" alt="">
+          <img class="user-icon" src="./assets/images/icons/icon-user.svg" alt="">
           <span>로그인</span>
         </button>
       </li>
@@ -90,7 +90,7 @@ function renderHeaderByAuth() {
 
     const loginBtn = navList.querySelector(".mypage-btn");
     loginBtn?.addEventListener("click", () => {
-      location.href = "../join/login.html";
+      location.href = "./join/login.html";
     });
     return;
   }
@@ -100,7 +100,7 @@ function renderHeaderByAuth() {
     navList.innerHTML = `
       <li class="mypage">
         <button type="button" class="mypage-btn" aria-haspopup="true" aria-expanded="false">
-          <img class="user-icon" src="../assets/images/icons/icon-user.svg" alt="">
+          <img class="user-icon" src="./assets/images/icons/icon-user.svg" alt="">
           <span>마이페이지</span>
         </button>
 
@@ -110,8 +110,8 @@ function renderHeaderByAuth() {
         </div>
       </li>
       <li class="seller-center">
-        <a href="../seller/seller-product.html" class="seller-btn">
-          <img src="../assets/images/icons/icon-shopping-bag.svg" alt="" class="seller-btn__icon">
+        <a href="./seller/seller-product.html" class="seller-btn">
+          <img src="./assets/images/icons/icon-shopping-bag.svg" alt="" class="seller-btn__icon">
           <span class="seller-btn__text">판매자 센터</span>
         </a>
       </li>
@@ -576,7 +576,7 @@ function renderProducts(products, { append } = { append: false }) {
     .map((p) => {
       const id = encodeURIComponent(p.id);
       const seller = p.seller?.store_name || p.seller?.name || "판매자";
-      const img = p.image || "../assets/images/sample-image.png";
+      const img = p.image || "./assets/images/sample-image.png";
 
       return `
         <li>
