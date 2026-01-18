@@ -39,7 +39,7 @@
 
 ## WBS 추진일정
 
-<img width="1499" height="663" alt="스크린샷 2026-01-17 103836" src="https://github.com/user-attachments/assets/4f459f5b-4422-4d77-a07e-46d465662a3c" />
+<img width="577.885 mm" height="567.544 mm" alt="WBS 추진일정" src="https://i.imgur.com/EWgbkTz.png" />
 
 ---
 
