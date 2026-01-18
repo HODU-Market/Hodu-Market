@@ -134,14 +134,31 @@ assets/js/api/
 - 상품 목록 조회 및 검색
 - 상품 상세 정보 확인
 - 장바구니 담기 / 수량 조절 / 삭제
-- 주문하기
 
 ### 판매자 기능
 
 - 판매자 회원가입 / 로그인
-- 상품 등록 / 수정 / 삭제
-- 재고 관리
-- 판매자 센터 (판매 중인 상품 관리)
+- 상품 등록
+
+## VIEW
+
+### 1. 로그인/회원가입
+
+| 로그인 | 회원가입 |
+| --- | --- |
+| <img width="1897" height="862" alt="image" src="https://github.com/user-attachments/assets/dc706915-1797-4d75-9c24-02a3ff527dcc" /> | <img width="1919" height="864" alt="image" src="https://github.com/user-attachments/assets/fd278770-ee0c-4be3-91a7-701f7cd9e8bd" /> |
+
+### 2. 메인페이지
+
+<img width="1898" height="864" alt="image" src="https://github.com/user-attachments/assets/8e233b9e-0c3c-4fc9-b531-afeaa7ba065b" />
+
+### 3. 제품 상세페이지
+
+<img width="1897" height="864" alt="image" src="https://github.com/user-attachments/assets/99600ba4-9f45-458d-9cf9-15018cf0638e" />
+
+### 4. 장바구니
+
+<img width="1895" height="863" alt="image" src="https://github.com/user-attachments/assets/79b0a0e3-7b83-4109-91f0-4083c439a5e2" />
 
 ---
 
