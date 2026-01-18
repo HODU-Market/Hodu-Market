@@ -189,6 +189,9 @@ assets/js/api/
 - 엔터키 로그인 지원
 - 반응형 디자인 버그 수정
 
+<img width="1895" height="862" alt="image" src="https://github.com/user-attachments/assets/82a868af-5bf5-468a-ba13-74b87a3841ba" />
+*▲ lighthouse 검사 결과*
+
 ---
 
 ## 에러 트래킹 및 품질 관리
